@@ -5,3 +5,11 @@ I'll use C# because it is easy to use (for me) and quite simple language (compar
 I want to do this project, because I think this would be fun! :)
 
 At the moment my main focus is study Game Boy and it's emulation.
+
+Tasks (incomplete):
+ * CPU
+     * Registers
+     * instruction set
+ * MEMORY
+ * ROM Loader
+ * GUI
