@@ -6,10 +6,16 @@ I want to do this project, because I think this would be fun! :)
 
 At the moment my main focus is study Game Boy and it's emulation.
 
-Tasks (incomplete):
- * CPU
-     * Registers
-     * instruction set
- * MEMORY
- * ROM Loader
- * GUI
+status list:
+* Done
+    * - 
+* Testing
+    * - 
+* In Progress
+    * Specification 
+* Specification In Progress:
+    * Processor,  Memory
+* TODO
+    * ROM Loader
+    * Sound, Video, Etc
+    * GUI
