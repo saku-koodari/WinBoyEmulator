@@ -11,10 +11,13 @@ status list:
     * - 
 * Testing
     * - 
+* Proof of Concept
+   * Memory
+   * CPU, without instruction set
 * In Progress
-    * Specification 
+    * GPU
 * Specification In Progress:
-    * Processor,  Memory
+    * spcefication is on hold at the moment.
 * TODO
     * ROM Loader
     * Sound, Video, Etc
