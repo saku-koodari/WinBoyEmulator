@@ -17,7 +17,7 @@ status list:
 * In Progress
     * GPU
 * Specification In Progress:
-    * spcefication is on hold at the moment.
+    * Instruction set of CPU
 * TODO
     * ROM Loader
     * Sound, Video, Etc
