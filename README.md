@@ -11,11 +11,12 @@ status list:
     * - 
 * Testing
     * - 
+* In Progress
+   *  Specification
 * Proof of Concept
    * Memory
    * CPU, without instruction set
-* In Progress
-    * GPU
+   * GPU
 * Specification In Progress:
     * Instruction set of CPU
 * TODO
