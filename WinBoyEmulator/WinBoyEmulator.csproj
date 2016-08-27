@@ -51,12 +51,19 @@
     <Compile Include="CPU\IRegisters.cs" />
     <Compile Include="CPU\LR35902.cs" />
     <Compile Include="CPU\Registers.cs" />
+    <Compile Include="GPU\GPU.cs" />
+    <Compile Include="GPU\ObjectData.cs" />
+    <Compile Include="GPU\Palette.cs" />
+    <Compile Include="GPU\Screen.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Memory\Bios.cs" />
+    <Compile Include="Memory\IMemory.cs" />
+    <Compile Include="Memory\Memory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">
@@ -83,6 +90,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LogWriter\Log4any.csproj">
+      <Project>{dd687b85-6996-4811-85cf-8fda6caf34b0}</Project>
+      <Name>Log4any</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
