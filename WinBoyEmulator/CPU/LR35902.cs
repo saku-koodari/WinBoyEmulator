@@ -197,6 +197,30 @@ namespace WinBoyEmulator.CPU
         }
         #endregion
 
+        #region static Instance constructor
+        static LR35902() { _syncRoot = new object(); }
+        private static LR35902 _instance;
+        private static readonly object _syncRoot;
+        public static LR35902 Instance
+        {
+            get
+            {
+                if (_instance != null)
+                    return _instance;
+
+                lock (_syncRoot)
+                {
+                    if (_instance != null)
+                        return _instance;
+
+                    _instance = new LR35902();
+                }
+
+                return _instance;
+            }
+        }
+        #endregion
+
         public void Reset()
         {
             // Since we have combined registers, we can use them.
