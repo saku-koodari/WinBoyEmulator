@@ -62,7 +62,7 @@ namespace WinBoyEmulator.Memory
         // https://github.com/visualboyadvance/visualboyadvance/blob/a2868a7eea7d5a6bc07a84ea69f18fafb09dfe4c/src/common/Loader.c
         public void Load(string fileName) {  throw new NotImplementedException("TODO"); }
 
-        public byte ReadByte(ushort address)
+        public byte ReadByte(int address)
         {
             var aAddress = address & 0xF000;
 
@@ -151,9 +151,9 @@ namespace WinBoyEmulator.Memory
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
-        public ushort ReadShort(ushort address) => (ushort)(ReadByte(address) + ReadByte((ushort)(address + 1)) << 8);
+        public int ReadShort(int address) => (ReadByte(address) + ReadByte(address + 1) << 8);
 
-        public void WriteByte(ushort address, byte value)
+        public void WriteByte(int address, byte value)
         {
             var warnMessage = "(method:WriteByte. Address='" + address + "'is at the '{0}'. Nothing has been written.";
 
@@ -239,10 +239,10 @@ namespace WinBoyEmulator.Memory
                     throw new ArgumentOutOfRangeException(nameof(address), $"address ({address}) was not in the memory");
             }
         }
-        public void WriteShort(ushort address, ushort value)
+        public void WriteShort(int address, int value)
         {
             WriteByte(address, (byte)(value & 255));
-            WriteByte((ushort)(address + 1), (byte)(value >> 8));
+            WriteByte((address + 1), (byte)(value >> 8));
         }
     }
 }
