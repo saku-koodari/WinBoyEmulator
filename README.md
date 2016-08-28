@@ -6,7 +6,7 @@ I want to do this project, because I think this would be fun! :)
 
 At the moment my main focus is study Game Boy and it's emulation.
 
-status list:
+general status list:
 * Done
     * - 
 * Testing
