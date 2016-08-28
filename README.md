@@ -6,7 +6,7 @@ I want to do this project, because I think this would be fun! :)
 
 At the moment my main focus is study Game Boy and it's emulation.
 
-status list:
+general status list:
 * Done
     * - 
 * Testing
@@ -18,9 +18,9 @@ status list:
    * CPU, without instruction set
    * GPU
 * Specification In Progress:
-    * Instruction set of CPU
+    * Instruction set of CPU (Issue #2)
 * TODO
-    * Test classes and/or project  
-    * ROM Loader
-    * Sound, Video, Etc
-    * GUI
+    * Test classes and/or project   (Issue #8)
+    * ROM Loader (Issue #15)
+    * Sound (Issue #20)
+    * GUI (Issue #18)
