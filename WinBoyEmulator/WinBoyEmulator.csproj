@@ -64,6 +64,7 @@
     <Compile Include="Memory\Bios.cs" />
     <Compile Include="Memory\IMemory.cs" />
     <Compile Include="Memory\Memory.cs" />
+    <Compile Include="Memory\Rom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">

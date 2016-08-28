@@ -25,6 +25,9 @@ namespace WinBoyEmulator.Memory
 {
     public class Memory : Bios, IMemory
     {
+        private LogWriter _logWriter;
+        private Rom _romObject { get; set; }
+
         // TODO: Consider BitVector instead of BitArray
         // https://msdn.microsoft.com/en-us/library/system.collections.specialized(v=vs.110).aspx
 
@@ -35,12 +38,13 @@ namespace WinBoyEmulator.Memory
         private byte[] _zram;
 
         private bool _isInBios;
-        private LogWriter _logWriter;
 
         static Memory() { _bios = BiosCode; }
 
         public Memory()
         {
+            _romObject = new Rom();
+
             // Since running bios is always the first thing you will do.
             _isInBios = true;
 
@@ -52,8 +56,10 @@ namespace WinBoyEmulator.Memory
             _wram = new byte[0x100];
             _zram = new byte[0x100];
 
-            _logWriter = new LogWriter( typeof(Memory) );
+            _logWriter = new LogWriter(typeof(Memory));
         }
+
+        public void Load(string filename) => _romObject.Load(filename);
 
         /// <summary>Resets memory.</summary>
         public void Reset()
@@ -69,12 +75,6 @@ namespace WinBoyEmulator.Memory
                 _zram[i] = 0;
             }
         }
-
-        // TODO: Implement this.
-        // NOTE: You might need to implement a custom reader.
-        // This might contain useful info:
-        // https://github.com/visualboyadvance/visualboyadvance/blob/a2868a7eea7d5a6bc07a84ea69f18fafb09dfe4c/src/common/Loader.c
-        public void Load(string fileName) {  throw new NotImplementedException("TODO"); }
 
         public byte ReadByte(int address)
         {
@@ -105,26 +105,35 @@ namespace WinBoyEmulator.Memory
                     return _rom[address];
 
                 // ROM0
-                case 0x1000: case 0x2000: case 0x3000:
+                case 0x1000:
+                case 0x2000:
+                case 0x3000:
                 // Rom1 (unbanked) 16k
-                case 0x4000: case 0x5000: case 0x6000: case 0x7000:
+                case 0x4000:
+                case 0x5000:
+                case 0x6000:
+                case 0x7000:
                     return _rom[address];
 
                 // Graphics: VRAM (8k)
-                case 0x8000: case 0x9000:
+                case 0x8000:
+                case 0x9000:
                     // return GPU._vram[addr & 0x1FFF];
                     throw new NotImplementedException("TODO");
 
                 // External RAM (8k)
-                case 0xA000: case 0xB000:
+                case 0xA000:
+                case 0xB000:
                     return _eram[address & 0x1FFF];
 
                 // Working RAM (8k)
-                case 0xC000: case 0xD000:
+                case 0xC000:
+                case 0xD000:
                     return _wram[address & 0x1FFF];
 
                 // Working RAM shadow 
-                case 0xE000: case 0xF000:
+                case 0xE000:
+                case 0xF000:
                     {
                         // Make bAddress variable. It's divided by 0x100 the avoid horrible long switch case
                         // Now it's just `bAddress >= 0xD` :)
@@ -181,43 +190,52 @@ namespace WinBoyEmulator.Memory
                     {
                         return;
                     }
-                    
+
                     break;
 
                 // ROM bank 0
-                case 0x1000: case 0x2000: case 0x3000:
+                case 0x1000:
+                case 0x2000:
+                case 0x3000:
                     _logWriter.WarnFormat(warnMessage, "ROM bank 0");
                     break;
 
                 // ROM bank 1
-                case 0x4000: case 0x5000: case 0x6000: case 0x7000:
+                case 0x4000:
+                case 0x5000:
+                case 0x6000:
+                case 0x7000:
                     _logWriter.WarnFormat(warnMessage, "ROM bank 1");
                     break;
 
                 // VRAM
-                case 0x8000: case 0x9000:
+                case 0x8000:
+                case 0x9000:
                     // TODO: GPU
                     // GPU._vram[addr&0x1FFF] = val;
                     // GPU.updatetile(addr & 0x1FFF, val);
                     throw new NotImplementedException("TODO: GPU");
 
                 // External RAM
-                case 0xA000: case 0xB000:
+                case 0xA000:
+                case 0xB000:
                     _eram[address & 0x1FFF] = value;
                     break;
 
                 // Work RAM and echo
-                case 0xC000: case 0xD000: case 0xE000:
+                case 0xC000:
+                case 0xD000:
+                case 0xE000:
                     _wram[address & 0x1FFF] = value;
                     break;
 
                 // Everything else
                 case 0xF000:
-                {
+                    {
                         var bAddress = (address & 0x0F00) / 100;
 
                         // Echo RAM
-                        if(bAddress <= 0xD)
+                        if (bAddress <= 0xD)
                         {
                             _wram[address & 0x1FFF] = value;
                             break;
@@ -230,7 +248,7 @@ namespace WinBoyEmulator.Memory
                             throw new NotImplementedException("TODO: GPU");
                         }
                         // Zero-page RAM, I/O
-                        else if(bAddress == 0xF)
+                        else if (bAddress == 0xF)
                         {
                             if (address > 0xFF7F)
                             {
@@ -248,7 +266,7 @@ namespace WinBoyEmulator.Memory
                         }
 
                         break;
-                }
+                    }
                 default:
                     throw new ArgumentOutOfRangeException(nameof(address), $"address ({address}) was not in the memory");
             }
