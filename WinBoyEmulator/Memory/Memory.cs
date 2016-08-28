@@ -28,9 +28,6 @@ namespace WinBoyEmulator.Memory
         private LogWriter _logWriter;
         private Rom _romObject { get; set; }
 
-        // TODO: Consider BitVector instead of BitArray
-        // https://msdn.microsoft.com/en-us/library/system.collections.specialized(v=vs.110).aspx
-
         private static byte[] _bios;
         private byte[] _rom;
         private byte[] _eram;
@@ -50,8 +47,8 @@ namespace WinBoyEmulator.Memory
 
             _rom = new byte[0x100];
             _eram = new byte[0x100];
-            _wram = new byte[0x100];
-            _zram = new byte[0x100];
+            _wram = new byte[0x2000];
+            _zram = new byte[0x7F];
 
             _logWriter = new LogWriter(typeof(Memory));
         }
@@ -61,13 +58,17 @@ namespace WinBoyEmulator.Memory
         /// <summary>Resets memory.</summary>
         public void Reset()
         {
-            for (var i = 0; i < 0x2000; i++)
+            for(var i = 0; i< _wram.Length; i++)
             {
                 _wram[i] = 0;
+            }
+
+            for (var i = 0; i < _eram.Length; i++)
+            {
                 _eram[i] = 0;
             }
 
-            for (var i = 0; i < 0x7F; i++)
+            for (var i = 0; i < _zram.Length; i++)
             {
                 _zram[i] = 0;
             }
