@@ -48,9 +48,6 @@ namespace WinBoyEmulator.Memory
             // Since running bios is always the first thing you will do.
             _isInBios = true;
 
-            throw new InvalidOperationException("TODO");
-            // TODO: sizes are the most likely incorrect.
-            // FIX THOSE
             _rom = new byte[0x100];
             _eram = new byte[0x100];
             _wram = new byte[0x100];
@@ -95,10 +92,7 @@ namespace WinBoyEmulator.Memory
                         else if (CPU.LR35902.Instance.PC == 0x0100)
                         {
                             _isInBios = false;
-
-                            // TODO: revision this:
-                            // http://imrannazar.com/content/files/jsgb.mmu.js
-                            throw new NotImplementedException("TODO");
+                            throw new NotImplementedException("Issue #10");
                         }
                     }
 
@@ -119,7 +113,7 @@ namespace WinBoyEmulator.Memory
                 case 0x8000:
                 case 0x9000:
                     // return GPU._vram[addr & 0x1FFF];
-                    throw new NotImplementedException("TODO");
+                    throw new NotImplementedException("Issue #11");
 
                 // External RAM (8k)
                 case 0xA000:
@@ -149,7 +143,7 @@ namespace WinBoyEmulator.Memory
                             // OAM is 160 bytes, remaining bytes read as 0
                             case 0xE:
                                 // return address < 0xFEA0 ? GPU.Instance.OAM[address & 0xFF] : 0;
-                                throw new NotImplementedException("TODO");
+                                throw new NotImplementedException("Issue #12");
 
                             // Zero-page
                             case 0xF:
@@ -159,13 +153,20 @@ namespace WinBoyEmulator.Memory
 
                             // error blaa blaa blaa
                             default:
-                                throw new IndexOutOfRangeException($"Check your address (address='{address}', bAddress='{bAddress}')");
+                                var fatalMessage = $"argument must be between 0x000 - 0xFFFF (0 - 65535).";
+                                _logWriter.FatalFormat("{0} address: {1}, aAddress: {2}.", fatalMessage, address, aAddress);
+                                throw new InvalidOperationException(fatalMessage);
                         }
                     }
 
                 // Check for bad address
+                // This should never happen
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(address), "argument must be between 0x000 - 0xFFFF (0 - 65535)");
+                    {
+                        var fatalMessage = $"argument must be between 0x000 - 0xFFFF (0 - 65535).";
+                        _logWriter.FatalFormat("{0} address: {1}, aAddress: {2}.", fatalMessage, address, aAddress);
+                        throw new ArgumentOutOfRangeException(nameof(address), fatalMessage);
+                    }
             }
         }
 
@@ -214,7 +215,7 @@ namespace WinBoyEmulator.Memory
                     // TODO: GPU
                     // GPU._vram[addr&0x1FFF] = val;
                     // GPU.updatetile(addr & 0x1FFF, val);
-                    throw new NotImplementedException("TODO: GPU");
+                    throw new NotImplementedException("Issue #13");
 
                 // External RAM
                 case 0xA000:
@@ -245,7 +246,7 @@ namespace WinBoyEmulator.Memory
                         {
                             // if((addr&0xFF)<0xA0) GPU._oam[addr&0xFF] = val;
                             // GPU.updateoam(addr, val);
-                            throw new NotImplementedException("TODO: GPU");
+                            throw new NotImplementedException("Issue #14");
                         }
                         // Zero-page RAM, I/O
                         else if (bAddress == 0xF)

@@ -16,7 +16,7 @@ namespace WinBoyEmulator.Memory
         // https://github.com/visualboyadvance/visualboyadvance/blob/a2868a7eea7d5a6bc07a84ea69f18fafb09dfe4c/src/common/Loader.c
         public void Load(string fileName)
         {
-            throw new NotImplementedException("TODO");
+            throw new NotImplementedException("Issue #15");
         }
     }
 }
