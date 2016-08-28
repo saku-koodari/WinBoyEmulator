@@ -31,6 +31,7 @@ namespace WinBoyEmulator.GPU
         #region Constants 
         // Note: this design is so tied with Game Boy, that it's better&quicker just hardcode every value
         // Note2: I prefer not to hardcode so therefore constants is used.
+        // Issue #7 Separate Game Boy related from the emulator
         private const int SCREEN_WIDTH = 0xA0;
         private const int SCREEN_HEIGHT = 0x90;
         private const int COLORS_IN_PALETTE = 0x4;
@@ -44,6 +45,7 @@ namespace WinBoyEmulator.GPU
         //       At this moment yes, because maybe we should build flexible emulator.
         //       Optimation later0.
         // NOTE2:_wram was originally byte[],then ushort[], now int[]
+        // Issue #4 data type as ushort or int?
         private int[] _vram;
         private byte[] _oam;
         private int[] _reg; // TODO: rename this
@@ -79,6 +81,8 @@ namespace WinBoyEmulator.GPU
 
         public GPU()
         {
+            // Check Issue #16: array sizes in GPU
+
             _logWriter = new LogWriter(typeof(GPU));
 
             // NOTE: if you use 3D array instead of jagged one, you could do this:
@@ -96,12 +100,11 @@ namespace WinBoyEmulator.GPU
             _vram = new int[0x2000]; //8192
             _oam = new byte[SCREEN_WIDTH];
             _reg = new int[1];
-            throw new NotImplementedException("// TODO: find out what is the size of the _reg");
+
             _scanrow = new byte[SCREEN_WIDTH];
             _palette = new Palette(COLORS_IN_PALETTE);
             _objectData = new ObjectData[40];
-            // TODO: you also might remove every hardcoded values from here.
-            throw new NotImplementedException("// TODO: find out where ObjectData's size (40) comes from.");
+
             _screen = new Screen(SCREEN_WIDTH, SCREEN_HEIGHT, COLORS_IN_PALETTE); // TODO: maybe you can use this instead of constants?
         }
 
@@ -121,7 +124,7 @@ namespace WinBoyEmulator.GPU
                 _linemode = 1;
                 //_canvas.putImageData(GPU._scrn, 0, 0);
                 //MMU._if |= 1;
-                throw new NotImplementedException("// TODO: check previous comments.");
+                throw new NotImplementedException("Issue #17");
             }
             else
             {
@@ -205,7 +208,6 @@ namespace WinBoyEmulator.GPU
 
                 var tilerow = _tilemap[tile][y];
 
-                // TODO: Check this. Is the following do ... while exactly the same than the other in else
                 do
                 {
                     _scanrow[SCREEN_WIDTH - x] = tilerow[x];
@@ -260,7 +262,7 @@ namespace WinBoyEmulator.GPU
 
                     // WTF Check source:
                     // https://github.com/Two9A/jsGB/blob/master/js/gpu.js line:213
-                    throw new NotImplementedException("WTF EXCEPTION; // TODO CHECK WHAT IS HAPPENING HERE");
+                    throw new NotImplementedException("Issue #17");
                 }
 
                 // To avoid nested loops.
@@ -380,7 +382,7 @@ namespace WinBoyEmulator.GPU
 
             // In the source (javascript code) has (re)create canvas at this point.
             /**
-             *  var c = document.getElementById('screen');
+                var c = document.getElementById('screen');
                 
                 if(c && c.getContext)
                 {
@@ -406,7 +408,7 @@ namespace WinBoyEmulator.GPU
                 }
              */
 
-            throw new NotImplementedException("// TODO: Initializing an actual screen. (form)");
+            throw new NotImplementedException("Issue #18");
 
             _curLine = 0;
             _curScan = 0;
@@ -452,9 +454,7 @@ namespace WinBoyEmulator.GPU
 
         public void Checkline()
         {
-            // GPU._modeclocks += Z80._r.m;
-            // throw new NotImplementedException("// TODO: check previous comment."); var aafdssgsdg = 0; // to 'catch' unreachable code detected - warning :D :D
-
+            throw new NotImplementedException("Issue #17");
             switch (_linemode)
             {
                 // In hblank
@@ -593,7 +593,7 @@ namespace WinBoyEmulator.GPU
                         // var val = MMU.rb((value << 8) + i);
                         // _oam[i] = vval;
                         // UpdateOAM(0xFE00 + i, val);
-                        throw new NotImplementedException("// TODO: uncomment lines above. NOTE: MMU.rd (memory.ReadByte)");
+                        throw new NotImplementedException("Issue #19");
                     }
                     break;
 
@@ -617,13 +617,14 @@ namespace WinBoyEmulator.GPU
                     }
                     break;
 
-                    // TODO: #1 Look the source (javascript) You can see, that 
+                    // Issue #19:
+                    //  1. Look the source (javascript) You can see, that 
                     //          there are used obj0 and obj1 instead object1 and object2.
                     //          Find out wheter that is done on purpose or not.
                     //
-                    // TODO: #2 Combine cases below, due to they are higly similar.
+                    //  2. Combine cases below, due to they are higly similar.
                     //
-                    // TODO: #3 You Enum again for those Colors
+                    //  3. #3 You Enum again for those Colors
 
                 // OBJ0 palette mapping
                 case 8:
