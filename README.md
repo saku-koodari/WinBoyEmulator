@@ -20,6 +20,7 @@ status list:
 * Specification In Progress:
     * Instruction set of CPU
 * TODO
+    * Test classes and/or project  
     * ROM Loader
     * Sound, Video, Etc
     * GUI
