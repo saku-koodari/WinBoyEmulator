@@ -18,25 +18,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinBoyEmulator.GPU
+namespace WinBoyEmulator.GameBoy.CPU
 {
-    public class Screen
+    interface IRegisters
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int[] Data { get; set; }
+        // 8-bit registers
+        byte A { get; set; }
+        byte B { get; set; }
+        byte C { get; set; }
+        byte D { get; set; }
+        byte E { get; set; }
+        byte F { get; set; }
+        byte H { get; set; }
+        byte L { get; set; }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="width">Amount of pixels in a row in the screen.</param>
-        /// <param name="height">Amount of pixels in a column in the screen.</param>
-        /// <param name="colorsInPalette">amount of colors in palette</param>
-        public Screen(int width, int height, int colorsInPalette)
-        {
-            Width = width;
-            Height = Height;
-            Data = new int[width * height * colorsInPalette];
-        }
+        // 16-bit registers
+        ushort AF { get; set; }
+        ushort BC { get; set; }
+        ushort DE { get; set; }
+        ushort HL { get; set; }
+
+        ushort SP { get; set; }
+        ushort PC { get; set; }
     }
 }

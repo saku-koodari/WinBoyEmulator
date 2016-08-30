@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinBoyEmulator.Memory
+namespace WinBoyEmulator.GameBoy.Memory
 {
     public class Rom
     {

@@ -18,7 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinBoyEmulator.CPU
+namespace WinBoyEmulator.GameBoy.CPU
 {
     /// <summary>Flag for F register.</summary>
     public class Flags

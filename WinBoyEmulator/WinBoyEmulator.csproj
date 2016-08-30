@@ -46,25 +46,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CPU\Flags.cs" />
-    <Compile Include="CPU\Instructions.cs" />
-    <Compile Include="CPU\IRegisters.cs" />
-    <Compile Include="CPU\LR35902.cs" />
-    <Compile Include="CPU\Registers.cs" />
-    <Compile Include="GPU\GPU.cs" />
-    <Compile Include="GPU\ObjectData.cs" />
-    <Compile Include="GPU\Palette.cs" />
-    <Compile Include="GPU\Screen.cs" />
+    <Compile Include="GameBoy\CPU\Flags.cs" />
+    <Compile Include="GameBoy\CPU\Instructions.cs" />
+    <Compile Include="GameBoy\CPU\IRegisters.cs" />
+    <Compile Include="GameBoy\CPU\LR35902.cs" />
+    <Compile Include="GameBoy\CPU\Registers.cs" />
+    <Compile Include="GameBoy\GPU\GPU.cs" />
+    <Compile Include="GameBoy\GPU\ObjectData.cs" />
+    <Compile Include="GameBoy\GPU\Palette.cs" />
+    <Compile Include="GameBoy\GPU\Screen.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Memory\Bios.cs" />
-    <Compile Include="Memory\IMemory.cs" />
-    <Compile Include="Memory\Memory.cs" />
-    <Compile Include="Memory\Rom.cs" />
+    <Compile Include="GameBoy\Memory\Bios.cs" />
+    <Compile Include="GameBoy\Memory\IMemory.cs" />
+    <Compile Include="GameBoy\Memory\Memory.cs" />
+    <Compile Include="GameBoy\Memory\Rom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">

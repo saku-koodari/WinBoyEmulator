@@ -18,17 +18,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinBoyEmulator.GPU
+namespace WinBoyEmulator.GameBoy.GPU
 {
-    public class ObjectData
+    /// <summary>
+    /// Class Palette. <para />
+    /// Every types can be here safely byte.
+    /// Reason is, that we are saving handling here RGB values.
+    /// Size of RGB value is one byte.
+    /// </summary>
+    public class Palette
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Tile { get; set; }
-        public bool Palette { get; set; }
-        public bool xFlip { get; set; }
-        public bool yFlip { get; set; }
-        public bool Priority { get; set; }
-        public int Number { get; set; }
+        public byte[] Background { get; set; }
+        public byte[] Object1 { get; set; }
+        public byte[] Object2 { get; set; }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="colorsInPalette">Amount of colors in the palette.</param>
+        public Palette(int colorsInPalette)
+        {
+            Background = new byte[colorsInPalette];
+            Object1 = new byte[colorsInPalette];
+            Object2 = new byte[colorsInPalette];
+        }
     }
 }

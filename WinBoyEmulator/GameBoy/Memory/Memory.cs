@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 using log4Any;
 
-namespace WinBoyEmulator.Memory
+namespace WinBoyEmulator.GameBoy.Memory
 {
     public class Memory : Bios, IMemory
     {

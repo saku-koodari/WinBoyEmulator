@@ -18,7 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinBoyEmulator.CPU.Regiser
+namespace WinBoyEmulator.GameBoy.CPU.Regiser
 {
 
     public class Register : IRegisters

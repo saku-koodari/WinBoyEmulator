@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 using log4Any;
 
-namespace WinBoyEmulator.GPU
+namespace WinBoyEmulator.GameBoy.GPU
 {
     /// <summary>
     /// This class based heavily on:

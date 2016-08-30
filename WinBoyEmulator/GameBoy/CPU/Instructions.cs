@@ -18,7 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinBoyEmulator.CPU
+namespace WinBoyEmulator.GameBoy.CPU
 {
     public interface IInstructions
     {
