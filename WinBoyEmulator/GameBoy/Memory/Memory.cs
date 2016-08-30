@@ -79,7 +79,7 @@ namespace WinBoyEmulator.GameBoy.Memory
             _logWriter = new LogWriter(typeof(Memory));
         }
 
-        public void Load(string filename) => _romObject.Load(filename);
+        public void Load(byte[] game) => _rom = game;
 
         /// <summary>Resets memory.</summary>
         public void Reset()

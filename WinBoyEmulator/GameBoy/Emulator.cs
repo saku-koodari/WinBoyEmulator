@@ -78,6 +78,7 @@ namespace WinBoyEmulator.GameBoy
         {
             // Load game.
             _readGameFile(gamePath);
+            MMU.Instance.Load(_game);
         }     
     }
 }

@@ -23,7 +23,7 @@ namespace WinBoyEmulator.GameBoy.Memory
     interface IMemory
     {
         void Reset();
-        void Load(string fileName);
+        void Load(byte[] game);
 
         byte ReadByte(int address);
         int ReadShort(int address);
