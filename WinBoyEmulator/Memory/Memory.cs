@@ -25,6 +25,9 @@ namespace WinBoyEmulator.Memory
 {
     public class Memory : Bios, IMemory
     {
+        private static readonly object _syncRoot = new object();
+        private static volatile Memory _instance;
+
         private LogWriter _logWriter;
         private Rom _romObject { get; set; }
 
@@ -35,6 +38,29 @@ namespace WinBoyEmulator.Memory
         private byte[] _zram;
 
         private bool _isInBios;
+
+        public static Memory Instance
+        {
+            get
+            {
+                if(_instance != null)
+                {
+                    return _instance;
+                }
+
+                lock(_syncRoot)
+                {
+                    if(_instance != null)
+                    {
+                        return _instance;
+                    }
+
+                    _instance = new Memory();
+                }
+
+                return _instance;
+            }
+        }
 
         static Memory() { _bios = BiosCode; }
 

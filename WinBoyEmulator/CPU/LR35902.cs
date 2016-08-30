@@ -27,6 +27,9 @@ namespace WinBoyEmulator.CPU
     /// </summary>
     public class LR35902 : Flags, IRegisters
     {
+        private static readonly object _syncRoot = new object();
+        private static volatile LR35902 _instance;
+
         // store registers values to these bytes.
         private byte _a, _b, _c, _d, _e, _f, _h, _l;
         private ushort _sp, _pc;
@@ -211,10 +214,6 @@ namespace WinBoyEmulator.CPU
         }
         #endregion
 
-        #region static Instance constructor
-        static LR35902() { _syncRoot = new object(); }
-        private static LR35902 _instance;
-        private static readonly object _syncRoot;
         public static LR35902 Instance
         {
             get
@@ -233,7 +232,6 @@ namespace WinBoyEmulator.CPU
                 return _instance;
             }
         }
-        #endregion
 
         public void Reset()
         {

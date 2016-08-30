@@ -36,6 +36,9 @@ namespace WinBoyEmulator.GPU
         private const int SCREEN_HEIGHT = 0x90;
         private const int COLORS_IN_PALETTE = 0x4;
         #endregion
+
+        private static readonly object _syncRoot = new object();
+        private static volatile GPU _instance;
         private LogWriter _logWriter;
 
         // NOTE: Everywhere you need to do calculations, you have to convert ushort to int afterwards
@@ -78,6 +81,26 @@ namespace WinBoyEmulator.GPU
         private int _bgtilebase = 0x0000;
         private int _bgmapbase = 0x1800;
         private int _wintilebase = 0x1800;
+
+        public static GPU Instance
+        {
+            get
+            {
+                if (_instance != null)
+                    return _instance;
+
+                lock(_syncRoot)
+                {
+                    if (_instance != null)
+                        return _instance;
+
+                    _instance = new GPU();
+                }
+
+                return _instance;
+            }
+        }
+
 
         public GPU()
         {
