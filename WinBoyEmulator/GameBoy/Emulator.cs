@@ -78,6 +78,7 @@ namespace WinBoyEmulator.GameBoy
                 LR35902.Instance.EmulateCycle();
 
                 // If the draw flag is set, update the screen
+                // update sound (Issue #20)
                 // Store key press state (Press and Release)
             }
         }
