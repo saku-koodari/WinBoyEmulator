@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -26,11 +27,31 @@ namespace WinBoyEmulator
 {
     public partial class MainForm : Form
     {
+        private const string _sourceCodeUrl = "https://github.com/saku-kaarakainen/WinBoyEmulator/";
+
         public MainForm() { InitializeComponent(); }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
 
         }
+
+        #region _Click
+
+        private void _toolStripMenuItemOpen_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException("Issue #15");
+        }
+
+        private void _toolStripMenuItemAbout_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException("Issue #24");
+        }
+
+        private void _toolStripMenuItemClose_Click(object sender, EventArgs e) => Close();
+
+        private void _toolStripMenuItemSourceCode_Click(object sender, EventArgs e) => Process.Start(new ProcessStartInfo(_sourceCodeUrl));
+
+        #endregion
     }
 }
