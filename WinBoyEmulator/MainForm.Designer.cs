@@ -30,11 +30,12 @@
         {
             this._menuStripMain = new System.Windows.Forms.MenuStrip();
             this._toolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
-            this._toolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._toolStripMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
             this._toolStripMenuItemClose = new System.Windows.Forms.ToolStripMenuItem();
+            this._toolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._toolStripMenuItemAbout = new System.Windows.Forms.ToolStripMenuItem();
             this._toolStripMenuItemSourceCode = new System.Windows.Forms.ToolStripMenuItem();
+            this._openFileDialogMain = new System.Windows.Forms.OpenFileDialog();
             this._menuStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,15 +59,6 @@
             this._toolStripMenuItemFile.Size = new System.Drawing.Size(37, 20);
             this._toolStripMenuItemFile.Text = "File";
             // 
-            // _toolStripMenuItemHelp
-            // 
-            this._toolStripMenuItemHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._toolStripMenuItemAbout,
-            this._toolStripMenuItemSourceCode});
-            this._toolStripMenuItemHelp.Name = "_toolStripMenuItemHelp";
-            this._toolStripMenuItemHelp.Size = new System.Drawing.Size(44, 20);
-            this._toolStripMenuItemHelp.Text = "Help";
-            // 
             // _toolStripMenuItemOpen
             // 
             this._toolStripMenuItemOpen.Name = "_toolStripMenuItemOpen";
@@ -81,6 +73,15 @@
             this._toolStripMenuItemClose.Text = "Close (Alt + F)";
             this._toolStripMenuItemClose.Click += new System.EventHandler(this._toolStripMenuItemClose_Click);
             // 
+            // _toolStripMenuItemHelp
+            // 
+            this._toolStripMenuItemHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._toolStripMenuItemAbout,
+            this._toolStripMenuItemSourceCode});
+            this._toolStripMenuItemHelp.Name = "_toolStripMenuItemHelp";
+            this._toolStripMenuItemHelp.Size = new System.Drawing.Size(44, 20);
+            this._toolStripMenuItemHelp.Text = "Help";
+            // 
             // _toolStripMenuItemAbout
             // 
             this._toolStripMenuItemAbout.Name = "_toolStripMenuItemAbout";
@@ -94,6 +95,10 @@
             this._toolStripMenuItemSourceCode.Size = new System.Drawing.Size(190, 22);
             this._toolStripMenuItemSourceCode.Text = "Source-code (GitHub)";
             this._toolStripMenuItemSourceCode.Click += new System.EventHandler(this._toolStripMenuItemSourceCode_Click);
+            // 
+            // _openFileDialogMain
+            // 
+            this._openFileDialogMain.FileName = "game.gb";
             // 
             // MainForm
             // 
@@ -121,6 +126,7 @@
         private System.Windows.Forms.ToolStripMenuItem _toolStripMenuItemHelp;
         private System.Windows.Forms.ToolStripMenuItem _toolStripMenuItemAbout;
         private System.Windows.Forms.ToolStripMenuItem _toolStripMenuItemSourceCode;
+        private System.Windows.Forms.OpenFileDialog _openFileDialogMain;
     }
 }
 

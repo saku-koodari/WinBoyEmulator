@@ -40,7 +40,14 @@ namespace WinBoyEmulator
 
         private void _toolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException("Issue #15");
+            if(_openFileDialogMain.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            var path = _openFileDialogMain.FileName;
+
+            throw new NotImplementedException("Issue #25. Blocked by #21");
         }
 
         private void _toolStripMenuItemAbout_Click(object sender, EventArgs e)
