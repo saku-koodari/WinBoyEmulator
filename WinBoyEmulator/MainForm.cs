@@ -23,6 +23,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using WinBoyEmulator.GameBoy;
+
 namespace WinBoyEmulator
 {
     public partial class MainForm : Form
@@ -40,14 +42,10 @@ namespace WinBoyEmulator
 
         private void _toolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
-            if(_openFileDialogMain.ShowDialog() != DialogResult.OK)
+            if (_openFileDialogMain.ShowDialog() != DialogResult.OK)
             {
-                return;
+                Emulator.Instance.StartEmulation(_openFileDialogMain.FileName);
             }
-
-            var path = _openFileDialogMain.FileName;
-
-            throw new NotImplementedException("Issue #25. Blocked by #21");
         }
 
         private void _toolStripMenuItemAbout_Click(object sender, EventArgs e)

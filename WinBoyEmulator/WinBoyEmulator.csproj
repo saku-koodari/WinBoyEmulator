@@ -51,10 +51,12 @@
     <Compile Include="GameBoy\CPU\IRegisters.cs" />
     <Compile Include="GameBoy\CPU\LR35902.cs" />
     <Compile Include="GameBoy\CPU\Registers.cs" />
+    <Compile Include="GameBoy\Emulator.cs" />
     <Compile Include="GameBoy\GPU\GPU.cs" />
     <Compile Include="GameBoy\GPU\ObjectData.cs" />
     <Compile Include="GameBoy\GPU\Palette.cs" />
     <Compile Include="GameBoy\GPU\Screen.cs" />
+    <Compile Include="GameBoy\IEmulator.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
