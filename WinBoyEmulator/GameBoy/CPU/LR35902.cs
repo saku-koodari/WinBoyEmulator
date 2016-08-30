@@ -245,10 +245,16 @@ namespace WinBoyEmulator.GameBoy.CPU
 
         }
 
+        private void _executeOpcode()
+        {
+
+        }
+
         public void EmulateCycle()
         {
             _fetchOpcode();
             _decodeOpcode();
+            _executeOpcode();
         }
 
         public void Reset()
