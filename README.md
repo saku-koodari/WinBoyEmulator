@@ -13,12 +13,10 @@ general status list:
     * - 
 * In Progress
    *  Specification
+   *  CPU (General issue #32)
 * Proof of Concept
    * Memory
-   * CPU, without instruction set
    * GPU
-* Specification In Progress:
-    * Instruction set of CPU (Issue #2)
 * TODO
     * Test classes and/or project   (Issue #8)
     * ROM Loader (Issue #15)
