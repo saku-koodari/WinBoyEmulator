@@ -233,6 +233,20 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
 
+        public void Start()
+        {
+            var cpuIsRunning = true;
+            /*while(cpuIsRunning)
+            {
+                // Issue #32
+                // 
+                // Fetch instruction
+                // Dispatch
+                // Mask PC to 16 bits 
+                // Add time to CPU clock
+            }*/
+        }
+
         public void Reset()
         {
             // Since we have combined registers, we can use them.
