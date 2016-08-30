@@ -113,6 +113,7 @@ namespace WinBoyEmulator
             // _openFileDialogMain
             // 
             this._openFileDialogMain.FileName = "game.gb";
+            this._openFileDialogMain.FileOk += new System.ComponentModel.CancelEventHandler(this._openFileDialogMain_FileOk);
             // 
             // MainForm
             // 

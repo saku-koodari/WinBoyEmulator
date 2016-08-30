@@ -14,6 +14,7 @@
 //     along with WinBoyEmulator.  If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,8 @@ namespace WinBoyEmulator.GameBoy
         private static readonly object _syncRoot = new object();
         private static volatile Emulator _instance;
 
+        private byte[] _game;
+
         public static Emulator Instance
         {
             get
@@ -38,7 +41,7 @@ namespace WinBoyEmulator.GameBoy
                 if (_instance != null)
                     return _instance;
 
-                lock (_instance)
+                lock (_syncRoot)
                 {
                     if (_instance != null)
                         return _instance;
@@ -52,8 +55,16 @@ namespace WinBoyEmulator.GameBoy
 
         private Emulator()
         {
-            // private empty constructor.
-            // Just to prevent object creation outside this class.
+            _game = new byte[0x200];
+        }
+
+        private void _readGameFile(string filename)
+        {
+            using (var reader = new BinaryReader(File.OpenRead(filename)))
+            {
+                var length = (int)reader.BaseStream.Length;
+                _game = reader.ReadBytes(length);
+            }
         }
 
         /// <summary>Starts emulation without game inside.</summary>
@@ -66,8 +77,7 @@ namespace WinBoyEmulator.GameBoy
         public void StartEmulation(string gamePath)
         {
             // Load game.
-            MMU.Instance.Load(gamePath);
-        }
-             
+            _readGameFile(gamePath);
+        }     
     }
 }

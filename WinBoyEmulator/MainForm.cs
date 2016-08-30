@@ -39,24 +39,21 @@ namespace WinBoyEmulator
         }
 
         #region _Click
-
-        private void _toolStripMenuItemOpen_Click(object sender, EventArgs e)
-        {
-            if (_openFileDialogMain.ShowDialog() != DialogResult.OK)
-            {
-                Emulator.Instance.StartEmulation(_openFileDialogMain.FileName);
-            }
-        }
-
         private void _toolStripMenuItemAbout_Click(object sender, EventArgs e)
         {
             throw new NotImplementedException("Issue #24");
         }
 
+        private void _toolStripMenuItemOpen_Click(object sender, EventArgs e) => _openFileDialogMain.ShowDialog();
+        
         private void _toolStripMenuItemClose_Click(object sender, EventArgs e) => Close();
 
         private void _toolStripMenuItemSourceCode_Click(object sender, EventArgs e) => Process.Start(new ProcessStartInfo(_sourceCodeUrl));
-
         #endregion
+
+        private void _openFileDialogMain_FileOk(object sender, CancelEventArgs e)
+        {
+            Emulator.Instance.StartEmulation(_openFileDialogMain.FileName);
+        }
     }
 }
