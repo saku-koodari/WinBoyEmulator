@@ -35,7 +35,9 @@ namespace WinBoyEmulator
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            // This due to Issue #30
+            // Check #31
+            Emulator.Instance.StartEmulation("C:\\temp\\game.gb");
         }
 
         #region _Click
