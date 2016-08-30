@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using WinBoyEmulator.GameBoy.CPU;
@@ -33,6 +34,7 @@ namespace WinBoyEmulator.GameBoy
         private static volatile Emulator _instance;
 
         private byte[] _game;
+        private bool _isGameBoyOn = false;
 
         public static Emulator Instance
         {
@@ -64,6 +66,19 @@ namespace WinBoyEmulator.GameBoy
             {
                 var length = (int)reader.BaseStream.Length;
                 _game = reader.ReadBytes(length);
+                // Issue #29
+            }
+        }
+
+        private void _gameCycle()
+        {
+            while(_isGameBoyOn)
+            {
+                // Emulate one cycle
+                LR35902.Instance.EmulateCycle();
+
+                // If the draw flag is set, update the screen
+                // Store key press state (Press and Release)
             }
         }
 
@@ -79,7 +94,14 @@ namespace WinBoyEmulator.GameBoy
             // Load game.
             _readGameFile(gamePath);
             MMU.Instance.Load(_game);
-            LR35902.Instance.Start();
+
+            var thread = new Thread(_gameCycle)
+            {
+                IsBackground = true,
+                Name  = "WinBoyEmulator",
+            };
+            thread.Start();
+
         }     
     }
 }

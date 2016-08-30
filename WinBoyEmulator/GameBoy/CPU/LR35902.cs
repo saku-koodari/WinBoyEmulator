@@ -30,6 +30,8 @@ namespace WinBoyEmulator.GameBoy.CPU
         private static readonly object _syncRoot = new object();
         private static volatile LR35902 _instance;
 
+        private bool _isCpuRunning = false;
+
         // store registers values to these bytes.
         private byte _a, _b, _c, _d, _e, _f, _h, _l;
         private ushort _sp, _pc;
@@ -233,18 +235,9 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
 
-        public void Start()
+        public void EmulateCycle()
         {
-            var cpuIsRunning = true;
-            /*while(cpuIsRunning)
-            {
-                // Issue #32
-                // 
-                // Fetch instruction
-                // Dispatch
-                // Mask PC to 16 bits 
-                // Add time to CPU clock
-            }*/
+
         }
 
         public void Reset()
