@@ -24,7 +24,7 @@ general status list:
     * GUI (Issue #18)
 
 My Plan:
- v0.5 - 'alpha release', working emulator without sound.
- v1.0 - first release with sound working
- v1.1 - Saving
- v1.2 - Login system
+ * v0.5 - 'alpha release', working emulator without sound.
+ * v1.0 - first release with sound working
+ * v1.1 - Saving
+ * v1.2 - Login system
