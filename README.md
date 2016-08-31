@@ -28,3 +28,4 @@ My Plan:
  * v1.0 - first release with sound working
  * v1.1 - Saving
  * v1.2 - Login system
+ * v1.3 - Link cable
