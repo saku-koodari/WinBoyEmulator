@@ -10,9 +10,9 @@ general status list:
 * Done
     * - 
 * Testing
-    * - 
+    * Testing will be started at the latest 1.0.0-rc1
 * In Progress
-   *  Specification
+   *  Instruction set for CPU (specification, issue #2)
    *  CPU (General issue #32)
 * Proof of Concept
    * Memory
@@ -25,7 +25,9 @@ general status list:
 
 My Plan:
  * v0.5 - 'alpha release', working emulator without sound.
- * v1.0 - first release with sound working
+ * v1.0 - (goal) first release with sound working
  * v1.1 - Saving
  * v1.2 - Login system
  * v1.3 - Link cable
+ * v2.0 - Multiplatform support
+ * v3.0 - Emulate Game Boy Color & Game Boy Advance
