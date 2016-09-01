@@ -14,12 +14,12 @@ general status list:
 * In Progress
    *  Instruction set for CPU (specification, issue #2)
    *  CPU (General issue #32)
+   *  Rom loader
 * Proof of Concept
    * Memory
    * GPU
 * TODO
     * Test classes and/or project   (Issue #8)
-    * ROM Loader (Issue #15)
     * Sound (Issue #20)
     * GUI (Issue #18)
 
