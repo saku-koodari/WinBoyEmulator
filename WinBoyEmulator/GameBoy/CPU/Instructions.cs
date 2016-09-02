@@ -62,55 +62,23 @@ namespace WinBoyEmulator.GameBoy.CPU
 
     /*
      keywords:
-     ADC
-     ADD
-     AND
+     ADC    ADD     AND
      BIT
-     CALL
-     CCF
-     CPL
-     CP
-     DAA
-     DEC
-     DI
+     CALL   CCF     CPL     CP
+     DAA    DEC     DI
      EI
      HALT
      INC
-     JP
-     JR
-     LD
-     LDD
-     LDH
-     LDI
-     LD
+     JP     JR
+     LD     LDD     LDH    LDI      LD
      NOP
-     */
-      
-     /*
      OR
-     POP
-     PUSH
-     RES
-     RET
-     RETI
-     RLA
-     RLCA
-     RLC
-     RL
-     RRA
-     RRCA
-     RRC
-     RR
-     RST
-     SBC
-     SCF
-     SET
-     SLA
-     SRA
-     SRL
-     STOP
-     SUB
-     SWAP
+     POP    PUSH
+     RES    RET     RETI    RLA     RLCA
+     RLC    RL      RRA     RRCA    RRC
+     RR     RST
+     SBC    SCF     SET     SLA     SRA
+     SRL    STOP    SUB     SWAP
      XOR
      LDHL
      */

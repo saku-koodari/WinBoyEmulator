@@ -47,9 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameBoy\CPU\Flags.cs" />
+    <Compile Include="GameBoy\CPU\Instruction set\Generator\Generator.cs" />
+    <Compile Include="GameBoy\CPU\Instruction set\Generator\Miscellaneous.cs" />
+    <Compile Include="GameBoy\CPU\Instruction set\IOpcode.cs" />
+    <Compile Include="GameBoy\CPU\Instruction set\Opcode.cs" />
     <Compile Include="GameBoy\CPU\Instructions.cs" />
     <Compile Include="GameBoy\CPU\IRegisters.cs" />
     <Compile Include="GameBoy\CPU\LR35902.cs" />
+    <Compile Include="GameBoy\CPU\Operand.cs" />
     <Compile Include="GameBoy\CPU\Registers.cs" />
     <Compile Include="GameBoy\Emulator.cs" />
     <Compile Include="GameBoy\GPU\GPU.cs" />
