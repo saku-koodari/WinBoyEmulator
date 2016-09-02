@@ -18,6 +18,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using MMU = WinBoyEmulator.GameBoy.Memory.Memory;
+
 namespace WinBoyEmulator.GameBoy.CPU
 {
     /// <summary>
@@ -235,26 +237,13 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
 
-        private void _fetchOpcode()
-        {
-
-        }
-
-        private void _decodeOpcode()
-        {
-
-        }
-
-        private void _executeOpcode()
-        {
-
-        }
-
         public void EmulateCycle()
         {
-            _fetchOpcode();
-            _decodeOpcode();
-            _executeOpcode();
+            // fetch operand
+            var operand = MMU.Instance.ReadByte(PC++);
+
+            // decode operand
+            // execute operand
         }
 
         public void Reset()
