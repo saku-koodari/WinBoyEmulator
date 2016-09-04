@@ -23,7 +23,7 @@ namespace WinBoyEmulator.GameBoy.CPU.Instruction_set
     public class Instruction : IInstruction
     {    
         /// <summary>Opcode as byte value.</summary>
-        public byte Value { get; set; }
+        public int Value { get; set; }
         /// <summary>Length in bytes. Either 1 or 2.</summary>
         public int Length { get; set; }
         /// <summary>Duration in cycles.</summary>

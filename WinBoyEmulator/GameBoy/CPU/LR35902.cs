@@ -38,12 +38,11 @@ namespace WinBoyEmulator.GameBoy.CPU
         private bool _isCpuRunning = false;
 
         // store registers values to these bytes.
-        private byte _a, _b, _c, _d, _e, _f, _h, _l;
-        private ushort _sp, _pc;
+        private int _a, _b, _c, _d, _e, _f, _h, _l, _sp, _pc;
 
         #region Registers Accessors
         /// <summary>8-bit register A. Value between 0x8000 - 0x0100.</summary>
-        public byte A
+        public int A
         {
             get
             {
@@ -55,7 +54,7 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>8-bit Flag register F. Value between 0x0080 - 0x0000.</summary>
-        public byte F
+        public int F
         {
             get
             {
@@ -67,7 +66,7 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>16-bit register AF. Combined register A with register F.</summary>
-        public ushort AF
+        public int AF
         {
             get
             {
@@ -81,7 +80,7 @@ namespace WinBoyEmulator.GameBoy.CPU
         }
 
         /// <summary>8-bit register B. Value betweem 0x8000 - 0x0100.</summary>
-        public byte B
+        public int B
         {
             get
             {
@@ -93,7 +92,7 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>8-bit register C. Value between 0x0080 - 0x0000.</summary>
-        public byte C
+        public int C
         {
             get
             {
@@ -105,7 +104,7 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>16-bit register BC. Combined register B with register C.</summary>
-        public ushort BC
+        public int BC
         {
             get
             {
@@ -119,7 +118,7 @@ namespace WinBoyEmulator.GameBoy.CPU
         }
 
         /// <summary>8-bit register D. Value between 0x8000 - 0x0100.</summary>
-        public byte D
+        public int D
         {
             get
             {
@@ -131,7 +130,7 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>8-bit register E. Value between 0x0080 - 0x0000.</summary>
-        public byte E
+        public int E
         {
             get
             {
@@ -143,7 +142,7 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>16-bit register DE. Combined register D with register E.</summary>
-        public ushort DE
+        public int DE
         {
             get
             {
@@ -157,7 +156,7 @@ namespace WinBoyEmulator.GameBoy.CPU
         }
 
         /// <summary>8-bit register H. Value between 0x8000 - 0x0100.</summary>
-        public byte H
+        public int H
         {
             get
             {
@@ -169,7 +168,7 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>8-bit register L. Value between 0x0080 - 0x0000.</summary>
-        public byte L
+        public int L
         {
             get
             {
@@ -181,7 +180,7 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>16-bit register HL. Combined register H with register L.</summary>
-        public ushort HL
+        public int HL
         {
             get
             {
@@ -195,7 +194,7 @@ namespace WinBoyEmulator.GameBoy.CPU
         }
 
         /// <summary>16-bit Stack Pointer register</summary>
-        public ushort SP
+        public int SP
         {
             get
             {
@@ -208,7 +207,7 @@ namespace WinBoyEmulator.GameBoy.CPU
         }
 
         /// <summary>16-bit Program Counter. Initialize value 0x100.</summary>
-        public ushort PC
+        public int PC
         {
             get
             {
@@ -228,18 +227,16 @@ namespace WinBoyEmulator.GameBoy.CPU
 
         // #endregion
 
-        // I am using different methods for setting 8-bit and 16-bit value.
-        // Reason is that, then I don't have to do any extra casting.
-
         /// <summary>
-        /// Set byte to 8-bit register.
+        /// Set value to register.
         /// </summary>
         /// <param name="register">Register. Use a const string of a static class Register.</param>
-        /// <param name="value">8-bit (byte) value</param>
-        private void _setByteToRegister(string register, byte value)
+        /// <param name="value"></param>
+        private void _setValueToRegister(string register, int value)
         {
             switch(register)
             {
+                // 8-bit
                 case Register.A: A = value; break;
                 case Register.B: B = value; break;
                 case Register.C: C = value; break;
@@ -248,20 +245,8 @@ namespace WinBoyEmulator.GameBoy.CPU
                 case Register.F: F = value; break;
                 case Register.H: H = value; break;
                 case Register.L: L = value; break;
-                default:
-                    throw new ArgumentException("Register doesn't match with 16-bit register", nameof(register));
-            }
-        }
 
-        /// <summary>
-        /// Set value to 16-bit register.
-        /// </summary>
-        /// <param name="register">Register. Use a const string of a static class Register.</param>
-        /// <param name="value"></param>
-        private void _setValueToRegister(string register, ushort value)
-        {
-            switch(register)
-            {
+                // 16-bit
                 case Register.AF: AF = value; break;
                 case Register.BC: BC = value; break;
                 case Register.DE: DE = value; break;
@@ -273,10 +258,11 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
 
-        private byte _getByteFromRegister(string register)
+        private int _getValueFromRegister(string register)
         {
             switch (register)
             {
+                // 8-bit
                 case Register.A: return A;
                 case Register.B: return B;
                 case Register.C: return C;
@@ -285,15 +271,8 @@ namespace WinBoyEmulator.GameBoy.CPU
                 case Register.F: return F;
                 case Register.H: return H;
                 case Register.L: return L;
-                default:
-                    throw new ArgumentException("Register doesn't match with 8-bit register", nameof(register));
-            }
-        }
 
-        private ushort _getValueFromRegister(string register)
-        {
-            switch (register)
-            {
+                // 16-bit
                 case Register.AF: return AF;
                 case Register.BC: return BC;
                 case Register.DE: return DE;
@@ -345,8 +324,8 @@ namespace WinBoyEmulator.GameBoy.CPU
         private void _ld(Instruction opcode)
         {
             // doens't handle 16-bit registers yet.
-            var value = _getByteFromRegister(opcode.Source);
-            _setByteToRegister(opcode.Destination, value);
+            var value = _getValueFromRegister(opcode.Source);
+            _setValueToRegister(opcode.Destination, value);
         }
 
         /* LDSPnn: function() 
