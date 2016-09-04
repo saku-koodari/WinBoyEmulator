@@ -24,38 +24,38 @@ namespace WinBoyEmulator.GameBoy.CPU.Regiser // Register, Why not Register?
     public class Register : IRegisters
     {
         /// <summary>8-bit register A. Value between 0x8000 - 0x0100.</summary>
-        public int A { get; set; }
+        public byte A { get; set; }
         /// <summary>8-bit Flag register F. Value between 0x0080 - 0x0000.</summary>
-        public int F { get; set; }
+        public byte F { get; set; }
         /// <summary>16-bit register AF. Combined register A with register F.</summary>
-        public int AF { get; set; }
+        public ushort AF { get; set; }
 
         /// <summary>8-bit register B. Value betweem 0x8000 - 0x0100.</summary>
-        public int B { get; set; }
+        public byte B { get; set; }
         /// <summary>8-bit register C. Value between 0x0080 - 0x0000.</summary>
-        public int C { get; set; }
+        public byte C { get; set; }
         /// <summary>16-bit register BC. Combined register B with register C.</summary>
-        public int BC { get; set; }
+        public ushort BC { get; set; }
 
         /// <summary>8-bit register D. Value between 0x8000 - 0x0100.</summary>
-        public int D { get; set; }
+        public byte D { get; set; }
         /// <summary>8-bit register E. Value between 0x0080 - 0x0000.</summary>
-        public int E { get; set; }
+        public byte E { get; set; }
         /// <summary>16-bit register DE. Combined register D with register E.</summary>
-        public int DE { get; set; }
+        public ushort DE { get; set; }
 
         /// <summary>8-bit register H. Value between 0x8000 - 0x0100.</summary>
-        public int H { get; set; }
+        public byte H { get; set; }
         /// <summary>8-bit register L. Value between 0x0080 - 0x0000.</summary>
-        public int L { get; set; }
+        public byte L { get; set; }
         /// <summary>16-bit register HL. Combined register H with register L.</summary>
-        public int HL { get; set; }
+        public ushort HL { get; set; }
 
         /// <summary>16-bit Stack Pointer register</summary>
-        public int SP { get; set; }
+        public ushort SP { get; set; }
 
         /// <summary>16-bit Program Counter. Initialize value 0x100.</summary>
-        public int PC { get; set; } = 0x100;
+        public ushort PC { get; set; } = 0x100;
 
         /// <summary>Private constructor to prevent a construction (alone) of this class.</summary>
         private Register() { }

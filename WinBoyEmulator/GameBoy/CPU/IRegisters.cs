@@ -23,22 +23,22 @@ namespace WinBoyEmulator.GameBoy.CPU
     interface IRegisters
     {
         // 8-bit registers
-        int A { get; set; }
-        int B { get; set; }
-        int C { get; set; }
-        int D { get; set; }
-        int E { get; set; }
-        int F { get; set; }
-        int H { get; set; }
-        int L { get; set; }
+        byte A { get; set; }
+        byte B { get; set; }
+        byte C { get; set; }
+        byte D { get; set; }
+        byte E { get; set; }
+        byte F { get; set; }
+        byte H { get; set; }
+        byte L { get; set; }
 
         // 16-bit registers
-        int AF { get; set; }
-        int BC { get; set; }
-        int DE { get; set; }
-        int HL { get; set; }
+        ushort AF { get; set; }
+        ushort BC { get; set; }
+        ushort DE { get; set; }
+        ushort HL { get; set; }
 
-        int SP { get; set; }
-        int PC { get; set; }
+        ushort SP { get; set; }
+        ushort PC { get; set; }
     }
 }
