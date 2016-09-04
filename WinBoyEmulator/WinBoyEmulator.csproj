@@ -54,6 +54,7 @@
     <Compile Include="GameBoy\CPU\Instruction set\Generator\MiscellaneousAndControl.cs" />
     <Compile Include="GameBoy\CPU\Instruction set\IInstruction.cs" />
     <Compile Include="GameBoy\CPU\Instruction set\Instruction.cs" />
+    <Compile Include="GameBoy\CPU\Instruction set\Source.cs" />
     <Compile Include="GameBoy\CPU\IRegisters.cs" />
     <Compile Include="GameBoy\CPU\LR35902.cs" />
     <Compile Include="GameBoy\CPU\Operand.cs" />
