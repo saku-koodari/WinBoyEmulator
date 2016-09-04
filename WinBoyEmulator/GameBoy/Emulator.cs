@@ -92,6 +92,10 @@ namespace WinBoyEmulator.GameBoy
         /// <param name="gamePath">path of the game. File type must be .gb</param>
         public void StartEmulation(string gamePath)
         {
+            // this keeps emulation on,
+            // until this will set to false
+            _isGameBoyOn = true;
+
             // Load game.
             _readGameFile(gamePath);
             MMU.Instance.Load(_game);

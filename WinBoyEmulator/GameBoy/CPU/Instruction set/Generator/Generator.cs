@@ -23,30 +23,36 @@ namespace WinBoyEmulator.GameBoy.CPU.Instruction_set.Generator
     /// <summary>
     /// Generator
     /// </summary>
-    public partial class Generator
+    public static partial class Generator
     {
         // Main partial of this class
+        private static Instruction DEFAULT = new Instruction { };
 
-        private Opcode[] _instructionSet = new Opcode[0x200];
+        private static Instruction[] _instructionSet = new Instruction[0x200];
 
-        public Opcode[] InstructionSet => _instructionSet;
+        public  static Instruction[] InstructionSet => _instructionSet;
 
-        #region Singleton
-        private Generator _instance;
-        public Generator Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new Generator();
 
-                return _instance;
-            }
-        }
-        #endregion
-        private Generator()
+        static Generator()
         {
             _miscControlInstructions();
+            _jumpAndCalls();
+            _loadStoreAndMove();
+        }
+
+        private static void _setInstruction(byte value, string operand, string destination = null, 
+            string source = null, int? length = null, int? duration = null, Flags flagsAffected = default(Flags))
+        {
+            _instructionSet[value] = new Instruction
+            {
+                Value = value,
+                Operand = operand,
+                Destination = destination ?? DEFAULT.Destination,
+                Source = source ?? DEFAULT.Source,
+                Duration = duration ?? DEFAULT.Duration,
+                Length = length ?? DEFAULT.Length,
+                FlagsAffected = flagsAffected
+            };
         }
     }
 }

@@ -56,5 +56,8 @@ namespace WinBoyEmulator.GameBoy.CPU.Regiser
 
         /// <summary>16-bit Program Counter. Initialize value 0x100.</summary>
         public ushort PC { get; set; } = 0x100;
+
+        /// <summary>Private constructor to prevent a construction (alone) of this class.</summary>
+        private Register() { }
     }
 }

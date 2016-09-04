@@ -18,6 +18,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using WinBoyEmulator.GameBoy.CPU.Instruction_set;
+using WinBoyEmulator.GameBoy.CPU.Instruction_set.Generator;
+
 using MMU = WinBoyEmulator.GameBoy.Memory.Memory;
 
 namespace WinBoyEmulator.GameBoy.CPU
@@ -27,7 +30,7 @@ namespace WinBoyEmulator.GameBoy.CPU
     /// Inherit Flags (Z,N,H,C, all typeof byte). <para />
     /// implement interface IRegisters.
     /// </summary>
-    public class LR35902 : Flags, IRegisters
+    public class LR35902 : Flag, IRegisters
     {
         private static readonly object _syncRoot = new object();
         private static volatile LR35902 _instance;
@@ -218,6 +221,66 @@ namespace WinBoyEmulator.GameBoy.CPU
         }
         #endregion
 
+        // #region Time related
+
+        public int LengthInBytes { get; set; }
+        public int DurationInCycles { get; set; }
+
+        // #endregion
+
+        private void _executeOperand(Instruction opcode)
+        {
+            if (opcode == null)
+                throw new ArgumentNullException(nameof(opcode), "Current instruction doesn't exists.");
+
+            // Duration and length is set every time.
+            DurationInCycles = opcode.Duration;
+            LengthInBytes = opcode.Length;
+
+            switch(opcode.Operand)
+            {
+                // Misc/Control
+                case Operand.NOP: /* No Operation */ break;
+
+                // Load/Store/Move
+                case Operand.LD: _ld(opcode); break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        /* var opcode = new Instruction
+        {
+            Value = 0x31,
+            Length = 3
+            Duration = 12,
+            Operand = "LD" // Operand.LD
+            Destination = "SP",
+            Source = "d16",
+            FlagsAffected = new Flags(Flag.Z, 0x00, Flag.H, Flag.C),
+        }; */
+        /* LDrr_bc: function() { 
+         *      Z80._r.b = Z80._r.c; 
+         *      Z80._r.m=1; Z80._r.t=4; 
+        },*/
+        /// <summary>Load/Store/Move Operation.</summary>
+        private void _ld(Instruction opcode)
+        {
+            if(opcode.Destination == "B" && opcode.Source == "C")
+            {
+                B = C;
+            }
+        }
+
+        /* LDSPnn: function() 
+        {
+            Z80._r.sp  = MMU.rw(Z80._r.pc);
+            Z80._r.pc += 2;
+            Z80._r.m   = 3;
+            Z80._r.t   = 12;
+        },*/
+
         public static LR35902 Instance
         {
             get
@@ -240,10 +303,13 @@ namespace WinBoyEmulator.GameBoy.CPU
         public void EmulateCycle()
         {
             // fetch operand
-            var operand = MMU.Instance.ReadByte(PC++);
+            var opcode = MMU.Instance.ReadByte(PC++);
 
             // decode operand
+            var instruction = Generator.InstructionSet[opcode];
+
             // execute operand
+            _executeOperand(instruction);
         }
 
         public void Reset()

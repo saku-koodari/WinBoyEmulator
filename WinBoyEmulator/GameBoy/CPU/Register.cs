@@ -18,20 +18,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinBoyEmulator.GameBoy.CPU.Instruction_set
+namespace WinBoyEmulator.GameBoy.CPU
 {
-    /// <summary>
-    /// Default values, that is used here, is for NOP
-    /// If this is too heavy, alter this class to struct (it's more efficient)
-    /// </summary>
-    public class Opcode : IOpcode
+    public static class Register
     {
-        public string Mnemonic { get; set; }
-        /// <summary>Default value is 1.</summary>
-        public int LengthInByte { get; set; } = 0x1;
-        /// <summary>Default value is 4.</summary>
-        public int DurationInCycles { get; set; } = 0x4;
-        /// <summary>Zero is default value, which means no flag affected.</summary>
-        public byte FlagsAffected { get; set; } = 0x0;
+        // 8-bit registers
+        public const string A = "A";
+        public const string B = "B";
+        public const string C = "C";
+        public const string D = "D";
+        public const string E = "E";
+        public const string F = "F";
+        public const string H = "H";
+        public const string L = "L";
+
+        // 16-bit registers
+        public const string AF = "AF";
+        public const string BC = "BC";
+        public const string DE = "DE";
+        public const string HL = "HL";
+        public const string SP = "SP";
+        public const string PC = "PC";
     }
 }

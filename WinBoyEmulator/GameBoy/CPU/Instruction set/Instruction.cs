@@ -20,14 +20,21 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.CPU.Instruction_set
 {
-    public interface IOpcode
-    {
-        string Mnemonic { get; set; }
-        /// <summary>Default value is 1.</summary>
-        int LengthInByte { get; set; }
-        /// <summary>Default value is 4.</summary>
-        int DurationInCycles { get; set; }
-        /// <summary>Zero is default value, which means no flag affected.</summary>
-        byte FlagsAffected { get; set; }
+    public class Instruction : IInstruction
+    {    
+        /// <summary>Opcode as byte value.</summary>
+        public byte Value { get; set; }
+        /// <summary>Length in bytes. Either 1 or 2.</summary>
+        public int Length { get; set; }
+        /// <summary>Duration in cycles.</summary>
+        public int Duration { get; set; }
+        /// <summary>First part of opcode.<para />Format of opcode is: {0} {1},{2}</summary>
+        public string Operand { get; set; }
+        /// <summary>Second part of opcode.<para />Format of opcode is: {0} {1},{2}</summary>
+        public string Destination { get; set; }
+        /// <summary>Third part of opcode.<para />Format of opcode is: {0} {1},{2}</summary>
+        public string Source { get; set; }
+        /// <summary>Flags that is affected in this instruction.</summary>
+        public Flags FlagsAffected { get; set; }
     }
 }
