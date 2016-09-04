@@ -327,6 +327,13 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
 
+        /*
+         0xE0: LDH (a8),A
+         0xF0: LDH A,(a8)
+         0xEA: LD (a16),A
+         0xFA: LD A,(a16)
+        */
+
         /* var opcode = new Instruction
         {
             Value = 0x31,
@@ -335,27 +342,44 @@ namespace WinBoyEmulator.GameBoy.CPU
             Operand = "LD" // Operand.LD
             Destination = "SP",
             Source = "d16",
-            FlagsAffected = new Flags(Flag.Z, 0x00, Flag.H, Flag.C),
+            FlagsAffected = default(Flags),
         }; */
-        /* LDrr_bc: function() { 
-         *      Z80._r.b = Z80._r.c; 
-         *      Z80._r.m=1; Z80._r.t=4; 
-        },*/
         /// <summary>Load/Store/Move Operation.</summary>
         private void _ld(Instruction opcode)
         {
+            // LD A,(C)         has alternative mnemonic LD A, ($FF00 + C)
+            // LD C,(A)         has alternative mnemonic LD($FF00 + C), A
+            // LDH A, (a8)      has alternative mnemonic LD A, ($FF00 + a8)
+            // LDH(a8),A        has alternative mnemonic LD($FF00 + a8),A
+            // LD A,(HL +)      has alternative mnemonic LD A,(HLI)or LDI A,(HL)
+            // LD(HL +), A      has alternative mnemonic LD(HLI), A or LDI(HL), A
+            // LD A, (HL -)     has alternative mnemonic LD A, (HLD)or LDD A, (HL)
+            // LD(HL -), A      has alternative mnemonic LD(HLD), A or LDD(HL), A
+            // LD HL, SP + r8   has alternative mnemonic LDHL SP, r8
+
+            switch(opcode.Source)
+            {
+                case Source.d8:
+                case Source.d16: 
+                    // When opcode.Value is: 0x01, 0x11, 0x21, 0x31
+                    // How about redesign, to not to cast here?
+                    SP = (ushort)MMU.Instance.ReadShort(PC);
+                    PC += 2;
+                    break;
+                // case Source.a8: // a8 is used only with LDH
+                case Source.a16:
+                case Source.r8:
+                    // Only situation: 0xF8: LD HL,SP+r8
+                    throw new NotImplementedException();
+                default:
+                    // For example if destination is any Register.
+                    throw new NotImplementedException();
+            }
+
             // doens't handle 16-bit registers yet.
             var value = _getByteFromRegister(opcode.Source);
             _setByteToRegister(opcode.Destination, value);
         }
-
-        /* LDSPnn: function() 
-        {
-            Z80._r.sp  = MMU.rw(Z80._r.pc);
-            Z80._r.pc += 2;
-            Z80._r.m   = 3;
-            Z80._r.t   = 12;
-        },*/
 
         public static LR35902 Instance
         {

@@ -10,7 +10,7 @@ namespace WinBoyEmulator.GameBoy.CPU.Instruction_set.Generator
     {
         public static void _loadStoreAndMove()
         {
-            _setInstruction(0x31, Operand.LD, Register.SP, "d16", 3, 12);
+            _setInstruction(0x31, Operand.LD, Register.SP, Source.d16, 3, 12);
         }
     }
 }
