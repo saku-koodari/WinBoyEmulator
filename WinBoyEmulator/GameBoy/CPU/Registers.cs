@@ -18,7 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinBoyEmulator.GameBoy.CPU.Regiser
+namespace WinBoyEmulator.GameBoy.CPU.Regiser // Register, Why not Register?
 {
 
     public class Register : IRegisters

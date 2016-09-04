@@ -228,6 +228,83 @@ namespace WinBoyEmulator.GameBoy.CPU
 
         // #endregion
 
+        // I am using different methods for setting 8-bit and 16-bit value.
+        // Reason is that, then I don't have to do any extra casting.
+
+        /// <summary>
+        /// Set byte to 8-bit register.
+        /// </summary>
+        /// <param name="register">Register. Use a const string of a static class Register.</param>
+        /// <param name="value">8-bit (byte) value</param>
+        private void _setByteToRegister(string register, byte value)
+        {
+            switch(register)
+            {
+                case Register.A: A = value; break;
+                case Register.B: B = value; break;
+                case Register.C: C = value; break;
+                case Register.D: D = value; break;
+                case Register.E: E = value; break;
+                case Register.F: F = value; break;
+                case Register.H: H = value; break;
+                case Register.L: L = value; break;
+                default:
+                    throw new ArgumentException("Register doesn't match with 16-bit register", nameof(register));
+            }
+        }
+
+        /// <summary>
+        /// Set value to 16-bit register.
+        /// </summary>
+        /// <param name="register">Register. Use a const string of a static class Register.</param>
+        /// <param name="value"></param>
+        private void _setValueToRegister(string register, ushort value)
+        {
+            switch(register)
+            {
+                case Register.AF: AF = value; break;
+                case Register.BC: BC = value; break;
+                case Register.DE: DE = value; break;
+                case Register.HL: HL = value; break;
+                case Register.PC: PC = value; break;
+                case Register.SP: SP = value; break;
+                default:
+                    throw new ArgumentException("Register doesn't match with 16-bit register", nameof(register));
+            }
+        }
+
+        private byte _getByteFromRegister(string register)
+        {
+            switch (register)
+            {
+                case Register.A: return A;
+                case Register.B: return B;
+                case Register.C: return C;
+                case Register.D: return D;
+                case Register.E: return E;
+                case Register.F: return F;
+                case Register.H: return H;
+                case Register.L: return L;
+                default:
+                    throw new ArgumentException("Register doesn't match with 8-bit register", nameof(register));
+            }
+        }
+
+        private ushort _getValueFromRegister(string register)
+        {
+            switch (register)
+            {
+                case Register.AF: return AF;
+                case Register.BC: return BC;
+                case Register.DE: return DE;
+                case Register.HL: return HL;
+                case Register.PC: return PC;
+                case Register.SP: return SP;
+                default:
+                    throw new ArgumentException("Register doesn't match with 8-bit register", nameof(register));
+            }
+        }
+
         private void _executeOperand(Instruction opcode)
         {
             if (opcode == null)
@@ -267,10 +344,9 @@ namespace WinBoyEmulator.GameBoy.CPU
         /// <summary>Load/Store/Move Operation.</summary>
         private void _ld(Instruction opcode)
         {
-            if(opcode.Destination == "B" && opcode.Source == "C")
-            {
-                B = C;
-            }
+            // doens't handle 16-bit registers yet.
+            var value = _getByteFromRegister(opcode.Source);
+            _setByteToRegister(opcode.Destination, value);
         }
 
         /* LDSPnn: function() 

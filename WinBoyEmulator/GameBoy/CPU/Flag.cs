@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.CPU
 {
-    /// <summary>Flag for F register.</summary>
+    /// <summary>Flags for F register.</summary>
     public class Flag
     {
         /// <summary>
