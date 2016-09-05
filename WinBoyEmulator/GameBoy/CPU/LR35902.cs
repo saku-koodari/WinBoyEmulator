@@ -375,10 +375,6 @@ namespace WinBoyEmulator.GameBoy.CPU
                     // For example if destination is any Register.
                     throw new NotImplementedException();
             }
-
-            // doens't handle 16-bit registers yet.
-            var value = _getByteFromRegister(opcode.Source);
-            _setByteToRegister(opcode.Destination, value);
         }
 
         public static LR35902 Instance
