@@ -23,6 +23,9 @@ general status list:
     * Sound (Issue #20)
     * GUI (Issue #18)
 
+Release Notes (tags):
+ * v0.0.1 - First version with (one) working instruction.
+
 My Plan:
  * v0.5 - 'alpha release', working emulator without sound.
  * v1.0 - (goal) first release with sound working
