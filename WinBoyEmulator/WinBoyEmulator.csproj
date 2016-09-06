@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameBoy\Configuration\Colors.cs" />
+    <Compile Include="GameBoy\Configuration\Screen.cs" />
     <Compile Include="GameBoy\CPU\Flag.cs" />
     <Compile Include="GameBoy\CPU\Flags.cs" />
     <Compile Include="GameBoy\CPU\Instruction set\Generator\Generator.cs" />

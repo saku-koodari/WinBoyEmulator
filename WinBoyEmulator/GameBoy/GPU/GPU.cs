@@ -28,27 +28,10 @@ namespace WinBoyEmulator.GameBoy.GPU
     /// </summary>
     public class GPU
     {
-        #region Constants 
-        // Note: this design is so tied with Game Boy, that it's better&quicker just hardcode every value
-        // Note2: I prefer not to hardcode so therefore constants is used.
-        // Issue #7 Separate Game Boy related from the emulator
-        private const int SCREEN_WIDTH = 0xA0;
-        private const int SCREEN_HEIGHT = 0x90;
-        private const int COLORS_IN_PALETTE = 0x4;
-        #endregion
-
         private static readonly object _syncRoot = new object();
         private static volatile GPU _instance;
         private LogWriter _logWriter;
 
-        // NOTE: Everywhere you need to do calculations, you have to convert ushort to int afterwards
-        //       Therefore you probably don't gain anything 
-        // (This computer has anyway enough of ram handling this Emulator)
-        // TODO: Find out whether you should use int instead of ushort
-        //       At this moment yes, because maybe we should build flexible emulator.
-        //       Optimation later0.
-        // NOTE2:_wram was originally byte[],then ushort[], now int[]
-        // Issue #4 data type as ushort or int?
         private int[] _vram;
         private byte[] _oam;
         private int[] _reg; // TODO: rename this
@@ -121,14 +104,14 @@ namespace WinBoyEmulator.GameBoy.GPU
             }
 
             _vram = new int[0x2000]; //8192
-            _oam = new byte[SCREEN_WIDTH];
+            _oam = new byte[Configuration.Screen.Width];
             _reg = new int[1];
 
-            _scanrow = new byte[SCREEN_WIDTH];
-            _palette = new Palette(COLORS_IN_PALETTE);
+            _scanrow = new byte[Configuration.Screen.Width];
+            _palette = new Palette(Configuration.Colors.Palette.Length);
             _objectData = new ObjectData[40];
 
-            _screen = new Screen(SCREEN_WIDTH, SCREEN_HEIGHT, COLORS_IN_PALETTE); // TODO: maybe you can use this instead of constants?
+            _screen = new Screen(Configuration.Screen.Width, Configuration.Screen.Height, Configuration.Colors.Palette.Length); // TODO: maybe you can use this instead of constants?
         }
 
         #region private methods for Checkline()
@@ -233,7 +216,7 @@ namespace WinBoyEmulator.GameBoy.GPU
 
                 do
                 {
-                    _scanrow[SCREEN_WIDTH - x] = tilerow[x];
+                    _scanrow[Configuration.Screen.Width - x] = tilerow[x];
                     _screen.Data[linebase + 3] = _palette.Background[tilerow[x]];
                     x++;
                     if (x == 8)
@@ -257,7 +240,7 @@ namespace WinBoyEmulator.GameBoy.GPU
                 var tilerow = _tilemap[_vram[mapbase + t]][y];
                 do
                 {
-                    _scanrow[SCREEN_WIDTH - x] = tilerow[x];
+                    _scanrow[Configuration.Screen.Width - x] = tilerow[x];
                     _screen.Data[linebase + 3] = _palette.Background[tilerow[x]];
                     x++;
                     if (x == 8)
@@ -310,11 +293,11 @@ namespace WinBoyEmulator.GameBoy.GPU
                 var tileRow = _tilemap[objectSorted.Tile][j];
                 var palette = objectSorted.Palette ? _palette.Object1 : _palette.Object2;
 
-                linebase = (_curLine * SCREEN_WIDTH + objectSorted.X) * COLORS_IN_PALETTE;
+                linebase = (_curLine * Configuration.Screen.Width + objectSorted.X) * Configuration.Colors.Palette.Length;
 
                 for (var _x = 0; _x < 8; _x++)
                 {
-                    if (objectSorted.X + _x >= 0 && objectSorted.X + _x < SCREEN_WIDTH
+                    if (objectSorted.X + _x >= 0 && objectSorted.X + _x < Configuration.Screen.Width
                     && (tileRow[_x] > 0 && (objectSorted.Priority || _scanrow[_x] == 0)))
                     {
                         _screen.Data[linebase + 3] = objectSorted.xFlip ? palette[tileRow[7 - _x]] : palette[tileRow[_x]];
@@ -587,8 +570,7 @@ namespace WinBoyEmulator.GameBoy.GPU
 
         private byte[] _writeColor(int value)
         {
-            var Palette = new byte[] { 255, 192, 96, 0 };
-            var length = Palette.Length;
+            var length = Configuration.Colors.Palette.Length;
             var array = new byte[length];
 
             for (var i = 0; i < length; i++)
@@ -596,7 +578,7 @@ namespace WinBoyEmulator.GameBoy.GPU
                 // If colors is incorrect in game boy color (any other than regular game boy)
                 // This might be the reason. (Because I haven't test this. :D)
                 var color = (value >> (i * 2)) & (length - 1);
-                array[i] = Palette[color];
+                array[i] = Configuration.Colors.Palette[color];
             }
 
             return array;
@@ -628,7 +610,7 @@ namespace WinBoyEmulator.GameBoy.GPU
                     break; // TODO: in the source, there was break; missing. Find out whether it was on purpose or not.
                 // OAM DMA
                 case 6:
-                    for (var i = 0; i < SCREEN_WIDTH; i++)
+                    for (var i = 0; i < Configuration.Screen.Width; i++)
                     {
                         // var val = MMU.rb((value << 8) + i);
                         // _oam[i] = vval;
