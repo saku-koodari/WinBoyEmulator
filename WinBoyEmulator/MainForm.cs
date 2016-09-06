@@ -57,5 +57,21 @@ namespace WinBoyEmulator
         {
             Emulator.Instance.StartEmulation(_openFileDialogMain.FileName);
         }
+
+        private void MainForm_Paint(object sender, PaintEventArgs e)
+        {
+            // Create solid brush.
+            SolidBrush blueBrush = new SolidBrush(Color.Blue);
+
+            Rectangle rectangle = new Rectangle(0, 0, 200, 200);
+
+            Graphics graphics = e.Graphics;
+            //graphics.FillRectangle(blueBrush, rectangle);
+        }
+
+        private void _timer_tick(object sender, EventArgs e)
+        {
+
+        }
     }
 }

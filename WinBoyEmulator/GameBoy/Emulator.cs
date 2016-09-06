@@ -100,12 +100,12 @@ namespace WinBoyEmulator.GameBoy
             _readGameFile(gamePath);
             MMU.Instance.Load(_game);
 
-            var thread = new Thread(_gameCycle)
-            {
-                IsBackground = true,
-                Name  = "WinBoyEmulator",
-            };
-            thread.Start();
+            //var thread = new Thread(_gameCycle)
+            //{
+            //    IsBackground = true,
+            //    Name  = "WinBoyEmulator",
+            //};
+            //thread.Start();
 
         }     
     }
