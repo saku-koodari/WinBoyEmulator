@@ -39,7 +39,7 @@ namespace WinBoyEmulator.GameBoy.CPU
 
         // store registers values to these bytes.
         private byte _a, _b, _c, _d, _e, _f, _h, _l;
-        private ushort _sp, _pc;
+        private int _sp, _pc;
 
         #region Registers Accessors
         /// <summary>8-bit register A. Value between 0x8000 - 0x0100.</summary>
@@ -67,11 +67,11 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>16-bit register AF. Combined register A with register F.</summary>
-        public ushort AF
+        public int AF
         {
             get
             {
-                return (ushort)((_a << 8) | F);
+                return (_a << 8) | F;
             }
             set
             {
@@ -105,11 +105,11 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>16-bit register BC. Combined register B with register C.</summary>
-        public ushort BC
+        public int BC
         {
             get
             {
-                return (ushort)((_b << 8) | _c);
+                return (_b << 8) | _c;
             }
             set
             {
@@ -143,11 +143,11 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>16-bit register DE. Combined register D with register E.</summary>
-        public ushort DE
+        public int DE
         {
             get
             {
-                return (ushort)((_d << 8) | _e);
+                return (_d << 8) | _e;
             }
             set
             {
@@ -181,11 +181,11 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
         /// <summary>16-bit register HL. Combined register H with register L.</summary>
-        public ushort HL
+        public int HL
         {
             get
             {
-                return (ushort)((_h << 8) | _l);
+                return (_h << 8) | _l;
             }
             set
             {
@@ -195,7 +195,7 @@ namespace WinBoyEmulator.GameBoy.CPU
         }
 
         /// <summary>16-bit Stack Pointer register</summary>
-        public ushort SP
+        public int SP
         {
             get
             {
@@ -208,7 +208,7 @@ namespace WinBoyEmulator.GameBoy.CPU
         }
 
         /// <summary>16-bit Program Counter. Initialize value 0x100.</summary>
-        public ushort PC
+        public int PC
         {
             get
             {
@@ -258,7 +258,7 @@ namespace WinBoyEmulator.GameBoy.CPU
         /// </summary>
         /// <param name="register">Register. Use a const string of a static class Register.</param>
         /// <param name="value"></param>
-        private void _setValueToRegister(string register, ushort value)
+        private void _setValueToRegister(string register, int value)
         {
             switch(register)
             {
@@ -290,7 +290,7 @@ namespace WinBoyEmulator.GameBoy.CPU
             }
         }
 
-        private ushort _getValueFromRegister(string register)
+        private int _getValueFromRegister(string register)
         {
             switch (register)
             {
@@ -363,7 +363,7 @@ namespace WinBoyEmulator.GameBoy.CPU
                 case Source.d16: 
                     // When opcode.Value is: 0x01, 0x11, 0x21, 0x31
                     // How about redesign, to not to cast here?
-                    SP = (ushort)MMU.Instance.ReadShort(PC);
+                    SP = MMU.Instance.ReadShort(PC);
                     PC += 2;
                     break;
                 // case Source.a8: // a8 is used only with LDH

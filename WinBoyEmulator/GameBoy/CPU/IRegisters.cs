@@ -33,12 +33,12 @@ namespace WinBoyEmulator.GameBoy.CPU
         byte L { get; set; }
 
         // 16-bit registers
-        ushort AF { get; set; }
-        ushort BC { get; set; }
-        ushort DE { get; set; }
-        ushort HL { get; set; }
+        int AF { get; set; }
+        int BC { get; set; }
+        int DE { get; set; }
+        int HL { get; set; }
 
-        ushort SP { get; set; }
-        ushort PC { get; set; }
+        int SP { get; set; }
+        int PC { get; set; }
     }
 }
