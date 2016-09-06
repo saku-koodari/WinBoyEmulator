@@ -585,6 +585,23 @@ namespace WinBoyEmulator.GameBoy.GPU
             }
         }
 
+        private byte[] _writeColor(int value)
+        {
+            var Palette = new byte[] { 255, 192, 96, 0 };
+            var length = Palette.Length;
+            var array = new byte[length];
+
+            for (var i = 0; i < length; i++)
+            {
+                // If colors is incorrect in game boy color (any other than regular game boy)
+                // This might be the reason. (Because I haven't test this. :D)
+                var color = (value >> (i * 2)) & (length - 1);
+                array[i] = Palette[color];
+            }
+
+            return array;
+        }
+
         public void WriteByte(int address, int value)
         {
             var gaddress = address - 0xFF40;
@@ -622,59 +639,20 @@ namespace WinBoyEmulator.GameBoy.GPU
 
                 // BG palette mapping
                 case 7:
-                    for (var i = 0; i < 4; i++)
-                    {
-                        // TODO: Make this enum.
-                        var color = (value >> (i * 2)) & 3;
-
-                        switch (color)
-                        {
-                            case 0: _palette.Background[i] = 255; break;
-                            case 1: _palette.Background[i] = 192; break;
-                            case 2: _palette.Background[i] = 96; break;
-                            case 3: _palette.Background[i] = 0; break;
-                            default:
-                                _logWriter.Fatal($"Invalid color value. Value should have been between 0 - 3. It was: {color}");
-                                throw new InvalidOperationException("Invalid color value.");
-                        }
-                    }
+                    _palette.Background = _writeColor(value);
                     break;
-
                     // Issue #19:
                     //  1. Look the source (javascript) You can see, that 
                     //          there are used obj0 and obj1 instead object1 and object2.
                     //          Find out wheter that is done on purpose or not.
-                    //
-                    //  2. Combine cases below, due to they are higly similar.
-                    //
-                    //  3. #3 You Enum again for those Colors
-
                 // OBJ0 palette mapping
                 case 8:
-                    for (var i = 0; i < 4; i++)
-                    {
-                        switch ((value >> (i * 2)) & 3)
-                        {
-                            case 0: _palette.Object1[i] = 255; break;
-                            case 1: _palette.Object1[i] = 192; break;
-                            case 2: _palette.Object1[i] = 96; break;
-                            case 3: _palette.Object1[i] = 0; break;
-                        }
-                    }
+                    _palette.Object1 = _writeColor(value);
                     break;
 
                 // OBJ1 palette mapping
                 case 9:
-                    for (var i = 0; i < 4; i++)
-                    {
-                        switch ((value >> (i * 2)) & 3)
-                        {
-                            case 0: _palette.Object2[i] = 255; break;
-                            case 1: _palette.Object2[i] = 192; break;
-                            case 2: _palette.Object2[i] = 96; break;
-                            case 3: _palette.Object2[i] = 0; break;
-                        }
-                    }
+                    _palette.Object2 = _writeColor(value);
                     break;
             }
         }
