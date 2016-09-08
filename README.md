@@ -14,7 +14,7 @@ general status list:
 * In Progress
    *  Instruction set for CPU (specification, issue #2)
    *  CPU (General issue #32)
-   *  Screen (update tiles to main form, Issue #43)
+   *  Screen: Interface between form and Emulator is (should be) complete (Issue #43).
 * Proof of Concept
    * Memory
    * GPU
@@ -27,8 +27,13 @@ Release Notes (tags):
  * v0.0.1 - First version with (one) working instruction.
 
 My Plan:
- * v0.5 - 'alpha release', working emulator without sound.
+ * v0.1 - First version that will be able to show data from Emulator (Screen) 
+ * v0.2 - Instrution set fully supported
+ * v0.3 - Memory and GPU working
+ * v0.5 - 'alpha release' - working emulator without sound.
+ * v0.6 - Implement minor features
  * v1.0 - (goal) first release with sound working
+ 
  * v1.1 - Saving
  * v1.2 - Login system
  * v1.3 - Link cable
