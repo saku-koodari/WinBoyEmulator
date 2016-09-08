@@ -14,7 +14,7 @@ general status list:
 * In Progress
    *  Instruction set for CPU (specification, issue #2)
    *  CPU (General issue #32)
-   *  Rom loader
+   *  Screen (update tiles to main form, Issue #43)
 * Proof of Concept
    * Memory
    * GPU
