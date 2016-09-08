@@ -25,21 +25,23 @@ using System.Windows.Forms;
 
 using WinBoyEmulator.GameBoy;
 
+using Screen = WinBoyEmulator.GameBoy.GPU.Screen;
+
 namespace WinBoyEmulator
 {
     public partial class MainForm : Form
     {
         private const string _sourceCodeUrl = "https://github.com/saku-kaarakainen/WinBoyEmulator/";
         private Emulator _emulator;
-
         public MainForm() { InitializeComponent(); }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            _emulator = new Emulator();
-            // This due to Issue #30
+            // Check Issues #30 and #31
             // Check #31
-            _emulator.StartEmulation("C:\\temp\\game.gb");
+            _emulator = new Emulator { GamePath = "C:\\temp\\game.gb" };
+            _emulator.DrawEventHandler += Draw;
+            _emulator.StartEmulation();
         }
 
         #region _Click
@@ -62,7 +64,23 @@ namespace WinBoyEmulator
 
         private void _openFileDialogMain_FileOk(object sender, CancelEventArgs e)
         {
-            _emulator.StartEmulation(_openFileDialogMain.FileName);
+            _emulator.GamePath = _openFileDialogMain.FileName;
+            _emulator.StartEmulation();
+        }
+
+        private void Draw(object sender, EventArgs e)
+        {
+            var screen = sender as Screen;
+
+            if (screen == null)
+                throw new InvalidCastException("Unable to cast object sender to Screen");
+
+
+        }
+
+        private void MainForm_Paint(object sender, PaintEventArgs e)
+        {
+            Draw(sender, e);
         }
     }
 }

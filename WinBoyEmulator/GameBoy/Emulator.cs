@@ -14,12 +14,14 @@
 //     along with WinBoyEmulator.  If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Timers;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using WinBoyEmulator.GameBoy.CPU;
 using WinBoyEmulator.GameBoy.GPU;
@@ -27,15 +29,33 @@ using WinBoyEmulator.GameBoy.Memory;
 
 using Timer = System.Timers.Timer;
 using MMU = WinBoyEmulator.GameBoy.Memory.Memory;
+using Screen = WinBoyEmulator.GameBoy.GPU.Screen;
+using static WinBoyEmulator.GameBoy.WinBoyEvents;
 
 namespace WinBoyEmulator.GameBoy
 {
+    /// <summary>An interface between a From and Game Boy Emulator.</summary>
     public class Emulator : IEmulator
     {
         private Timer _timer;
         private Toolbox _toolbox;
         private Screen _screen;
         private byte[] _game;
+        private string _gamePath;
+
+        public event DrawEventHandler DrawEventHandler;
+
+        public string GamePath
+        {
+            get
+            {
+                return _gamePath;
+            }
+            set
+            {
+                _gamePath = value;
+            }
+        }
 
         public  Emulator()
         {
@@ -55,7 +75,7 @@ namespace WinBoyEmulator.GameBoy
 
         private void _render()
         {
-            
+            DrawEventHandler(_screen, new EventArgs());
         }
 
         private void _gameCycle(object sender, ElapsedEventArgs e)
@@ -72,20 +92,14 @@ namespace WinBoyEmulator.GameBoy
             _render();
         }
 
-        /// <summary>Starts emulation without game inside.</summary>
-        public void StartEmulation() => StartEmulation(string.Empty);
-
-        /// <summary>
-        /// Starts emulation with game inside.
-        /// </summary>
-        /// <param name="gamePath">path of the game. File type must be .gb</param>
-        public void StartEmulation(string gamePath)
+        /// <summary>Starts emulation with game inside.</summary>
+        public void StartEmulation()
         {
             if (_timer != null)
                 throw new InvalidOperationException($"Trying to access an object:{nameof(_timer)} even though it has been initialized already.");
 
             // Load game.
-            _readGameFile(gamePath);
+            _readGameFile(_gamePath);
             MMU.Instance.Load(_game);
 
             _timer = new Timer

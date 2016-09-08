@@ -63,7 +63,7 @@ namespace WinBoyEmulator
             this._menuStripMain.Location = new System.Drawing.Point(0, 0);
             this._menuStripMain.Name = "_menuStripMain";
             this._menuStripMain.Padding = new System.Windows.Forms.Padding(16, 5, 0, 5);
-            this._menuStripMain.Size = new System.Drawing.Size(779, 58);
+            this._menuStripMain.Size = new System.Drawing.Size(779, 55);
             this._menuStripMain.TabIndex = 0;
             this._menuStripMain.Text = "menuStrip1";
             // 
@@ -74,7 +74,7 @@ namespace WinBoyEmulator
             this._closeEmulatorToolStripMenuItem,
             this._toolStripMenuItemClose});
             this._toolStripMenuItemFile.Name = "_toolStripMenuItemFile";
-            this._toolStripMenuItemFile.Size = new System.Drawing.Size(75, 48);
+            this._toolStripMenuItemFile.Size = new System.Drawing.Size(75, 45);
             this._toolStripMenuItemFile.Text = "File";
             // 
             // _toolStripMenuItemOpen
@@ -104,7 +104,7 @@ namespace WinBoyEmulator
             this._toolStripMenuItemAbout,
             this._toolStripMenuItemSourceCode});
             this._toolStripMenuItemHelp.Name = "_toolStripMenuItemHelp";
-            this._toolStripMenuItemHelp.Size = new System.Drawing.Size(92, 48);
+            this._toolStripMenuItemHelp.Size = new System.Drawing.Size(92, 45);
             this._toolStripMenuItemHelp.Text = "Help";
             // 
             // _toolStripMenuItemAbout
@@ -137,6 +137,7 @@ namespace WinBoyEmulator
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this._menuStripMain.ResumeLayout(false);
             this._menuStripMain.PerformLayout();
             this.ResumeLayout(false);

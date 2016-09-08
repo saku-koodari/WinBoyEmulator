@@ -64,6 +64,7 @@
     <Compile Include="GameBoy\CPU\Operand.cs" />
     <Compile Include="GameBoy\CPU\Register.cs" />
     <Compile Include="GameBoy\CPU\Registers.cs" />
+    <Compile Include="GameBoy\WinBoyEvents.cs" />
     <Compile Include="GameBoy\Emulator.cs" />
     <Compile Include="GameBoy\GPU\GPU.cs" />
     <Compile Include="GameBoy\GPU\ObjectData.cs" />
