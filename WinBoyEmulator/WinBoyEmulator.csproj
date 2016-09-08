@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameBoy\Configuration\Clock.cs" />
     <Compile Include="GameBoy\Configuration\Color.cs" />
     <Compile Include="GameBoy\Configuration\Colors.cs" />
     <Compile Include="GameBoy\Configuration\Screen.cs" />

@@ -46,6 +46,11 @@ namespace WinBoyEmulator
             throw new NotImplementedException("Issue #24");
         }
 
+        private void _closeEmulatorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Emulator.Instance.StopEmulation();
+        }
+
         private void _toolStripMenuItemOpen_Click(object sender, EventArgs e) => _openFileDialogMain.ShowDialog();
         
         private void _toolStripMenuItemClose_Click(object sender, EventArgs e) => Close();

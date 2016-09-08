@@ -65,6 +65,8 @@ namespace WinBoyEmulator.GameBoy.GPU
         private int _bgmapbase = 0x1800;
         private int _wintilebase = 0x1800;
 
+        public Screen Screen => _screen;
+
         public static GPU Instance
         {
             get

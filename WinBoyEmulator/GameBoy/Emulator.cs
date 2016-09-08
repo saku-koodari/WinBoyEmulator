@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Timers;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,6 +25,7 @@ using WinBoyEmulator.GameBoy.CPU;
 using WinBoyEmulator.GameBoy.GPU;
 using WinBoyEmulator.GameBoy.Memory;
 
+using Timer = System.Timers.Timer;
 using MMU = WinBoyEmulator.GameBoy.Memory.Memory;
 
 namespace WinBoyEmulator.GameBoy
@@ -33,6 +35,7 @@ namespace WinBoyEmulator.GameBoy
         private static readonly object _syncRoot = new object();
         private static volatile Emulator _instance;
 
+        private Timer _timer;
         private byte[] _game;
         private bool _isGameBoyOn = false;
 
@@ -70,17 +73,20 @@ namespace WinBoyEmulator.GameBoy
             }
         }
 
-        private void _gameCycle()
+        private void _render()
         {
-            while(_isGameBoyOn)
-            {
-                // Emulate one cycle
-                LR35902.Instance.EmulateCycle();
 
-                // If the draw flag is set, update the screen
-                // update sound (Issue #20)
-                // Store key press state (Press and Release)
-            }
+        }
+
+        private void _gameCycle(object sender, ElapsedEventArgs e)
+        {
+            // Emulate one cycle
+            //LR35902.Instance.EmulateCycle();
+
+            // If the draw flag is set, update the screen
+            // update sound (Issue #20)
+            // Store key press state (Press and Release)
+            _render();
         }
 
         /// <summary>Starts emulation without game inside.</summary>
@@ -92,21 +98,28 @@ namespace WinBoyEmulator.GameBoy
         /// <param name="gamePath">path of the game. File type must be .gb</param>
         public void StartEmulation(string gamePath)
         {
+            if (_timer != null)
+                throw new InvalidOperationException($"{nameof(_timer)} is");
+
             // this keeps emulation on,
             // until this will set to false
-            _isGameBoyOn = true;
+            _timer = new Timer
+            {
+                Enabled = true,
+                Interval = Configuration.Clock.Timer_Interval
+            };
+
+            _timer.Elapsed += _gameCycle;
 
             // Load game.
             _readGameFile(gamePath);
             MMU.Instance.Load(_game);
-
-            var thread = new Thread(_gameCycle)
-            {
-                IsBackground = true,
-                Name  = "WinBoyEmulator",
-            };
-            thread.Start();
-
         }     
+
+        public void StopEmulation()
+        {
+            _timer.Dispose();
+            throw new NotImplementedException("Issue #46");
+        }
     }
 }
