@@ -70,6 +70,7 @@
     <Compile Include="GameBoy\GPU\Palette.cs" />
     <Compile Include="GameBoy\GPU\Screen.cs" />
     <Compile Include="GameBoy\IEmulator.cs" />
+    <Compile Include="GameBoy\Toolbox.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

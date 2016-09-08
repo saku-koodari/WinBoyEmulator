@@ -27,7 +27,20 @@ namespace WinBoyEmulator.GameBoy.GPU
         public int[] Data { get; set; }
 
         /// <summary>
-        /// Constructor
+        /// Constructor without parameters. Initializes screen default values, which are: <para/>
+        /// Width = Configuration.Screen.Width; <para />
+        /// Height = Configuration.Screen.Height; <para />
+        /// Data = new int[Width * Height * Configuration.Colors.Palette.Length];
+        /// </summary>
+        public Screen()
+        {
+            Width = Configuration.Screen.Width;
+            Height = Configuration.Screen.Height;
+            Data = new int[Width * Height * Configuration.Colors.Palette.Length];
+        }
+
+        /// <summary>
+        /// Constructor, with three parameters.
         /// </summary>
         /// <param name="width">Amount of pixels in a row in the screen.</param>
         /// <param name="height">Amount of pixels in a column in the screen.</param>

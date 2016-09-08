@@ -30,14 +30,16 @@ namespace WinBoyEmulator
     public partial class MainForm : Form
     {
         private const string _sourceCodeUrl = "https://github.com/saku-kaarakainen/WinBoyEmulator/";
+        private Emulator _emulator;
 
         public MainForm() { InitializeComponent(); }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            _emulator = new Emulator();
             // This due to Issue #30
             // Check #31
-            Emulator.Instance.StartEmulation("C:\\temp\\game.gb");
+            _emulator.StartEmulation("C:\\temp\\game.gb");
         }
 
         #region _Click
@@ -48,7 +50,7 @@ namespace WinBoyEmulator
 
         private void _closeEmulatorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Emulator.Instance.StopEmulation();
+            _emulator.StopEmulation();
         }
 
         private void _toolStripMenuItemOpen_Click(object sender, EventArgs e) => _openFileDialogMain.ShowDialog();
@@ -60,7 +62,7 @@ namespace WinBoyEmulator
 
         private void _openFileDialogMain_FileOk(object sender, CancelEventArgs e)
         {
-            Emulator.Instance.StartEmulation(_openFileDialogMain.FileName);
+            _emulator.StartEmulation(_openFileDialogMain.FileName);
         }
     }
 }

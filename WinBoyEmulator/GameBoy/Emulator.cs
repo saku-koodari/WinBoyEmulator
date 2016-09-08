@@ -32,35 +32,15 @@ namespace WinBoyEmulator.GameBoy
 {
     public class Emulator : IEmulator
     {
-        private static readonly object _syncRoot = new object();
-        private static volatile Emulator _instance;
-
         private Timer _timer;
+        private Toolbox _toolbox;
+        private Screen _screen;
         private byte[] _game;
-        private bool _isGameBoyOn = false;
 
-        public static Emulator Instance
-        {
-            get
-            {
-                if (_instance != null)
-                    return _instance;
-
-                lock (_syncRoot)
-                {
-                    if (_instance != null)
-                        return _instance;
-
-                    _instance = new Emulator();
-                }
-
-                return _instance;
-            }
-        }
-
-        private Emulator()
+        public  Emulator()
         {
             _game = new byte[0x200];
+            _toolbox = new Toolbox();
         }
 
         private void _readGameFile(string filename)
@@ -75,7 +55,7 @@ namespace WinBoyEmulator.GameBoy
 
         private void _render()
         {
-
+            
         }
 
         private void _gameCycle(object sender, ElapsedEventArgs e)
@@ -86,6 +66,9 @@ namespace WinBoyEmulator.GameBoy
             // If the draw flag is set, update the screen
             // update sound (Issue #20)
             // Store key press state (Press and Release)
+
+            _screen = _toolbox.RandomizeScreen();
+
             _render();
         }
 
@@ -99,21 +82,20 @@ namespace WinBoyEmulator.GameBoy
         public void StartEmulation(string gamePath)
         {
             if (_timer != null)
-                throw new InvalidOperationException($"{nameof(_timer)} is");
+                throw new InvalidOperationException($"Trying to access an object:{nameof(_timer)} even though it has been initialized already.");
 
-            // this keeps emulation on,
-            // until this will set to false
+            // Load game.
+            _readGameFile(gamePath);
+            MMU.Instance.Load(_game);
+
             _timer = new Timer
             {
                 Enabled = true,
                 Interval = Configuration.Clock.Timer_Interval
             };
 
+            // method tha Elapsed will get, is the main loop
             _timer.Elapsed += _gameCycle;
-
-            // Load game.
-            _readGameFile(gamePath);
-            MMU.Instance.Load(_game);
         }     
 
         public void StopEmulation()
