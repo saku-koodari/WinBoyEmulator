@@ -57,6 +57,8 @@ namespace WinBoyEmulator.GameBoy
             }
         }
 
+        public Graphics Graphics { get; set; }
+
         public  Emulator()
         {
             _game = new byte[0x200];
@@ -75,7 +77,12 @@ namespace WinBoyEmulator.GameBoy
 
         private void _render()
         {
-            DrawEventHandler(_screen, new EventArgs());
+            var clipRect = new Rectangle(0, 0,
+                Configuration.Screen.Width,
+                Configuration.Screen.Height);
+            var pea = new PaintEventArgs(Graphics, clipRect);
+
+            DrawEventHandler(_screen, pea);
         }
 
         private void _gameCycle(object sender, ElapsedEventArgs e)

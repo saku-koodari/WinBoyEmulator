@@ -23,6 +23,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using log4Any;
+
 using WinBoyEmulator.GameBoy;
 
 using Screen = WinBoyEmulator.GameBoy.GPU.Screen;
@@ -33,13 +35,17 @@ namespace WinBoyEmulator
     {
         private const string _sourceCodeUrl = "https://github.com/saku-kaarakainen/WinBoyEmulator/";
         private Emulator _emulator;
+        private LogWriter _logWriter;
         public MainForm() { InitializeComponent(); }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            _logWriter = new LogWriter(GetType());
+
             // Check Issues #30 and #31
             // Check #31
             _emulator = new Emulator { GamePath = "C:\\temp\\game.gb" };
+            _emulator.Graphics = CreateGraphics();
             _emulator.DrawEventHandler += Draw;
             _emulator.StartEmulation();
         }
@@ -68,19 +74,29 @@ namespace WinBoyEmulator
             _emulator.StartEmulation();
         }
 
-        private void Draw(object sender, EventArgs e)
+        private void Draw(Screen screen, PaintEventArgs e)
         {
-            var screen = sender as Screen;
-
             if (screen == null)
-                throw new InvalidCastException("Unable to cast object sender to Screen");
+            {
+                _logWriter.Info("Cannot draw screen. Argument screen is null.");
+                return;
+            }
 
+
+            //
+            // TODO: 
+            // Draw Screen screen into form.
+            // This might be good choise for that...:
+            // https://stackoverflow.com/questions/761003/draw-a-single-pixel-on-windows-forms
+            //
 
         }
 
         private void MainForm_Paint(object sender, PaintEventArgs e)
         {
-            Draw(sender, e);
+            //_emulator.Graphics = e.Graphics;
+
+            Draw(null, e);
         }
     }
 }
