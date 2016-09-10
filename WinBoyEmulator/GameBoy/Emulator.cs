@@ -31,6 +31,8 @@ using Timer = System.Timers.Timer;
 using MMU = WinBoyEmulator.GameBoy.Memory.Memory;
 using Screen = WinBoyEmulator.GameBoy.GPU.Screen;
 
+using static WinBoyEmulator.GameBoy.WinBoyEvents;
+
 namespace WinBoyEmulator.GameBoy
 {
     /// <summary>An interface between a From and Game Boy Emulator.</summary>
@@ -41,6 +43,12 @@ namespace WinBoyEmulator.GameBoy
         private Screen _screen;
         private byte[] _game;
         private string _gamePath;
+
+        /// <summary>Event handler for drawing the Screen to a form.</summary>
+        public DrawEventHandler DrawEventHandler { get; set; }
+
+        /// <summary>Grahics that is used to draw Sceen.</summary>
+        public Graphics Graphics { get; set; }
 
         public string GamePath
         {
@@ -72,7 +80,10 @@ namespace WinBoyEmulator.GameBoy
 
         private void _render()
         {
+            var clipRect = new Rectangle();
+            var e = new PaintEventArgs(Graphics, clipRect);
 
+            DrawEventHandler(_toolbox.RandomizeScreen(), e);
         }
 
         private void _gameCycle(object sender, ElapsedEventArgs e)

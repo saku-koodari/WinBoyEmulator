@@ -55,7 +55,7 @@ namespace WinBoyEmulator.GameBoy
         {
             for(var i = 0; i < _screen.Data.GetLength(0); i++)
             {
-                for(var j = 0; j < _screen.Data.GetLength(1); i++)
+                for(var j = 0; j < _screen.Data.GetLength(1); j++)
                 {
                     var max = Configuration.Colors.Palette.Length - 1;
                     var value = _random.Next(max);

@@ -14,16 +14,25 @@
 //     along with WinBoyEmulator.  If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using static WinBoyEmulator.GameBoy.WinBoyEvents;
 
 namespace WinBoyEmulator.GameBoy
 {
     /// <summary>Interface IEmulator. class Emulator impments this.</summary>
     public interface IEmulator
     {
+        /// <summary>Event handler for drawing the Screen to a form.</summary>
+        DrawEventHandler DrawEventHandler { get; set; }
+
+        /// <summary>Grahics that is used to draw Sceen.</summary>
+        Graphics Graphics { get; set; }
+
         /// <summary>Full path of a game.</summary>
         string GamePath { get; set; }
 
