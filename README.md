@@ -27,7 +27,7 @@ Release Notes (tags):
  * v0.0.1 - First version with (one) working instruction.
 
 My Plan:
- * v0.1 - First version that will be able to show data from Emulator (Screen) 
+ * v0.1 - First version that will be able to show data from Emulator (In Progress)
  * v0.2 - Instrution set fully supported
  * v0.3 - Memory and GPU working
  * v0.5 - 'alpha release' - working emulator without sound.
