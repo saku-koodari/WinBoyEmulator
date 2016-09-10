@@ -33,6 +33,8 @@ namespace WinBoyEmulator
 {
     public partial class MainForm : Form
     {
+        private static readonly object _syncRoot = new object();
+
         private const string _sourceCodeUrl = "https://github.com/saku-kaarakainen/WinBoyEmulator/";
         private Emulator _emulator;
         private LogWriter _logWriter;
@@ -82,7 +84,6 @@ namespace WinBoyEmulator
                 return;
             }
 
-
             //
             // TODO: 
             // Draw Screen screen into form.
@@ -90,6 +91,42 @@ namespace WinBoyEmulator
             // https://stackoverflow.com/questions/761003/draw-a-single-pixel-on-windows-forms
             //
 
+            // Note: lock might be heavy
+            // This is because this method is used by multiple thread
+            // Maybe some sort of update would be enough...
+            lock (_syncRoot) 
+            {
+                var rect = new Rectangle(0, 0, screen.Width, screen.Height);
+                Pen[] pens = new Pen[]
+                {
+                    Pens.White,
+                    Pens.Silver,
+                    Pens.Gray,
+                    Pens.Black
+                };
+
+
+                var kp = e.Graphics;
+                kp.DrawRectangle(pens, rect);
+                
+                for(var i = 0; i < screen.Data.Length; i++)
+                {
+                    var penIndex = screen.Data[i];
+
+                    kp.DrawRectangle(pens[penIndex], new Rectangle());
+
+                    switch(screen.Data[i])
+                    {
+                        case 0:
+
+                        case 1:
+                        case 2:
+                        case 3:
+                        default:
+                            throw new Exception("ok");
+                    }
+                }
+            }
         }
 
         private void MainForm_Paint(object sender, PaintEventArgs e)

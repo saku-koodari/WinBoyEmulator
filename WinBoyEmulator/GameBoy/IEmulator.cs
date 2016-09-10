@@ -18,16 +18,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static WinBoyEmulator.GameBoy.WinBoyEvents;
 
 namespace WinBoyEmulator.GameBoy
 {
     /// <summary>Interface IEmulator. class Emulator impments this.</summary>
     public interface IEmulator
     {
-        /// <summary>Event for drawing screen.</summary>
-        event DrawEventHandler DrawEventHandler;
-
         /// <summary>Full path of a game.</summary>
         string GamePath { get; set; }
 
