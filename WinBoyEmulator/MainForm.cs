@@ -47,8 +47,6 @@ namespace WinBoyEmulator
             // Check Issues #30 and #31
             // Check #31
             _emulator = new Emulator { GamePath = "C:\\temp\\game.gb" };
-            _emulator.Graphics = CreateGraphics();
-            _emulator.DrawEventHandler += Draw;
             _emulator.StartEmulation();
         }
 
@@ -74,66 +72,6 @@ namespace WinBoyEmulator
         {
             _emulator.GamePath = _openFileDialogMain.FileName;
             _emulator.StartEmulation();
-        }
-
-        private void Draw(Screen screen, PaintEventArgs e)
-        {
-            if (screen == null)
-            {
-                _logWriter.Info("Cannot draw screen. Argument screen is null.");
-                return;
-            }
-
-            //
-            // TODO: 
-            // Draw Screen screen into form.
-            // This might be good choise for that...:
-            // https://stackoverflow.com/questions/761003/draw-a-single-pixel-on-windows-forms
-            //
-
-            // Note: lock might be heavy
-            // This is because this method is used by multiple thread
-            // Maybe some sort of update would be enough...
-            lock (_syncRoot) 
-            {
-                var rect = new Rectangle(0, 0, screen.Width, screen.Height);
-                Pen[] pens = new Pen[]
-                {
-                    Pens.White,
-                    Pens.Silver,
-                    Pens.Gray,
-                    Pens.Black
-                };
-
-
-                var kp = e.Graphics;
-                kp.DrawRectangle(pens, rect);
-                
-                for(var i = 0; i < screen.Data.Length; i++)
-                {
-                    var penIndex = screen.Data[i];
-
-                    kp.DrawRectangle(pens[penIndex], new Rectangle());
-
-                    switch(screen.Data[i])
-                    {
-                        case 0:
-
-                        case 1:
-                        case 2:
-                        case 3:
-                        default:
-                            throw new Exception("ok");
-                    }
-                }
-            }
-        }
-
-        private void MainForm_Paint(object sender, PaintEventArgs e)
-        {
-            //_emulator.Graphics = e.Graphics;
-
-            Draw(null, e);
         }
     }
 }

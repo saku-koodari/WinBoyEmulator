@@ -137,7 +137,6 @@ namespace WinBoyEmulator
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this._menuStripMain.ResumeLayout(false);
             this._menuStripMain.PerformLayout();
             this.ResumeLayout(false);
