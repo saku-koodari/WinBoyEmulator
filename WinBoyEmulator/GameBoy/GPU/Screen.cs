@@ -22,9 +22,33 @@ namespace WinBoyEmulator.GameBoy.GPU
 {
     public class Screen
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int[] Data { get; set; }
+        private int[,] _data;
+
+        /// <summary>Width of the Screen</summary>
+        public static int Width => Configuration.Screen.Width;
+        /// <summary>Height of the Screen</summary>
+        public static int Height => Configuration.Screen.Height;
+        /// <summary>Amount of colors in palette</summary>
+        public static int ColorsInPalette => Configuration.Colors.Palette.Length;
+
+        /// <summary>The actual data of the screen.</summary>
+        public int[,] Data
+        {
+            get
+            {
+                return _data;
+            }
+            set
+            {
+                foreach(var i in value)
+                {
+                    if (i > ColorsInPalette)
+                        throw new ArgumentOutOfRangeException(nameof(value), $"value must be between 0 and {ColorsInPalette}");
+                }
+
+                _data = value;
+            }
+        }
 
         /// <summary>
         /// Constructor without parameters. Initializes screen default values, which are: <para/>
@@ -34,22 +58,7 @@ namespace WinBoyEmulator.GameBoy.GPU
         /// </summary>
         public Screen()
         {
-            Width = Configuration.Screen.Width;
-            Height = Configuration.Screen.Height;
-            Data = new int[Width * Height * Configuration.Colors.Palette.Length];
-        }
-
-        /// <summary>
-        /// Constructor, with three parameters.
-        /// </summary>
-        /// <param name="width">Amount of pixels in a row in the screen.</param>
-        /// <param name="height">Amount of pixels in a column in the screen.</param>
-        /// <param name="colorsInPalette">amount of colors in palette</param>
-        public Screen(int width, int height, int colorsInPalette)
-        {
-            Width = width;
-            Height = Height;
-            Data = new int[width * height * colorsInPalette];
+            Data = new int[Width, Height];
         }
     }
 }

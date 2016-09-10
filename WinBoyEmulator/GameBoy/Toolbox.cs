@@ -53,11 +53,14 @@ namespace WinBoyEmulator.GameBoy
         /// <summary>Fills Screen with random color values.</summary>
         public Screen RandomizeScreen()
         {
-            for(var i = 0; i < _screen.Data.Length; i++)
+            for(var i = 0; i < _screen.Data.GetLength(0); i++)
             {
-                var max = Configuration.Colors.Palette.Length - 1;
-                var value = _random.Next(max);
-                _screen.Data[i] = value;
+                for(var j = 0; j < _screen.Data.GetLength(1); i++)
+                {
+                    var max = Configuration.Colors.Palette.Length - 1;
+                    var value = _random.Next(max);
+                    _screen.Data[i,j] = value;
+                }
             }
 
             return _screen;
