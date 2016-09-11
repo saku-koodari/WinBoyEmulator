@@ -63,7 +63,7 @@ namespace WinBoyEmulator
             this._menuStripMain.Location = new System.Drawing.Point(0, 0);
             this._menuStripMain.Name = "_menuStripMain";
             this._menuStripMain.Padding = new System.Windows.Forms.Padding(16, 5, 0, 5);
-            this._menuStripMain.Size = new System.Drawing.Size(779, 55);
+            this._menuStripMain.Size = new System.Drawing.Size(779, 29);
             this._menuStripMain.TabIndex = 0;
             this._menuStripMain.Text = "menuStrip1";
             // 
@@ -74,27 +74,27 @@ namespace WinBoyEmulator
             this._closeEmulatorToolStripMenuItem,
             this._toolStripMenuItemClose});
             this._toolStripMenuItemFile.Name = "_toolStripMenuItemFile";
-            this._toolStripMenuItemFile.Size = new System.Drawing.Size(75, 45);
+            this._toolStripMenuItemFile.Size = new System.Drawing.Size(37, 19);
             this._toolStripMenuItemFile.Text = "File";
             // 
             // _toolStripMenuItemOpen
             // 
             this._toolStripMenuItemOpen.Name = "_toolStripMenuItemOpen";
-            this._toolStripMenuItemOpen.Size = new System.Drawing.Size(464, 46);
+            this._toolStripMenuItemOpen.Size = new System.Drawing.Size(207, 22);
             this._toolStripMenuItemOpen.Text = "Open (Ctrl + O)";
             this._toolStripMenuItemOpen.Click += new System.EventHandler(this._toolStripMenuItemOpen_Click);
             // 
             // _closeEmulatorToolStripMenuItem
             // 
             this._closeEmulatorToolStripMenuItem.Name = "_closeEmulatorToolStripMenuItem";
-            this._closeEmulatorToolStripMenuItem.Size = new System.Drawing.Size(464, 46);
+            this._closeEmulatorToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this._closeEmulatorToolStripMenuItem.Text = "Close Emulator (Ctrl + Q)";
             this._closeEmulatorToolStripMenuItem.Click += new System.EventHandler(this._closeEmulatorToolStripMenuItem_Click);
             // 
             // _toolStripMenuItemClose
             // 
             this._toolStripMenuItemClose.Name = "_toolStripMenuItemClose";
-            this._toolStripMenuItemClose.Size = new System.Drawing.Size(464, 46);
+            this._toolStripMenuItemClose.Size = new System.Drawing.Size(207, 22);
             this._toolStripMenuItemClose.Text = "Close (Alt + F4)";
             this._toolStripMenuItemClose.Click += new System.EventHandler(this._toolStripMenuItemClose_Click);
             // 
@@ -104,20 +104,20 @@ namespace WinBoyEmulator
             this._toolStripMenuItemAbout,
             this._toolStripMenuItemSourceCode});
             this._toolStripMenuItemHelp.Name = "_toolStripMenuItemHelp";
-            this._toolStripMenuItemHelp.Size = new System.Drawing.Size(92, 45);
+            this._toolStripMenuItemHelp.Size = new System.Drawing.Size(44, 19);
             this._toolStripMenuItemHelp.Text = "Help";
             // 
             // _toolStripMenuItemAbout
             // 
             this._toolStripMenuItemAbout.Name = "_toolStripMenuItemAbout";
-            this._toolStripMenuItemAbout.Size = new System.Drawing.Size(422, 46);
+            this._toolStripMenuItemAbout.Size = new System.Drawing.Size(190, 22);
             this._toolStripMenuItemAbout.Text = "About (F1)";
             this._toolStripMenuItemAbout.Click += new System.EventHandler(this._toolStripMenuItemAbout_Click);
             // 
             // _toolStripMenuItemSourceCode
             // 
             this._toolStripMenuItemSourceCode.Name = "_toolStripMenuItemSourceCode";
-            this._toolStripMenuItemSourceCode.Size = new System.Drawing.Size(422, 46);
+            this._toolStripMenuItemSourceCode.Size = new System.Drawing.Size(190, 22);
             this._toolStripMenuItemSourceCode.Text = "Source-code (GitHub)";
             this._toolStripMenuItemSourceCode.Click += new System.EventHandler(this._toolStripMenuItemSourceCode_Click);
             // 
@@ -136,6 +136,7 @@ namespace WinBoyEmulator
             this.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this._menuStripMain.ResumeLayout(false);
             this._menuStripMain.PerformLayout();

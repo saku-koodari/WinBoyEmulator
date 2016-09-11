@@ -24,10 +24,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using log4Any;
-
-using WinBoyEmulator.GameBoy;
-
-using Screen = WinBoyEmulator.GameBoy.GPU.Screen;
+using WinBoyEmulator.SharpDX;
 
 namespace WinBoyEmulator
 {
@@ -36,21 +33,21 @@ namespace WinBoyEmulator
         private static readonly object _syncRoot = new object();
 
         private const string _sourceCodeUrl = "https://github.com/saku-kaarakainen/WinBoyEmulator/";
-        private Emulator _emulator;
         private LogWriter _logWriter;
+        private Game _game;
         public MainForm() { InitializeComponent(); }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             _logWriter = new LogWriter(GetType());
-
-            // Check Issues #30 and #31
-            // Check #31
-            _emulator = new Emulator { GamePath = "C:\\temp\\game.gb" };
-            _emulator.StartEmulation();
+            _game = new Game{ GamePath = "C\\temp\\game.gb" };
+            _game.Run(); // Check Issues #30 and #31
         }
 
         #region _Click
+        private void _toolStripMenuItemOpen_Click(object sender, EventArgs e) => _openFileDialogMain.ShowDialog();
+        private void _toolStripMenuItemSourceCode_Click(object sender, EventArgs e) => Process.Start(new ProcessStartInfo(_sourceCodeUrl));
+
         private void _toolStripMenuItemAbout_Click(object sender, EventArgs e)
         {
             throw new NotImplementedException("Issue #24");
@@ -58,20 +55,25 @@ namespace WinBoyEmulator
 
         private void _closeEmulatorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _emulator.StopEmulation();
+            _game.Dispose();
         }
 
-        private void _toolStripMenuItemOpen_Click(object sender, EventArgs e) => _openFileDialogMain.ShowDialog();
-        
-        private void _toolStripMenuItemClose_Click(object sender, EventArgs e) => Close();
-
-        private void _toolStripMenuItemSourceCode_Click(object sender, EventArgs e) => Process.Start(new ProcessStartInfo(_sourceCodeUrl));
+        private void _toolStripMenuItemClose_Click(object sender, EventArgs e)
+        {
+            _game.Dispose();
+            Close();
+        }
         #endregion
 
         private void _openFileDialogMain_FileOk(object sender, CancelEventArgs e)
         {
-            _emulator.GamePath = _openFileDialogMain.FileName;
-            _emulator.StartEmulation();
+            _game.GamePath = _openFileDialogMain.FileName;
+            _game.Run();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _game.Dispose();
         }
     }
 }
