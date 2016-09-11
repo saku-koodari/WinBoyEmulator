@@ -103,20 +103,9 @@ namespace WinBoyEmulator.SharpDX4GB
 
         private void _draw()
         {
-            // In tutorial (http://www.johanfalk.eu/blog/sharpdx-beginners-tutorial-part-3-initializing-directx),
-            // there is:
-            //
-            //      d3d11DeviceContext.OutputMerger.SetRenderTargets(renderTargetView);
-            //      d3dDeviceContext.ClearRenderTargetView(renderTargetView, new SharpDX.Color(32, 103, 178));
-            //
-            // Where you can see, that there is used different objects.
-            // I don't know whether is that typo or supposed to be so.
-            // I assume it's typo, so I just use d3dDeviceContext (_d3dDeviceContext).
             _d3dDeviceContext.OutputMerger.SetRenderTargets(_renderTargetView);
             _d3dDeviceContext.ClearRenderTargetView(_renderTargetView, new SharpDX.Color(255, 255, 255));
             _swapChain.Present(1, PresentFlags.None);
-
-
         }
 
         private void _renderCallBack() => _draw();

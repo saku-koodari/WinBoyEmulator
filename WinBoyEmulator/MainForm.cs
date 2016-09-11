@@ -40,7 +40,7 @@ namespace WinBoyEmulator
         private void MainForm_Load(object sender, EventArgs e)
         {
             _logWriter = new LogWriter(GetType());
-            _game = new Game{ GamePath = "C\\temp\\game.gb" };
+            _game = new Game{ GamePath = "C:\\temp\\game.gb" };
             _game.Run(); // Check Issues #30 and #31
         }
 
