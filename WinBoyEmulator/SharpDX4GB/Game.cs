@@ -87,7 +87,7 @@ namespace WinBoyEmulator.SharpDX4GB
             _renderForm.AllowUserResizing = false;
 
             _initializeDeviceResources();
-            //_initializeShaders();
+            _initializeShaders();
             _initializeTriangle();
 
             _inputElements = new D3D11.InputElement[]
