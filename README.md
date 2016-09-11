@@ -1,10 +1,6 @@
 # WinBoyEmulator
-This is my attemption to create Game Boy emulator. After this is somewhat complete, I'll start to port it to Android. 
-I'll use C# because it is easy to use (for me) and quite simple language (compared to C/C++ for example).
-
-I do this project, because I think this is fun! :)
-
-At the moment my main focus is study Game Boy and it's emulation.
+This is my attemption to create Game Boy emulator. I use C# because I'm most comfortable with C#.
+I do this project for fun! :)
 
 general status list:
 * Done
@@ -15,6 +11,7 @@ general status list:
    *  Instruction set for CPU (specification, issue #2)
    *  CPU (General issue #32)
    *  Screen: Interface between form and Emulator is (should be) complete (Issue #43).
+   *  Graphics (Issues #43 and #47)
 * Proof of Concept
    * Memory
    * GPU
@@ -27,7 +24,8 @@ Release Notes (tags):
  * v0.0.1 - First version with (one) working instruction.
 
 My Plan:
- * v0.1 - First version that will be able to show data from Emulator (In Progress)
+ * v0.0.2 - First version that will be able to draw data from screen (In progress).
+ * v0.1 - First version that will be able to show data from Emulator
  * v0.2 - Instrution set fully supported
  * v0.3 - Memory and GPU working
  * v0.5 - 'alpha release' - working emulator without sound.
