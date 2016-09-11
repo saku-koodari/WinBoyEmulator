@@ -14,19 +14,23 @@
 //     along with WinBoyEmulator.  If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using log4Any;
+// Third party
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.DXGI;
 using SharpDX.Windows;
 
+// Self-written
+using log4Any;
 using WinBoyEmulator.GameBoy;
 
+// Aliasses
 using D3D11 = SharpDX.Direct3D11;
 
 namespace WinBoyEmulator.SharpDX4GB
@@ -66,6 +70,7 @@ namespace WinBoyEmulator.SharpDX4GB
 
         public Game(string text)
         {
+            _logWriter = new LogWriter( GetType() );
             _emulator = new Emulator();
 
             _renderForm = new RenderForm(text);
@@ -81,12 +86,12 @@ namespace WinBoyEmulator.SharpDX4GB
             _backBufferDescription = new ModeDescription(Width, Height, new Rational(FPS, 1), Format.R8G8B8A8_UNorm);
             _swapChainDescription = new SwapChainDescription
             {
-                ModeDescription = _backBufferDescription,
-                SampleDescription = new SampleDescription(1, 0),
-                Usage = Usage.RenderTargetOutput,
-                BufferCount = 1,
-                OutputHandle = _renderForm.Handle,
-                IsWindowed = true
+                ModeDescription     = _backBufferDescription,
+                SampleDescription   = new SampleDescription(1, 0),
+                Usage               = Usage.RenderTargetOutput,
+                BufferCount         = 1,
+                OutputHandle        = _renderForm.Handle,
+                IsWindowed          = true
             };
 
             var hw = DriverType.Hardware;
@@ -125,15 +130,30 @@ namespace WinBoyEmulator.SharpDX4GB
         /// Check if object is disposed. If it's not, then dispose the object. Else do nothing.
         /// </summary>
         /// <param name="disposableObject">object that inherit's SharpDX.DisposeBase</param>
-        private void _disposeIfNotDisposed(DisposeBase disposableObject)
+        private void _disposeIfNotDisposed(DisposeBase disposableObject, string nameofObject = null)
         {
-            if( !disposableObject.IsDisposed )
+            if (string.IsNullOrEmpty(nameofObject))
+                nameofObject = nameof(disposableObject);
+
+            if ( !disposableObject.IsDisposed )
             {
                 disposableObject.Dispose();
+                // Would it better to use trace? This might put too much data to output.
+                _logWriter.Debug($"Object: {nameofObject} disposed.");
             }
-            else
+            else 
             {
+                var stackTrace = new StackTrace();
+                var stackFrame = stackTrace.GetFrame(1);
+                var method = stackFrame.GetMethod();
+                var message = $"Object: {nameofObject} is already disposed.\nSmall stack trace:\n";
 
+                for(var i = 0; i < 3; i++)
+                {
+                    message += $"i:{i}\tmethod{stackTrace.GetFrame(i).GetMethod()}\n";
+                }
+
+                _logWriter.Info(message);
             }
         }
 
@@ -142,10 +162,10 @@ namespace WinBoyEmulator.SharpDX4GB
         {
             _emulator.StopEmulation();
 
-            _disposeIfNotDisposed(_renderTargetView);
-            _disposeIfNotDisposed(_swapChain);
-            _disposeIfNotDisposed(_d3dDevice);
-            _disposeIfNotDisposed(_d3dDeviceContext);
+            _disposeIfNotDisposed(_renderTargetView, nameof(_renderTargetView));
+            _disposeIfNotDisposed(_swapChain, nameof(_renderTargetView));
+            _disposeIfNotDisposed(_d3dDevice, nameof(_d3dDevice));
+            _disposeIfNotDisposed(_d3dDeviceContext, nameof(_d3dDeviceContext));
 
             if( !_renderForm.IsDisposed )
                 _renderForm.Dispose();
