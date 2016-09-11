@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using log4Any;
-using WinBoyEmulator.SharpDX;
+using WinBoyEmulator.SharpDX4GB;
 
 namespace WinBoyEmulator
 {
