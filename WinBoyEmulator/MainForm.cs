@@ -23,7 +23,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using log4Any;
+using Log4Any;
 
 using WinBoyEmulator.GameBoy;
 

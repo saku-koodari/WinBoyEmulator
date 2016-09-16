@@ -18,7 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using log4Any;
+using Log4Any;
 
 namespace WinBoyEmulator.GameBoy.GPU
 {
