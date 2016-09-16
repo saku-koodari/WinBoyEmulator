@@ -21,7 +21,6 @@ using System.Text;
 using System.Timers;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 using WinBoyEmulator.GameBoy.CPU;
 using WinBoyEmulator.GameBoy.GPU;
