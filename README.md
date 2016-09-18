@@ -4,9 +4,17 @@ I'll use C# because it is easy to use (for me) and quite simple language (compar
 
 I do this project, because I think this is fun! :)
 
-At the moment my main focus is study Game Boy and it's emulation.
+## Requirements
+ * Windows OS (I use Windows 10 Pro)
+ * .NET 4.5.2 & Windows SDK & Visual Studio 2015
+ * Dependencies
+ ** [Log4Any](https://github.com/saku-kaarakainen/Log4Any)
+ ** SharpDX
+ ** SharpDX.D3DCompiler
+ ** SharpDX.Direct2D1
+ ** SharpDX.DXGI
 
-general status list:
+## general status list:
 * Done
     * - 
 * Testing
