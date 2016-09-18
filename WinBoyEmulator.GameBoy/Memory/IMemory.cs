@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.Memory
 {
-    interface IMemory
+    internal interface IMemory
     {
         void Reset();
         void Load(byte[] game);

@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.GPU
 {
-    public class Screen
+    internal class Screen
     {
         public int Width { get; set; }
         public int Height { get; set; }

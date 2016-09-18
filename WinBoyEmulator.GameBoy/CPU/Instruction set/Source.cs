@@ -10,7 +10,7 @@ namespace WinBoyEmulator.GameBoy.CPU.Instruction_set
     /// This class is used to determinite source of opcode <para/>
     /// Use this with Instruction.Source
     /// </summary>
-    public static class Source
+    internal static class Source
     {
         /// <summary>8-bit data.</summary>
         public const string d8 = "d8";

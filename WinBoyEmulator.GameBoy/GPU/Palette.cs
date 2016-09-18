@@ -26,7 +26,7 @@ namespace WinBoyEmulator.GameBoy.GPU
     /// Reason is, that we are saving handling here RGB values.
     /// Size of RGB value is one byte.
     /// </summary>
-    public class Palette
+    internal class Palette
     {
         public byte[] Background { get; set; }
         public byte[] Object1 { get; set; }

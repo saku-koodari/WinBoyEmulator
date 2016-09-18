@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.CPU
 {
-    public struct Flags
+    internal struct Flags
     {
         byte? Z { get; set; }
         byte? H { get; set; }

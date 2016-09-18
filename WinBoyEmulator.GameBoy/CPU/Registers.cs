@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 namespace WinBoyEmulator.GameBoy.CPU.Regiser // Register, Why not Register?
 {
 
-    public class Register : IRegisters
+    internal class Register : IRegisters
     {
         /// <summary>8-bit register A. Value between 0x8000 - 0x0100.</summary>
         public byte A { get; set; }

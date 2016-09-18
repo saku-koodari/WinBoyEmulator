@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.Configuration
 {
-    public static class Clock
+    internal static class Clock
     {
         public const int Timer_Interval = 1;
     }

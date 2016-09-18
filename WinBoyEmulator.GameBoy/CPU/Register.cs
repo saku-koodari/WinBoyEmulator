@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.CPU
 {
-    public static class Register
+    internal static class Register
     {
         // 8-bit registers
         public const string A = "A";

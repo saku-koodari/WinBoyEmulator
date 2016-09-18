@@ -30,7 +30,7 @@ namespace WinBoyEmulator.GameBoy.CPU
     /// Inherit Flags (Z,N,H,C, all typeof byte). <para />
     /// implement interface IRegisters.
     /// </summary>
-    public class LR35902 : Flag, IRegisters
+    internal class LR35902 : Flag, IRegisters
     {
         private static readonly object _syncRoot = new object();
         private static volatile LR35902 _instance;

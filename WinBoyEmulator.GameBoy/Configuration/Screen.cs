@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.Configuration
 {
-    public static class Screen
+    internal static class Screen
     {
         /// <summary>Screen Width: 160 = 0xA0.</summary>
         public const int Width = 0xA0;

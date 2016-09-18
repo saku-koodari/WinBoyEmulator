@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.GPU
 {
-    public class ObjectData
+    internal class ObjectData
     {
         public int X { get; set; }
         public int Y { get; set; }

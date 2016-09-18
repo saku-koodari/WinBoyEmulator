@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.Memory
 {
-    public class Rom
+    internal class Rom
     {
         // TODO: consider combining this class with Bios.cs
 

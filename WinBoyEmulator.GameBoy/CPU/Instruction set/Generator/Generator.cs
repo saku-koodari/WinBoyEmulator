@@ -23,7 +23,7 @@ namespace WinBoyEmulator.GameBoy.CPU.Instruction_set.Generator
     /// <summary>
     /// Generator
     /// </summary>
-    public static partial class Generator
+    internal static partial class Generator
     {
         // Main partial of this class
         private static Instruction DEFAULT = new Instruction { };

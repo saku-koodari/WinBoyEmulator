@@ -26,7 +26,7 @@ namespace WinBoyEmulator.GameBoy.GPU
     /// This class based heavily on:
     /// https://github.com/Two9A/jsGB/blob/master/js/gpu.js
     /// </summary>
-    public class GPU
+    internal class GPU
     {
         private static readonly object _syncRoot = new object();
         private static volatile GPU _instance;

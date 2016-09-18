@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.CPU.Instruction_set.Generator
 {
-    public static partial class Generator
+    internal static partial class Generator
     {
         public static void _loadStoreAndMove()
         {

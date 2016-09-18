@@ -22,7 +22,7 @@ using WinBoyEmulator.GameBoy.GPU;
 
 namespace WinBoyEmulator.GameBoy
 {
-    public class Toolbox
+    internal class Toolbox
     {
         private Screen _screen;
         private Random _random;

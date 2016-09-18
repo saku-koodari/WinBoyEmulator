@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 namespace WinBoyEmulator.GameBoy.CPU
 {
     /// <summary>Flags for F register.</summary>
-    public class Flag
+    internal class Flag
     {
         /// <summary>
         /// Zero Flag: This bit is set when,

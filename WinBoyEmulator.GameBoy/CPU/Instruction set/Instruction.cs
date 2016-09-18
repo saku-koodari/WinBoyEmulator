@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.CPU.Instruction_set
 {
-    public class Instruction : IInstruction
+    internal class Instruction : IInstruction
     {    
         /// <summary>Opcode as byte value.</summary>
         public byte Value { get; set; }

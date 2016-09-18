@@ -10,7 +10,7 @@ namespace WinBoyEmulator.GameBoy.CPU.Instruction_set.Generator
     /// Miscellaneous / 
     /// Control instructions
     /// </summary>
-    public static partial class Generator
+    internal static partial class Generator
     {
         private static void _miscControlInstructions()
         {

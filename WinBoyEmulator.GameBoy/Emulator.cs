@@ -41,6 +41,12 @@ namespace WinBoyEmulator.GameBoy
         private byte[] _game;
         private string _gamePath;
 
+        /// <summary>Width of the game area.</summary>
+        public static int Width => Configuration.Screen.Width;
+
+        /// <summary>Height of the game area.</summary>
+        public static int Height => Configuration.Screen.Height;
+
         public string GamePath
         {
             get

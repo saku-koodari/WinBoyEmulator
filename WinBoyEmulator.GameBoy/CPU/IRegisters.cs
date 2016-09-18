@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.CPU
 {
-    interface IRegisters
+    internal interface IRegisters
     {
         // 8-bit registers
         byte A { get; set; }

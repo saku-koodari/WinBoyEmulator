@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.CPU
 {
-    public static class Operand
+    internal static class Operand
     {
         #region Misc/control instructions (red)
         /// <summary>Misc/control instructions (red)</summary>

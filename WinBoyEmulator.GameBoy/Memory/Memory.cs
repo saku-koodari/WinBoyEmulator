@@ -23,7 +23,7 @@ using Log4Any;
 
 namespace WinBoyEmulator.GameBoy.Memory
 {
-    public class Memory : Bios, IMemory
+    internal class Memory : Bios, IMemory
     {
         private static readonly object _syncRoot = new object();
         private static volatile Memory _instance;

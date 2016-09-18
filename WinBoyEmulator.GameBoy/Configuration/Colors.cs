@@ -22,7 +22,7 @@ using static WinBoyEmulator.GameBoy.Configuration.Color;
 
 namespace WinBoyEmulator.GameBoy.Configuration
 {
-    public static class Colors
+    internal static class Colors
     {
         public static byte[] Palette = new byte[4] { White, Silver, Grey, Black };
     }
