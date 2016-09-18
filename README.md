@@ -20,16 +20,16 @@ I do this project, because I think this is fun! :)
 * Testing
     * Testing will be started at the latest 1.0.0-rc1
 * In Progress
+   *  Video rendering
+* On hold
    *  Instruction set for CPU (specification, issue #2)
    *  CPU (General issue #32)
-   *  Screen: Interface between form and Emulator is (should be) complete (Issue #43).
 * Proof of Concept
    * Memory
    * GPU
 * TODO
-    * Test classes and/or project   (Issue #8)
+    * Test classes and/or project (Issue #8)
     * Sound (Issue #20)
-    * GUI (Issue #18)
 
 Release Notes (tags):
  * v0.0.1 - First version with (one) working instruction.
