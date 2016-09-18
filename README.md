@@ -8,11 +8,11 @@ I do this project, because I think this is fun! :)
  * Windows OS (I use Windows 10 Pro)
  * .NET 4.5.2 & Windows SDK & Visual Studio 2015
  * Dependencies
- ** [Log4Any](https://github.com/saku-kaarakainen/Log4Any)
- ** SharpDX
- ** SharpDX.D3DCompiler
- ** SharpDX.Direct2D1
- ** SharpDX.DXGI
+     * [Log4Any](https://github.com/saku-kaarakainen/Log4Any)
+     * SharpDX
+     * SharpDX.D3DCompiler
+     * SharpDX.Direct2D1
+     * SharpDX.DXGI
 
 ## general status list:
 * Done
