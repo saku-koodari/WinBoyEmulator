@@ -1,8 +1,9 @@
 # WinBoyEmulator
 This is my attemption to create Game Boy emulator. After this is somewhat complete, I'll start to port it to Android. 
-I'll use C# because it is easy to use (for me) and quite simple language (compared to C/C++ for example).
+I'll use C# because it is easy to use (for me).
 
-I do this project, because I think this is fun! :)
+I do this project, for fun! :)
+...Whenever I have enough time for this.
 
 ## Requirements
  * Windows OS (I use Windows 10 Pro)
