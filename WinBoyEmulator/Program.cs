@@ -28,8 +28,14 @@ namespace WinBoyEmulator
         [STAThread]
         static void Main()
         {
+            var test = new Rendering.Renderer();
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            test.Run(new MainForm());
+            Application.Exit();
             Application.Run(new MainForm());
         }
     }

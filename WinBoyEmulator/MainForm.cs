@@ -24,10 +24,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Log4Any;
-
-using WinBoyEmulator.GameBoy;
-
-using Screen = WinBoyEmulator.GameBoy.GPU.Screen;
+// using WinBoyEmulator.GameBoy;
 
 namespace WinBoyEmulator
 {
@@ -36,7 +33,7 @@ namespace WinBoyEmulator
         private static readonly object _syncRoot = new object();
 
         private const string _sourceCodeUrl = "https://github.com/saku-kaarakainen/WinBoyEmulator/";
-        private Emulator _emulator;
+        // private Emulator _emulator;
         private LogWriter _logWriter;
         public MainForm() { InitializeComponent(); }
 
@@ -46,8 +43,8 @@ namespace WinBoyEmulator
 
             // Check Issues #30 and #31
             // Check #31
-            _emulator = new Emulator { GamePath = "C:\\temp\\game.gb" };
-            _emulator.StartEmulation();
+            //_emulator = new Emulator { GamePath = "C:\\temp\\game.gb" };
+            //_emulator.StartEmulation();
         }
 
         #region _Click
@@ -58,7 +55,7 @@ namespace WinBoyEmulator
 
         private void _closeEmulatorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _emulator.StopEmulation();
+            //_emulator.StopEmulation();
         }
 
         private void _toolStripMenuItemOpen_Click(object sender, EventArgs e) => _openFileDialogMain.ShowDialog();
@@ -70,8 +67,8 @@ namespace WinBoyEmulator
 
         private void _openFileDialogMain_FileOk(object sender, CancelEventArgs e)
         {
-            _emulator.GamePath = _openFileDialogMain.FileName;
-            _emulator.StartEmulation();
+            //_emulator.GamePath = _openFileDialogMain.FileName;
+            //_emulator.StartEmulation();
         }
     }
 }
