@@ -26,16 +26,14 @@ using WinBoyEmulator.GameBoy.CPU;
 using WinBoyEmulator.GameBoy.GPU;
 using WinBoyEmulator.GameBoy.Memory;
 
-using Timer = System.Timers.Timer;
 using MMU = WinBoyEmulator.GameBoy.Memory.Memory;
 using Screen = WinBoyEmulator.GameBoy.GPU.Screen;
 
 namespace WinBoyEmulator.GameBoy
 {
     /// <summary>An interface between a From and Game Boy Emulator.</summary>
-    public class Emulator : IEmulator
+    public class Emulator
     {
-        private Timer _timer;
         private Toolbox _toolbox;
         private Screen _screen;
         private byte[] _game;
@@ -59,6 +57,11 @@ namespace WinBoyEmulator.GameBoy
             }
         }
 
+        /// <summary>
+        /// Screen object.
+        /// </summary>
+        public Screen Screen => _screen = _toolbox.RandomizeScreen();
+
         public  Emulator()
         {
             _game = new byte[0x200];
@@ -75,12 +78,8 @@ namespace WinBoyEmulator.GameBoy
             }
         }
 
-        private void _render()
-        {
-
-        }
-
-        private void _gameCycle(object sender, ElapsedEventArgs e)
+        /// <summary>Emulate one Cycle</summary>
+        public void EmulateCycle()
         {
             // Emulate one cycle
             //LR35902.Instance.EmulateCycle();
@@ -88,36 +87,26 @@ namespace WinBoyEmulator.GameBoy
             // If the draw flag is set, update the screen
             // update sound (Issue #20)
             // Store key press state (Press and Release)
-
-            _screen = _toolbox.RandomizeScreen();
-
-            _render();
         }
 
-        /// <summary>Starts emulation with game inside.</summary>
-        public void StartEmulation()
+        /// <summary>Load game to the memory.</summary>
+        /// <param name="gamePath">
+        /// use this, if you don't want use GamePath property. 
+        /// (If used, it will override value of GamePath)
+        /// </param>
+        public void LoadGameToMemory(string gamePath = null)
         {
-            if (_timer != null)
-                throw new InvalidOperationException($"Trying to access an object:{nameof(_timer)} even though it has been initialized already.");
+            if ( !string.IsNullOrEmpty(gamePath) )
+                _gamePath = gamePath;
 
-            // Load game.
+            if (string.IsNullOrEmpty(_gamePath))
+                throw new InvalidOperationException($"Property '{nameof(GamePath)}' or argument {nameof(gamePath)} is either null or empty");
+            
+            // Load the game.
             _readGameFile(_gamePath);
+
+            // Load the game to the memory
             MMU.Instance.Load(_game);
-
-            _timer = new Timer
-            {
-                Enabled = true,
-                Interval = Configuration.Clock.Timer_Interval
-            };
-
-            // method tha Elapsed will get, is the main loop
-            _timer.Elapsed += _gameCycle;
         }     
-
-        public void StopEmulation()
-        {
-            _timer.Dispose();
-            throw new NotImplementedException("Issue #46");
-        }
     }
 }

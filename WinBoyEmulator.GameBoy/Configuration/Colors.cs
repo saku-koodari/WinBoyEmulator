@@ -14,16 +14,23 @@
 //     along with WinBoyEmulator.  If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using static WinBoyEmulator.GameBoy.Configuration.Color;
+//using static WinBoyEmulator.GameBoy.Configuration.Color;
 
 namespace WinBoyEmulator.GameBoy.Configuration
 {
     internal static class Colors
     {
-        public static byte[] Palette = new byte[4] { White, Silver, Grey, Black };
+        public static Color[] Palette = new Color[4]
+        {
+            Color.White,
+            Color.Silver,
+            Color.Gray,
+            Color.Black
+        };
     }
 }

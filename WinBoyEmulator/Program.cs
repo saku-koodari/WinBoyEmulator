@@ -18,25 +18,30 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using WinBoyEmulator.Rendering;
+
 namespace WinBoyEmulator
 {
     static class Program
     {
+        private static Renderer _renderer;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            var test = new Rendering.Renderer();
-
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            test.Run(new MainForm());
+            var targetForm = new MainForm();
+            _renderer = new Renderer();
+
+            // run the emulator with SharpDX
+            _renderer.Run(targetForm);
+
             Application.Exit();
-            Application.Run(new MainForm());
         }
     }
 }

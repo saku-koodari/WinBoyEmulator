@@ -25,10 +25,12 @@ using WinBoyEmulator.Rendering.Utils;
 
 namespace WinBoyEmulator.Rendering
 {
-
+    /// <summary>Class Renderer. SharpDX class for showing emulator on a form.</summary>
     public class Renderer : Direct2DApp
     {
         private Bitmap _bitmap;
+        private GameBoy.Emulator _gameBoy;
+
         /// <summary>Initializes Configuration values ASAP.</summary>
         static Renderer()
         {
@@ -40,25 +42,44 @@ namespace WinBoyEmulator.Rendering
             Configuration.Instance.FPS = 60;
             Configuration.Instance.Width = GameBoy.Emulator.Width;
             Configuration.Instance.Height = GameBoy.Emulator.Height;
+
         }
 
         public Renderer()
         {
+            _gameBoy = new GameBoy.Emulator();
         }
 
-        #region protected
         protected override void Initialize()
         {
             base.Initialize();
+
+            // Check issues #30 and #31
+            // Also WinBoyEmulator/MainForm.cs/MainForm_Load - method.
+            // There is comments about this.
+            _gameBoy.GamePath = "C:\\temp\\game.gb";
+            _gameBoy.LoadGameToMemory();
+
             _bitmap = Load(RenderTarget2D);
         }
 
         protected override void Draw(Stopwatch watch)
         {
+            // Draw's base method
             base.Draw(watch);
-            RenderTarget2D.DrawBitmap(_bitmap, 1.0f, BitmapInterpolationMode.Linear);
+
+            // emulate one cycle of gameboy
+            _gameBoy.EmulateCycle();
+
+            // convert GB's screen to System.Drawign bitmap
+            //var gamedata = _gameBoy.Screen.ToBitmap();
+
+            // Convert System.Drawing.Bitmap to SharpDX.Direct2D1.Bitmap
+            var bitmap = new Bitmap(IntPtr.Zero);
+
+            // Draw bitmap
+            RenderTarget2D.DrawBitmap(bitmap, 1.0f, BitmapInterpolationMode.Linear);
         }
-        #endregion
 
         /// <summary>Run on a new form.</summary>
         public new void Run() => base.Run();

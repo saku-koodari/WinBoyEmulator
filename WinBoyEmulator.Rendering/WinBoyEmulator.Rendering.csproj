@@ -80,6 +80,7 @@
     <Compile Include="App\Direct3DApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer.cs" />
+    <Compile Include="Utils\GameBoyExtensions.cs" />
     <Compile Include="Utils\Stopwatch.cs" />
   </ItemGroup>
   <ItemGroup>

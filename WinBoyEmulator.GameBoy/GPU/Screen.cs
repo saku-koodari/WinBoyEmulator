@@ -14,18 +14,15 @@
 //     along with WinBoyEmulator.  If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WinBoyEmulator.GameBoy.GPU
 {
-    internal class Screen
+    public class Screen
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int[] Data { get; set; }
-
         /// <summary>
         /// Constructor without parameters. Initializes screen default values, which are: <para/>
         /// Width = Configuration.Screen.Width; <para />
@@ -51,5 +48,9 @@ namespace WinBoyEmulator.GameBoy.GPU
             Height = Height;
             Data = new int[width * height * colorsInPalette];
         }
+
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public int[] Data { get; set; }
     }
 }
