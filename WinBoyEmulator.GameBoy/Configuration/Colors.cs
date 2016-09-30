@@ -25,6 +25,10 @@ namespace WinBoyEmulator.GameBoy.Configuration
 {
     internal static class Colors
     {
+        /// <summary>
+        /// Color Palette. Contains different colors GameBoy is using. <para />
+        /// Note: 
+        /// </summary>
         public static Color[] Palette = new Color[4]
         {
             Color.White,

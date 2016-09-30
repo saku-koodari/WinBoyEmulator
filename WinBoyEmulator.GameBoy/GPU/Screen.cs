@@ -51,6 +51,11 @@ namespace WinBoyEmulator.GameBoy.GPU
 
         public int Width { get; set; }
         public int Height { get; set; }
+
+        /// <summary>
+        /// Flatten screen, where values represent rgb hexadecimal value of the color. <para />
+        /// Format is RGB (red, blue, green). A value can be from #000000 (0) - #FFFFFF (16777215)
+        /// </summary>
         public int[] Data { get; set; }
     }
 }

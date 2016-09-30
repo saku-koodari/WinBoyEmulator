@@ -570,17 +570,22 @@ namespace WinBoyEmulator.GameBoy.GPU
             }
         }
 
-        private byte[] _writeColor(int value)
+        private int[] _writeColor(int value)
         {
             var length = Configuration.Colors.Palette.Length;
-            var array = new byte[length];
+            var array = new int[length];
 
             for (var i = 0; i < length; i++)
             {
                 // If colors is incorrect in game boy color (any other than regular game boy)
                 // This might be the reason. (Because I haven't test this. :D)
-                var color = (value >> (i * 2)) & (length - 1);
-                array[i] = Configuration.Colors.Palette[color];
+                var colorIndex = (value >> (i * 2)) & (length - 1);
+                var color = Configuration.Colors.Palette[colorIndex];
+               
+                // color as int value
+                var iColor = color.R | (color.G << 8) | (color.B << 24);
+
+                array[i] = iColor;
             }
 
             return array;

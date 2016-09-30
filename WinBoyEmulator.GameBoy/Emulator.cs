@@ -45,6 +45,8 @@ namespace WinBoyEmulator.GameBoy
         /// <summary>Height of the game area.</summary>
         public static int Height => Configuration.Screen.Height;
 
+        public static Color[] ColorPalette => Configuration.Colors.Palette;
+
         public string GamePath
         {
             get
