@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Clock.cs" />
-    <Compile Include="Configuration\Color.cs" />
     <Compile Include="Configuration\Colors.cs" />
     <Compile Include="Configuration\Screen.cs" />
     <Compile Include="CPU\Flag.cs" />
