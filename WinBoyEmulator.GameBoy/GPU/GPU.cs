@@ -113,7 +113,7 @@ namespace WinBoyEmulator.GameBoy.GPU
             _palette = new Palette(Configuration.Colors.Palette.Length);
             _objectData = new ObjectData[40];
 
-            _screen = new Screen(Configuration.Screen.Width, Configuration.Screen.Height, Configuration.Colors.Palette.Length); // TODO: maybe you can use this instead of constants?
+            _screen = new Screen(Configuration.Screen.Width, Configuration.Screen.Height);
         }
 
         #region private methods for Checkline()
@@ -219,7 +219,8 @@ namespace WinBoyEmulator.GameBoy.GPU
                 do
                 {
                     _scanrow[Configuration.Screen.Width - x] = tilerow[x];
-                    _screen.Data[linebase + 3] = _palette.Background[tilerow[x]];
+                    throw new NotImplementedException("fix _screen.data");
+                    _screen.Data[linebase + 3] = (byte)_palette.Background[tilerow[x]];
                     x++;
                     if (x == 8)
                     {
@@ -243,7 +244,8 @@ namespace WinBoyEmulator.GameBoy.GPU
                 do
                 {
                     _scanrow[Configuration.Screen.Width - x] = tilerow[x];
-                    _screen.Data[linebase + 3] = _palette.Background[tilerow[x]];
+                    throw new NotImplementedException("fix _screen.data");
+                    _screen.Data[linebase + 3] = (byte)_palette.Background[tilerow[x]];
                     x++;
                     if (x == 8)
                     {
@@ -302,7 +304,8 @@ namespace WinBoyEmulator.GameBoy.GPU
                     if (objectSorted.X + _x >= 0 && objectSorted.X + _x < Configuration.Screen.Width
                     && (tileRow[_x] > 0 && (objectSorted.Priority || _scanrow[_x] == 0)))
                     {
-                        _screen.Data[linebase + 3] = objectSorted.xFlip ? palette[tileRow[7 - _x]] : palette[tileRow[_x]];
+                        throw new NotImplementedException("fix _screen.data");
+                        _screen.Data[linebase + 3] = (byte)(objectSorted.xFlip ? palette[tileRow[7 - _x]] : palette[tileRow[_x]]);
                     }
 
                     linebase += 4;

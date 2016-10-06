@@ -14,6 +14,7 @@
 //     along with WinBoyEmulator.  If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,5 +53,8 @@ namespace WinBoyEmulator.Rendering
 
         /// <summary>Wait vertical blanking</summary>
         public bool WaitVerticalBlanking { get; set; }
+
+        /// <summary>Color palette</summary>
+        public Color[] ColorPalette { get; set; }
     }
 }

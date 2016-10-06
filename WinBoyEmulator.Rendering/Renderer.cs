@@ -42,7 +42,7 @@ namespace WinBoyEmulator.Rendering
             Configuration.Instance.FPS = 60;
             Configuration.Instance.Width = GameBoy.Emulator.Width;
             Configuration.Instance.Height = GameBoy.Emulator.Height;
-
+            Configuration.Instance.ColorPalette = GameBoy.Emulator.ColorPalette;
         }
 
         public Renderer()
@@ -72,13 +72,12 @@ namespace WinBoyEmulator.Rendering
             _gameBoy.EmulateCycle();
 
             // convert GB's screen to System.Drawign bitmap
-            //var gamedata = _gameBoy.Screen.ToBitmap();
-
-            // Convert System.Drawing.Bitmap to SharpDX.Direct2D1.Bitmap
-            var bitmap = new Bitmap(IntPtr.Zero);
+            var bitmap = _gameBoy.Screen.ToBitmap(RenderTarget2D);
 
             // Draw bitmap
             RenderTarget2D.DrawBitmap(bitmap, 1.0f, BitmapInterpolationMode.Linear);
+
+
         }
 
         /// <summary>Run on a new form.</summary>

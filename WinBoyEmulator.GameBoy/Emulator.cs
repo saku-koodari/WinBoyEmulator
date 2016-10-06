@@ -34,6 +34,9 @@ namespace WinBoyEmulator.GameBoy
     /// <summary>An interface between a From and Game Boy Emulator.</summary>
     public class Emulator
     {
+        // TODO: Release memory of GPU.Screen.Data (it's IDisposable)
+        // TODO2: It would be better, instances here (instead of `singleton`.Instance.*)
+
         private Toolbox _toolbox;
         private Screen _screen;
         private byte[] _game;
@@ -45,6 +48,7 @@ namespace WinBoyEmulator.GameBoy
         /// <summary>Height of the game area.</summary>
         public static int Height => Configuration.Screen.Height;
 
+        /// <summary>Contains color GameBoy is using.</summary>
         public static Color[] ColorPalette => Configuration.Colors.Palette;
 
         public string GamePath
