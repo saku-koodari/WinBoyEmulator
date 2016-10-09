@@ -32,12 +32,11 @@ namespace WinBoyEmulator.Rendering
     public class Renderer : IDisposable
     {
         private GameBoy.Emulator _gameBoy;
-        private readonly RenderTargetProperties _renderTargetProperties;
-        private readonly HwndRenderTargetProperties _hwndRenderTargetProperties;
         private readonly byte[] _buffer;
         private Form _form;
         private Factory _factory;
         private WindowRenderTarget _windowRenderTarget;
+        private RawRectangleF _drawRectangle;
         private Bitmap _bitmap;
         private bool _isFormClosed;
 
@@ -57,6 +56,7 @@ namespace WinBoyEmulator.Rendering
         /// <summary>Constructor of a disposable class Renderer</summary>
         public Renderer()
         {
+            // TODO: _gameBoy of this class (and project)
             _gameBoy = new GameBoy.Emulator();
 
             // Check issues #30 and #31
@@ -72,19 +72,19 @@ namespace WinBoyEmulator.Rendering
                 * Configuration.Instance.ColorPalette.Length];
         }
 
+        private Size2 NewClientSize => new Size2(_form.ClientSize.Width, _form.ClientSize.Height);
+
+        private Size2 NewConfigurationSize => new Size2(Configuration.Instance.Width, Configuration.Instance.Height);
+
+        private PixelFormat NewPixelFormat => new PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Ignore);
+
         private void CreateRenderTargets()
         {
-            _windowRenderTarget = new WindowRenderTarget(_factory, new RenderTargetProperties
-            {
-                PixelFormat = new PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Ignore),
+            _windowRenderTarget = new WindowRenderTarget(_factory, new RenderTargetProperties {
+                PixelFormat = NewPixelFormat,
                 Type = RenderTargetType.Default,
                 MinLevel = FeatureLevel.Level_DEFAULT
-            }, new HwndRenderTargetProperties
-            {
-                Hwnd = _form.Handle,
-                PixelSize = new Size2(_form.ClientSize.Width, _form.ClientSize.Height),
-                PresentOptions = PresentOptions.Immediately
-            })
+            }, new HwndRenderTargetProperties { Hwnd = _form.Handle, PixelSize = NewClientSize, PresentOptions = PresentOptions.Immediately})
             {
                 DotsPerInch = new Size2F(96.0f, 96.0f),
                 AntialiasMode = AntialiasMode.Aliased,
@@ -92,24 +92,30 @@ namespace WinBoyEmulator.Rendering
 
             // CreateRenderTargets
             var _screenRenderTarget = new BitmapRenderTarget(_windowRenderTarget, CompatibleRenderTargetOptions.None, 
-                new Size2F(Configuration.Instance.Width, Configuration.Instance.Height), 
-                new Size2(Configuration.Instance.Width, Configuration.Instance.Height + Configuration.Instance.ColorPalette.Length), null);
+                new Size2F(Configuration.Instance.Width, Configuration.Instance.Height), new Size2(Configuration.Instance.Width, Configuration.Instance.Height), null);
             // RecalculateDrawRectangle
-            var _drawRectangle = new RawRectangleF(0, 0, _form.ClientSize.Width, _form.ClientSize.Height);
+            _drawRectangle = new RawRectangleF(0, 0, _form.ClientSize.Width, _form.ClientSize.Height);
         }
 
         private void CreateBitmap()
         {
-            _bitmap = new Bitmap(_windowRenderTarget,
-                new Size2(Configuration.Instance.Width, Configuration.Instance.Height),
-                new BitmapProperties { PixelFormat = new PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Ignore) });
+            _bitmap = new Bitmap(_windowRenderTarget, NewConfigurationSize, new BitmapProperties { PixelFormat = NewPixelFormat });
             _bitmap.CopyFromMemory(_buffer);
         }
 
+        private void SizeChanged(object sender, EventArgs e)
+        {
+            // If you uncomment next line, screen won't be sctretched if window size changes.
+            // _windowRenderTarget?.Resize(NewClientSize);
+        }
+
+        // TODO: Separate all game boy stuff from here.
+        // (Put them preferably to WinBoyEmulator.Program.cs)
         public void Run(Form targetForm)
         {
             // Before run
             _form = targetForm;
+            _form.SizeChanged += SizeChanged;
 
             CreateRenderTargets();
             CreateBitmap();
@@ -120,34 +126,35 @@ namespace WinBoyEmulator.Rendering
                 if (_isFormClosed)
                     return;
 
-
-
                 // emulate one cycle of gameboy
                 _gameBoy.EmulateCycle();
 
                 // Copy gameboy screen's data to bitmap
-                _bitmap.CopyFromMemory(_gameBoy.Screen.Data, _gameBoy.Screen.Width);
+                _bitmap.CopyFromMemory(_gameBoy.Screen.Data, _gameBoy.Screen.Width * _gameBoy.Screen.ColorCount);
 
                 // TODO:
-                // Check whether we need to close form.
+                // Check whether we need to close form or not.
 
                 // Draw bitmap
                 _windowRenderTarget.BeginDraw();
-                _windowRenderTarget.DrawBitmap(_bitmap, 1.0f, BitmapInterpolationMode.Linear);
+                _windowRenderTarget.DrawBitmap(_bitmap, _drawRectangle, 1.0f, BitmapInterpolationMode.Linear);
                 _windowRenderTarget.EndDraw();
             });
 
-            #region After run
             // After run
+            _form.SizeChanged -= SizeChanged;
+            #region Dispose();
             // Dispose is not necessary needed here, since
             // this class uses interface IDisposable (user can dispose when (s)he wants).
             // Dispose();
             #endregion
         }
 
+        /// <summary>Dispose objects used by Renderer.</summary>
         public void Dispose()
         {
             _bitmap?.Dispose();
+            _windowRenderTarget?.Dispose();
         }
 
     }
