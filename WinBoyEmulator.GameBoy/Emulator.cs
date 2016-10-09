@@ -42,6 +42,13 @@ namespace WinBoyEmulator.GameBoy
         private byte[] _game;
         private string _gamePath;
 
+        public Emulator()
+        {
+            _game = new byte[0x200];
+            _screen = new Screen();
+            _toolbox = new Toolbox();
+        }
+
         /// <summary>Width of the game area.</summary>
         public static int Width => Configuration.Screen.Width;
 
@@ -66,13 +73,7 @@ namespace WinBoyEmulator.GameBoy
         /// <summary>
         /// Screen object.
         /// </summary>
-        public Screen Screen => _screen = _toolbox.RandomizeScreen();
-
-        public  Emulator()
-        {
-            _game = new byte[0x200];
-            _toolbox = new Toolbox();
-        }
+        public Screen Screen => _screen;
 
         private void _readGameFile(string filename)
         {
@@ -88,7 +89,7 @@ namespace WinBoyEmulator.GameBoy
         public void EmulateCycle()
         {
             // Emulate one cycle
-            //LR35902.Instance.EmulateCycle();
+            LR35902.Instance.EmulateCycle();
 
             // If the draw flag is set, update the screen
             // update sound (Issue #20)

@@ -57,6 +57,9 @@ namespace WinBoyEmulator.GameBoy.GPU
             // https://stackoverflow.com/questions/3944320/maximum-length-of-byte
             // https://stackoverflow.com/questions/4815461/outofmemoryexception-on-declaration-of-large-array
             Data = new byte[dataSize];
+
+            // Fast way to fill 'Data' with zeros.
+            Parallel.For(0, Data.Length, i => Data[i] = 0);
         }
 
         public int Width { get; set; }

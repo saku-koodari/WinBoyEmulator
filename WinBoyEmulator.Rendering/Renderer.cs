@@ -32,7 +32,7 @@ namespace WinBoyEmulator.Rendering
     public class Renderer : IDisposable
     {
         private GameBoy.Emulator _gameBoy;
-        private readonly byte[] _buffer;
+        private byte[] _buffer;
         private Form _form;
         private Factory _factory;
         private WindowRenderTarget _windowRenderTarget;
@@ -129,8 +129,10 @@ namespace WinBoyEmulator.Rendering
                 // emulate one cycle of gameboy
                 _gameBoy.EmulateCycle();
 
+                _buffer = _gameBoy.Screen.Data;
+
                 // Copy gameboy screen's data to bitmap
-                _bitmap.CopyFromMemory(_gameBoy.Screen.Data, _gameBoy.Screen.Width * _gameBoy.Screen.ColorCount);
+                _bitmap.CopyFromMemory(_gameBoy.Screen.Data);
 
                 // TODO:
                 // Check whether we need to close form or not.
