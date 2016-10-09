@@ -16,13 +16,12 @@ I do this project, for fun! :)
 * Done
     * Video rendering (primitive version)
 * Testing
-    * Testing will be started at the latest 1.0.0-rc1
+    * Testing will be started later. 
 * In Progress
    - 
-* On hold
-   *  Instruction set for CPU (specification, issue #2)
-   *  CPU (General issue #32)
 * Proof of Concept
+   * Instruction set for CPU (specification, issue #2)
+   * CPU (General issue #32)
    * Memory
    * GPU
 * TODO
