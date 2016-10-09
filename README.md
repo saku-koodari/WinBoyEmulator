@@ -31,13 +31,12 @@ I do this project, for fun! :)
 
 Release Notes (tags):
  * v0.0.1 - First version with (one) working instruction.
+ * v0.0.2 - Working video rendering.
 
 My Plan:
- * v0.1 - First version that will be able to show data from Emulator (Screen) 
- * v0.2 - Instrution set fully supported
- * v0.3 - Memory and GPU working
- * v0.5 - 'alpha release' - working emulator without sound.
- * v0.6 - Implement minor features
+ * v0.1 - First version that that is able to run a game (atleast somehow...)
+ * v0.2 - Keyboard support
+ * v0.3 - Sound support
  * v1.0 - (goal) first release with sound working
  
  * v1.1 - Saving
