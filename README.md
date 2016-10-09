@@ -17,11 +17,11 @@ I do this project, for fun! :)
 
 ## general status list:
 * Done
-    * - 
+    * Video rendering (primitive version)
 * Testing
     * Testing will be started at the latest 1.0.0-rc1
 * In Progress
-   *  Video rendering
+   - 
 * On hold
    *  Instruction set for CPU (specification, issue #2)
    *  CPU (General issue #32)
