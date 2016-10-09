@@ -1,27 +1,36 @@
 # WinBoyEmulator
 This is my attemption to create Game Boy emulator. After this is somewhat complete, I'll start to port it to Android. 
-I'll use C# because it is easy to use (for me) and quite simple language (compared to C/C++ for example).
+I'll use C# because it is easy to use (for me).
 
-I do this project, because I think this is fun! :)
+I do this project, for fun! :)
+...Whenever I have enough time for this.
 
-At the moment my main focus is study Game Boy and it's emulation.
+## Requirements
+ * Windows OS (I use Windows 10 Pro)
+ * .NET 4.5.2 & Windows SDK & Visual Studio 2015
+ * Dependencies
+     * [Log4Any](https://github.com/saku-kaarakainen/Log4Any)
+     * SharpDX
+     * SharpDX.D3DCompiler
+     * SharpDX.Direct2D1
+     * SharpDX.DXGI
 
-general status list:
+## general status list:
 * Done
     * - 
 * Testing
     * Testing will be started at the latest 1.0.0-rc1
 * In Progress
+   *  Video rendering
+* On hold
    *  Instruction set for CPU (specification, issue #2)
    *  CPU (General issue #32)
-   *  Screen: Interface between form and Emulator is (should be) complete (Issue #43).
 * Proof of Concept
    * Memory
    * GPU
 * TODO
-    * Test classes and/or project   (Issue #8)
+    * Test classes and/or project (Issue #8)
     * Sound (Issue #20)
-    * GUI (Issue #18)
 
 Release Notes (tags):
  * v0.0.1 - First version with (one) working instruction.
