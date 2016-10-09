@@ -113,7 +113,7 @@ namespace WinBoyEmulator.GameBoy.GPU
             _palette = new Palette(Configuration.Colors.Palette.Length);
             _objectData = new ObjectData[40];
 
-            _screen = new Screen(Configuration.Screen.Width, Configuration.Screen.Height);
+            _screen = new Screen(Configuration.Screen.Width, Configuration.Screen.Height, Configuration.Colors.Palette.Length);
         }
 
         #region private methods for Checkline()

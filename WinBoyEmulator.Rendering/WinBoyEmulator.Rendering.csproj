@@ -73,14 +73,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App\BaseClass.cs" />
-    <Compile Include="App\BaseClass.Events.cs" />
-    <Compile Include="App\Configuration.cs" />
-    <Compile Include="App\Direct2DApp.cs" />
-    <Compile Include="App\Direct3DApp.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer.cs" />
-    <Compile Include="Utils\GameBoyExtensions.cs" />
     <Compile Include="Utils\Stopwatch.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -19,19 +19,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using SharpDX;
 using SharpDX.Direct2D1;
-using WinBoyEmulator.Rendering.App;
+using SharpDX.Mathematics.Interop;
+using SharpDX.Windows;
+using Format = SharpDX.DXGI.Format;
 using WinBoyEmulator.Rendering.Utils;
 
 namespace WinBoyEmulator.Rendering
 {
-    /// <summary>Class Renderer. SharpDX class for showing emulator on a form.</summary>
-    public class Renderer : Direct2DApp
+    /// <summary>Class Renderer. SharpDX class for showing emulator on a form. Disposable.</summary>
+    public class Renderer : IDisposable
     {
-        private Bitmap _bitmap;
         private GameBoy.Emulator _gameBoy;
+        private readonly RenderTargetProperties _renderTargetProperties;
+        private readonly HwndRenderTargetProperties _hwndRenderTargetProperties;
+        private readonly byte[] _buffer;
+        private Form _form;
+        private Factory _factory;
+        private WindowRenderTarget _windowRenderTarget;
+        private Bitmap _bitmap;
+        private bool _isFormClosed;
 
-        /// <summary>Initializes Configuration values ASAP.</summary>
         static Renderer()
         {
             Configuration.Instance.Title = "WinBoyEmulator";
@@ -45,14 +54,10 @@ namespace WinBoyEmulator.Rendering
             Configuration.Instance.ColorPalette = GameBoy.Emulator.ColorPalette;
         }
 
+        /// <summary>Constructor of a disposable class Renderer</summary>
         public Renderer()
         {
             _gameBoy = new GameBoy.Emulator();
-        }
-
-        protected override void Initialize()
-        {
-            base.Initialize();
 
             // Check issues #30 and #31
             // Also WinBoyEmulator/MainForm.cs/MainForm_Load - method.
@@ -60,70 +65,90 @@ namespace WinBoyEmulator.Rendering
             _gameBoy.GamePath = "C:\\temp\\game.gb";
             _gameBoy.LoadGameToMemory();
 
-            _bitmap = Load(RenderTarget2D);
+            _factory = new Factory(FactoryType.SingleThreaded, DebugLevel.Information);
+
+            _buffer = new byte[Configuration.Instance.Width
+                * Configuration.Instance.Height
+                * Configuration.Instance.ColorPalette.Length];
         }
 
-        protected override void Draw(Stopwatch watch)
+        private void CreateRenderTargets()
         {
-            // Draw's base method
-            base.Draw(watch);
-
-            // emulate one cycle of gameboy
-            _gameBoy.EmulateCycle();
-
-            // convert GB's screen to System.Drawign bitmap
-            var bitmap = _gameBoy.Screen.ToBitmap(RenderTarget2D);
-
-            // Draw bitmap
-            RenderTarget2D.DrawBitmap(bitmap, 1.0f, BitmapInterpolationMode.Linear);
-
-
-        }
-
-        /// <summary>Run on a new form.</summary>
-        public new void Run() => base.Run();
-
-        /// <summary>Run game on the target form.</summary>
-        /// <param name="targetForm">The form where the game will be put.</param>
-        public new void Run(Form targetForm) => base.Run(targetForm);
-
-        public Bitmap Load(RenderTarget renderTarget)
-        {
-            // Loads from file using System.Drawing.Image
-            var bitmap = new System.Drawing.Bitmap(Configuration.Instance.Width, Configuration.Instance.Height);
-            var sourceArea = new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height);
-            var bitmapProperties = new BitmapProperties(new PixelFormat(SharpDX.DXGI.Format.R8G8B8A8_UNorm, AlphaMode.Premultiplied));
-            var size = new SharpDX.Size2(bitmap.Width, bitmap.Height);
-
-            // Transform pixels from BGRA to RGBA
-            int stride = bitmap.Width * sizeof(int);
-            using (var tempStream = new SharpDX.DataStream(bitmap.Height * stride, true, true))
+            _windowRenderTarget = new WindowRenderTarget(_factory, new RenderTargetProperties
             {
-                // Lock System.Drawing.Bitmap
-                var bitmapData = bitmap.LockBits(sourceArea, System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+                PixelFormat = new PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Ignore),
+                Type = RenderTargetType.Default,
+                MinLevel = FeatureLevel.Level_DEFAULT
+            }, new HwndRenderTargetProperties
+            {
+                Hwnd = _form.Handle,
+                PixelSize = new Size2(_form.ClientSize.Width, _form.ClientSize.Height),
+                PresentOptions = PresentOptions.Immediately
+            })
+            {
+                DotsPerInch = new Size2F(96.0f, 96.0f),
+                AntialiasMode = AntialiasMode.Aliased,
+            };
 
-                // Convert all pixels 
-                for (int y = 0; y < bitmap.Height; y++)
-                {
-                    int offset = bitmapData.Stride * y;
-                    for (int x = 0; x < bitmap.Width; x++)
-                    {
-                        // Not optimized 
-                        byte B = System.Runtime.InteropServices.Marshal.ReadByte(bitmapData.Scan0, offset++);
-                        byte G = System.Runtime.InteropServices.Marshal.ReadByte(bitmapData.Scan0, offset++);
-                        byte R = System.Runtime.InteropServices.Marshal.ReadByte(bitmapData.Scan0, offset++);
-                        byte A = System.Runtime.InteropServices.Marshal.ReadByte(bitmapData.Scan0, offset++);
-                        int rgba = R | (G << 8) | (B << 16) | (A << 24);
-                        tempStream.Write(rgba);
-                    }
-
-                }
-                bitmap.UnlockBits(bitmapData);
-                tempStream.Position = 0;
-
-                return new Bitmap(renderTarget, size, tempStream, stride, bitmapProperties);
-            }
-
+            // CreateRenderTargets
+            var _screenRenderTarget = new BitmapRenderTarget(_windowRenderTarget, CompatibleRenderTargetOptions.None, 
+                new Size2F(Configuration.Instance.Width, Configuration.Instance.Height), 
+                new Size2(Configuration.Instance.Width, Configuration.Instance.Height + Configuration.Instance.ColorPalette.Length), null);
+            // RecalculateDrawRectangle
+            var _drawRectangle = new RawRectangleF(0, 0, _form.ClientSize.Width, _form.ClientSize.Height);
         }
+
+        private void CreateBitmap()
+        {
+            _bitmap = new Bitmap(_windowRenderTarget,
+                new Size2(Configuration.Instance.Width, Configuration.Instance.Height),
+                new BitmapProperties { PixelFormat = new PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Ignore) });
+            _bitmap.CopyFromMemory(_buffer);
+        }
+
+        public void Run(Form targetForm)
+        {
+            // Before run
+            _form = targetForm;
+
+            CreateRenderTargets();
+            CreateBitmap();
+
+            // Run
+            RenderLoop.Run(targetForm, () =>
+            {
+                if (_isFormClosed)
+                    return;
+
+
+
+                // emulate one cycle of gameboy
+                _gameBoy.EmulateCycle();
+
+                // Copy gameboy screen's data to bitmap
+                _bitmap.CopyFromMemory(_gameBoy.Screen.Data, _gameBoy.Screen.Width);
+
+                // TODO:
+                // Check whether we need to close form.
+
+                // Draw bitmap
+                _windowRenderTarget.BeginDraw();
+                _windowRenderTarget.DrawBitmap(_bitmap, 1.0f, BitmapInterpolationMode.Linear);
+                _windowRenderTarget.EndDraw();
+            });
+
+            #region After run
+            // After run
+            // Dispose is not necessary needed here, since
+            // this class uses interface IDisposable (user can dispose when (s)he wants).
+            // Dispose();
+            #endregion
+        }
+
+        public void Dispose()
+        {
+            _bitmap?.Dispose();
+        }
+
     }
 }

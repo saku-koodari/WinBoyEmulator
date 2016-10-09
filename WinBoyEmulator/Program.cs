@@ -35,11 +35,13 @@ namespace WinBoyEmulator
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var targetForm = new MainForm();
-            _renderer = new Renderer();
+            using (_renderer = new Renderer())
+            {
+                var targetForm = new MainForm();
 
-            // run the emulator with SharpDX
-            _renderer.Run(targetForm);
+                // run the emulator with SharpDX
+                _renderer.Run(targetForm);
+            }
 
             Application.Exit();
         }

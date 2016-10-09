@@ -25,21 +25,16 @@ namespace WinBoyEmulator.GameBoy.GPU
     public class Screen
     {
         /// <summary>
-        /// Multiply value for Buffer size. It is four (4), because each byte of color reservers one byte (RGBA)
-        /// </summary>
-        public const int BufferSize = 4;
-
-        /// <summary>
-        /// Constructor without parameters. Initializes screen default values, which are: <para/>
+        /// Constructor without parameters. Initializes screen with default values, which are: <para/>
         /// Width = Configuration.Screen.Width; <para />
         /// Height = Configuration.Screen.Height; <para />
-        /// Data = new int[Width * Height * Configuration.Colors.Palette.Length];
+        /// ColorCount = Configuration.Screen.Palette.Length; <para />
+        /// Data = new int[Width * Height * ColorCount];
         /// </summary>
-        public Screen()
+        public Screen() 
+            : this(Configuration.Screen.Width, Configuration.Screen.Height, Configuration.Colors.Palette.Length)
         {
-            Width = Configuration.Screen.Width;
-            Height = Configuration.Screen.Height;
-            Data = new byte[Width * Height * BufferSize];
+
         }
 
         /// <summary>
@@ -47,11 +42,13 @@ namespace WinBoyEmulator.GameBoy.GPU
         /// </summary>
         /// <param name="width">Amount of pixels in a row in the screen.</param>
         /// <param name="height">Amount of pixels in a column in the screen.</param>
-        public Screen(int width, int height)
+        /// <param name="colorCount">Amount of colors in the palette.</param>
+        public Screen(int width, int height, int colorCount)
         {
-            var dataSize = width * height * BufferSize;
+            var dataSize = width * height * colorCount;
             Width = width;
             Height = Height;
+            ColorCount = colorCount;
 
             //if (dataSize > int.MaxValue)
             //    throw new OutOfMemoryException("Data.Length can't be bigger than int.MaxValue.");
@@ -64,10 +61,13 @@ namespace WinBoyEmulator.GameBoy.GPU
 
         public int Width { get; set; }
         public int Height { get; set; }
+        public int ColorCount { get; set; }
 
         // RGB's value range:  #000000   (0) - #FFFFFF   (16777215)
         // RGBA's value range: #00000000 (0) - #FFFFFFFF (4294967295)
-        /// <summary>Flatten screen, where values represent rgb hexadecimal value of the color.</summary>
+        /// <summary>
+        /// Flatten screen, where values represent rgb hexadecimal value of the color.
+        /// </summary>
         public byte[] Data { get; set; }
     }
 }
