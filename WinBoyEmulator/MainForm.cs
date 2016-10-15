@@ -24,29 +24,44 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Log4Any;
-// using WinBoyEmulator.GameBoy;
+using WinBoyEmulator.GameBoy;
 
 namespace WinBoyEmulator
 {
     public partial class MainForm : Form
     {
-        private static readonly object _syncRoot = new object();
-
         private const string _sourceCodeUrl = "https://github.com/saku-kaarakainen/WinBoyEmulator/";
-        // private Emulator _emulator;
+        private IVideoRenderer _graphics;
         private LogWriter _logWriter;
-        public MainForm() { InitializeComponent(); }
+        private Emulator _gameBoy;
+
+        /// <summary>
+        /// MainForm's constructor. Takes one argument, <see cref="IVideoRenderer">renderer</see> 
+        /// </summary>
+        /// <param name="renderer">graphics renderer.</param>
+        public MainForm(IVideoRenderer renderer)
+        {
+            InitializeComponent();
+            InitializeGraphicsAndEmulator(renderer);
+        }
+
+        private void InitializeGraphicsAndEmulator(IVideoRenderer renderer)
+        {
+            _gameBoy = new Emulator();
+            _graphics = renderer;
+            _graphics.Loop = Loop;
+            _graphics.Buffer = new byte[_gameBoy.Width 
+                * _gameBoy.Height 
+                * _gameBoy.ColorPalette.Length];
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             _logWriter = new LogWriter(GetType());
-
             // Check Issues #30 and #31
-            // Check #31
             //_emulator = new Emulator { GamePath = "C:\\temp\\game.gb" };
             //_emulator.StartEmulation();
         }
-
         #region _Click
         private void _toolStripMenuItemAbout_Click(object sender, EventArgs e)
         {
@@ -59,7 +74,7 @@ namespace WinBoyEmulator
         }
 
         private void _toolStripMenuItemOpen_Click(object sender, EventArgs e) => _openFileDialogMain.ShowDialog();
-        
+
         private void _toolStripMenuItemClose_Click(object sender, EventArgs e) => Close();
 
         private void _toolStripMenuItemSourceCode_Click(object sender, EventArgs e) => Process.Start(new ProcessStartInfo(_sourceCodeUrl));
@@ -69,6 +84,24 @@ namespace WinBoyEmulator
         {
             //_emulator.GamePath = _openFileDialogMain.FileName;
             //_emulator.StartEmulation();
+        }
+
+        private readonly static Random r = new Random();
+        private void Loop()
+        {
+            // pre-render,
+            // emulates one cycle of gameboy
+            _gameBoy.EmulateCycle();
+
+            r.NextBytes(_gameBoy.Screen.Data);
+
+            _graphics.Buffer = _gameBoy.Screen.Data;
+
+            // Update renderer's buffer. 
+            _graphics.Update();
+
+            // Draws the bitmap
+            _graphics.Draw();
         }
     }
 }

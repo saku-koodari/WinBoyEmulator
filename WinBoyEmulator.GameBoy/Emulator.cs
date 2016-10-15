@@ -22,41 +22,37 @@ using System.Timers;
 using System.Threading;
 using System.Threading.Tasks;
 
-using WinBoyEmulator.GameBoy.CPU;
-using WinBoyEmulator.GameBoy.GPU;
-using WinBoyEmulator.GameBoy.Memory;
-
-using MMU = WinBoyEmulator.GameBoy.Memory.Memory;
-using Screen = WinBoyEmulator.GameBoy.GPU.Screen;
-
 namespace WinBoyEmulator.GameBoy
 {
     /// <summary>An interface between a From and Game Boy Emulator.</summary>
     public class Emulator
     {
-        // TODO: Release memory of GPU.Screen.Data (it's IDisposable)
-        // TODO2: It would be better, instances here (instead of `singleton`.Instance.*)
-
-        private Toolbox _toolbox;
         private Screen _screen;
-        private byte[] _game;
         private string _gamePath;
 
         public Emulator()
         {
-            _game = new byte[0x200];
-            _screen = new Screen();
-            _toolbox = new Toolbox();
+            _screen = new Screen(200, 100, new Color[]
+            {
+                Color.White,
+                Color.Silver,
+                Color.Gray,
+                Color.Black
+            });
         }
 
+        #region Screen Properties
+        public Screen Screen => _screen;
+
         /// <summary>Width of the game area.</summary>
-        public static int Width => Configuration.Screen.Width;
+        public int Width => _screen.Width;
 
         /// <summary>Height of the game area.</summary>
-        public static int Height => Configuration.Screen.Height;
+        public int Height => _screen.Height;
 
         /// <summary>Contains color GameBoy is using.</summary>
-        public static Color[] ColorPalette => Configuration.Colors.Palette;
+        public Color[] ColorPalette => _screen.ColorPalette;
+        #endregion
 
         public string GamePath
         {
@@ -70,50 +66,37 @@ namespace WinBoyEmulator.GameBoy
             }
         }
 
-        /// <summary>
-        /// Screen object.
-        /// </summary>
-        public Screen Screen => _screen;
-
-        private void _readGameFile(string filename)
+        private void EmulateCpu()
         {
-            using (var reader = new BinaryReader(File.OpenRead(filename)))
-            {
-                var length = (int)reader.BaseStream.Length;
-                _game = reader.ReadBytes(length);
-                // Issue #29
-            }
+            // throw new NotImplementedException("kräks");
+        }
+
+        private void EmulateSound()
+        {
+           // Console.WriteLine("Sound: bii bii bi bi...");
+        }
+
+        private void UpdateScreen()
+        {
+
+        }
+
+        /// <summary>Load game to the memory.</summary>
+        /// <param name="gamePath">
+        /// use this, if you don't want use <see cref="GamePath"/> property. 
+        /// (If used, it will override value of <see cref="GamePath"/>)
+        /// </param>
+        public void LoadGameToMemory(string gamePath = null)
+        {
+
         }
 
         /// <summary>Emulate one Cycle</summary>
         public void EmulateCycle()
         {
-            // Emulate one cycle
-            LR35902.Instance.EmulateCycle();
-
-            // If the draw flag is set, update the screen
-            // update sound (Issue #20)
-            // Store key press state (Press and Release)
+            EmulateCpu();
+            EmulateSound();
+            UpdateScreen();
         }
-
-        /// <summary>Load game to the memory.</summary>
-        /// <param name="gamePath">
-        /// use this, if you don't want use GamePath property. 
-        /// (If used, it will override value of GamePath)
-        /// </param>
-        public void LoadGameToMemory(string gamePath = null)
-        {
-            if ( !string.IsNullOrEmpty(gamePath) )
-                _gamePath = gamePath;
-
-            if (string.IsNullOrEmpty(_gamePath))
-                throw new InvalidOperationException($"Property '{nameof(GamePath)}' or argument {nameof(gamePath)} is either null or empty");
-            
-            // Load the game.
-            _readGameFile(_gamePath);
-
-            // Load the game to the memory
-            MMU.Instance.Load(_game);
-        }     
     }
 }

@@ -24,57 +24,60 @@ using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 using SharpDX.Windows;
 using Format = SharpDX.DXGI.Format;
+using Color = System.Drawing.Color;
+
+using WinBoyEmulator;
 using WinBoyEmulator.Rendering.Utils;
 
 namespace WinBoyEmulator.Rendering
 {
     /// <summary>Class Renderer. SharpDX class for showing emulator on a form. Disposable.</summary>
-    public class Renderer : IDisposable
+    public class Renderer : IDisposable, IVideoRenderer
     {
-        private GameBoy.Emulator _gameBoy;
         private byte[] _buffer;
         private Form _form;
         private Factory _factory;
         private WindowRenderTarget _windowRenderTarget;
         private RawRectangleF _drawRectangle;
         private Bitmap _bitmap;
+
+        // TODO: This is never assigned. Use it somehow.
         private bool _isFormClosed;
 
-        static Renderer()
-        {
-            Configuration.Instance.Title = "WinBoyEmulator";
-
-            // Actually I think is Frames per seconds is just an initial values
-            // and the Game's fps could be anything. 
-            // Mayber that 60 is minimum fps?
-            Configuration.Instance.FPS = 60;
-            Configuration.Instance.Width = GameBoy.Emulator.Width;
-            Configuration.Instance.Height = GameBoy.Emulator.Height;
-            Configuration.Instance.ColorPalette = GameBoy.Emulator.ColorPalette;
-        }
-
-        /// <summary>Constructor of a disposable class Renderer</summary>
+        /// <summary>
+        /// Constructor of <see cref="Render"/>.
+        /// Doesn't initialize buffer. <para />
+        /// Class uses interface <see cref="IDisposable"/>
+        /// </summary>
         public Renderer()
         {
-            // TODO: _gameBoy of this class (and project)
-            _gameBoy = new GameBoy.Emulator();
-
-            // Check issues #30 and #31
-            // Also WinBoyEmulator/MainForm.cs/MainForm_Load - method.
-            // There is comments about this.
-            _gameBoy.GamePath = "C:\\temp\\game.gb";
-            _gameBoy.LoadGameToMemory();
-
             _factory = new Factory(FactoryType.SingleThreaded, DebugLevel.Information);
-
-            _buffer = new byte[Configuration.Instance.Width
-                * Configuration.Instance.Height
-                * Configuration.Instance.ColorPalette.Length];
         }
 
-        private Size2 NewClientSize => new Size2(_form.ClientSize.Width, _form.ClientSize.Height);
+        public string Title => "WinBoyEmulator";
+        public int FPS { get; set; } = 60;
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public Color[] ColorPalette { get; set; }
 
-        private Size2 NewConfigurationSize => new Size2(Configuration.Instance.Width, Configuration.Instance.Height);
+        /// <summary>
+        /// Buffer that contains GameBoy's screen
+        /// </summary>
+        public byte[] Buffer
+        {
+            get
+            {
+                return _buffer;
+            }
+            set
+            {
+                _buffer = value;
+            }
+        }
+
+        public Action Loop { get; set; }
+
+        private Size2 NewSize => new Size2(Width, Height);
 
         private PixelFormat NewPixelFormat => new PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Ignore);
 
@@ -84,22 +87,22 @@ namespace WinBoyEmulator.Rendering
                 PixelFormat = NewPixelFormat,
                 Type = RenderTargetType.Default,
                 MinLevel = FeatureLevel.Level_DEFAULT
-            }, new HwndRenderTargetProperties { Hwnd = _form.Handle, PixelSize = NewClientSize, PresentOptions = PresentOptions.Immediately})
+            }, new HwndRenderTargetProperties { Hwnd = _form.Handle, PixelSize = NewSize, PresentOptions = PresentOptions.Immediately})
             {
                 DotsPerInch = new Size2F(96.0f, 96.0f),
                 AntialiasMode = AntialiasMode.Aliased,
             };
 
             // CreateRenderTargets
-            var _screenRenderTarget = new BitmapRenderTarget(_windowRenderTarget, CompatibleRenderTargetOptions.None, 
-                new Size2F(Configuration.Instance.Width, Configuration.Instance.Height), new Size2(Configuration.Instance.Width, Configuration.Instance.Height), null);
+            var _screenRenderTarget = new BitmapRenderTarget(_windowRenderTarget, 
+                CompatibleRenderTargetOptions.None, new Size2F(Width, Height), NewSize, null);
             // RecalculateDrawRectangle
             _drawRectangle = new RawRectangleF(0, 0, _form.ClientSize.Width, _form.ClientSize.Height);
         }
 
         private void CreateBitmap()
         {
-            _bitmap = new Bitmap(_windowRenderTarget, NewConfigurationSize, new BitmapProperties { PixelFormat = NewPixelFormat });
+            _bitmap = new Bitmap(_windowRenderTarget, NewSize, new BitmapProperties { PixelFormat = NewPixelFormat });
             _bitmap.CopyFromMemory(_buffer);
         }
 
@@ -109,10 +112,44 @@ namespace WinBoyEmulator.Rendering
             // _windowRenderTarget?.Resize(NewClientSize);
         }
 
-        // TODO: Separate all game boy stuff from here.
-        // (Put them preferably to WinBoyEmulator.Program.cs)
+        /// <summary>
+        /// Updates bitmap's buffer.
+        /// </summary>
+        /// <param name="updatedBuffer">updated buffer. if value is null (which is default), use Property Buffer</param>
+        public void Update(byte[] updatedBuffer = null)
+        {
+            if (updatedBuffer != null)
+                _buffer = updatedBuffer;
+
+            // Copy gameboy screen's data to bitmap
+            _bitmap.CopyFromMemory(_buffer);
+        }
+
+        /// <summary>
+        /// Draws the bitmap to the target form.
+        /// </summary>
+        public void Draw()
+        {
+            // Draw bitmap
+            _windowRenderTarget.BeginDraw();
+            _windowRenderTarget.DrawBitmap(_bitmap, _drawRectangle, 1.0f, BitmapInterpolationMode.Linear);
+            _windowRenderTarget.EndDraw();
+        }
+
+        /// <summary>
+        /// Runs the game. This method handles form closing.
+        /// // TODO: Add property LoopAction add add possibility to all this method without arguments.
+        /// </summary>
+        /// <param name="targetForm">the form where graphics will drawn.</param>
+        /// <param name="loopAction">Add your game logic here.</param>
         public void Run(Form targetForm)
         {
+            if (targetForm == null)
+                throw new ArgumentNullException(nameof(targetForm));
+
+            if (Loop == null)
+                throw new InvalidOperationException($"Property '{nameof(Loop)}' is null. Have you initialized it?");
+
             // Before run
             _form = targetForm;
             _form.SizeChanged += SizeChanged;
@@ -123,24 +160,14 @@ namespace WinBoyEmulator.Rendering
             // Run
             RenderLoop.Run(targetForm, () =>
             {
+                // Check wheter is it time to finish.
+                // a.k.a. bool form close flag is set to true.
                 if (_isFormClosed)
                     return;
 
-                // emulate one cycle of gameboy
-                _gameBoy.EmulateCycle();
+                Loop();
 
-                _buffer = _gameBoy.Screen.Data;
-
-                // Copy gameboy screen's data to bitmap
-                _bitmap.CopyFromMemory(_gameBoy.Screen.Data);
-
-                // TODO:
-                // Check whether we need to close form or not.
-
-                // Draw bitmap
-                _windowRenderTarget.BeginDraw();
-                _windowRenderTarget.DrawBitmap(_bitmap, _drawRectangle, 1.0f, BitmapInterpolationMode.Linear);
-                _windowRenderTarget.EndDraw();
+                // TODO: Check whether we need to close form or not.
             });
 
             // After run
@@ -158,6 +185,5 @@ namespace WinBoyEmulator.Rendering
             _bitmap?.Dispose();
             _windowRenderTarget?.Dispose();
         }
-
     }
 }

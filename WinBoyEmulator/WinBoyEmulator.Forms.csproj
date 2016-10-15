@@ -83,6 +83,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WinBoyEmulator.API\WinBoyEmulator.csproj">
+      <Project>{3397e066-5e80-4283-8fd8-60c6805063b5}</Project>
+      <Name>WinBoyEmulator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WinBoyEmulator.GameBoy\WinBoyEmulator.GameBoy.csproj">
+      <Project>{f63a5353-29c2-4892-bc76-4b9c1ab95c9c}</Project>
+      <Name>WinBoyEmulator.GameBoy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WinBoyEmulator.Rendering\WinBoyEmulator.Rendering.csproj">
       <Project>{8146a6a9-a5f8-4bc2-945b-468eebbc31fc}</Project>
       <Name>WinBoyEmulator.Rendering</Name>

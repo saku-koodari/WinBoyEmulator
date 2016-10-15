@@ -14,21 +14,37 @@
 //     along with WinBoyEmulator.  If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinBoyEmulator.GameBoy.Memory
+namespace WinBoyEmulator
 {
-    internal interface IMemory
+    /// <summary>
+    /// A class that holds the data of the screen.
+    /// </summary>
+    public class Screen
     {
-        void Reset();
-        void Load(byte[] game);
+        public Screen() : this(0, 0, null) { }
 
-        byte ReadByte(int address);
-        int ReadShort(int address);
+        public Screen(int width, int height, Color[] colorPalette)
+        {
+            Width = width;
+            Height = height;
+            ColorPalette = colorPalette;
 
-        void WriteByte(int address, byte value);
-        void WriteShort(int address, int value);
+            Data = new byte[width * height * colorPalette.Length];
+        }
+
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public Color[] ColorPalette { get; set; }
+
+        /// <summary>
+        /// Byte array, a buffer, 
+        /// that conains the data of the screen.
+        /// </summary>
+        public byte[] Data { get; set; }
     }
 }

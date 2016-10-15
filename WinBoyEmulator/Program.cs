@@ -14,10 +14,12 @@
 //     along with WinBoyEmulator.  If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using WinBoyEmulator.GameBoy;
 using WinBoyEmulator.Rendering;
 
 namespace WinBoyEmulator
@@ -37,10 +39,7 @@ namespace WinBoyEmulator
 
             using (_renderer = new Renderer())
             {
-                var targetForm = new MainForm();
-
-                // run the emulator with SharpDX
-                _renderer.Run(targetForm);
+                _renderer.Run(new MainForm(_renderer));
             }
 
             Application.Exit();
