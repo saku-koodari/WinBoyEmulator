@@ -14,35 +14,16 @@
 //     along with WinBoyEmulator.  If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-
-using WinBoyEmulator.GameBoy;
-using WinBoyEmulator.Rendering;
 
 namespace WinBoyEmulator
 {
-    static class Program
+    /// <summary>Thread types.</summary>
+    public enum ThreadType
     {
-        private static SharpDX _renderer;
-
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            using (_renderer = new SharpDX())
-            {
-                _renderer.Run(new MainForm(_renderer));
-            }
-
-            Application.Exit();
-        }
+        SingleThread = 0,
+        Multithread = 1
     }
 }

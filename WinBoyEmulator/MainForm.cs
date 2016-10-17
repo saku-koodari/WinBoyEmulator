@@ -41,18 +41,25 @@ namespace WinBoyEmulator
         /// <param name="renderer">graphics renderer.</param>
         public MainForm(IVideoRenderer renderer)
         {
-            InitializeComponent();
             InitializeGraphicsAndEmulator(renderer);
+            InitializeComponent();
         }
 
         private void InitializeGraphicsAndEmulator(IVideoRenderer renderer)
         {
-            _gameBoy = new Emulator();
+            _gameBoy = new Emulator(
+                width:          200,
+                height:         100,
+                colorPalette:   new Color[] {
+                    Color.Black,
+                    Color.Gray,
+                    Color.Silver//,
+                   // Color.White
+                });
+
             _graphics = renderer;
+            _graphics.Screen = _gameBoy.Screen;
             _graphics.Loop = Loop;
-            _graphics.Buffer = new byte[_gameBoy.Width 
-                * _gameBoy.Height 
-                * _gameBoy.ColorPalette.Length];
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -95,10 +102,8 @@ namespace WinBoyEmulator
 
             r.NextBytes(_gameBoy.Screen.Data);
 
-            _graphics.Buffer = _gameBoy.Screen.Data;
-
-            // Update renderer's buffer. 
-            _graphics.Update();
+            // Update screen
+            _graphics.Update(_gameBoy.Screen);
 
             // Draws the bitmap
             _graphics.Draw();

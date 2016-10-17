@@ -14,6 +14,7 @@
 //     along with WinBoyEmulator.  If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,12 +28,10 @@ namespace WinBoyEmulator
     /// </summary>
     public interface IVideoRenderer
     {
-        /// <summary>
-        /// Buffer contains the data of the screen in a bit array. <para />
-        /// Buffer's format is a four-component, 32-bit unsigned-normalized-integer format
-        /// that supports 8 bits for each color channel and 8-bit alpha.
-        /// </summary>
-        byte[] Buffer { get; set; }
+        // TODO: Consider updating just a Data (as buffer) instead of a whole screen.
+
+        /// <summary>Screen that will be displayed in the form.</summary>
+        Screen Screen { get; set; }
 
         /// <summary>Actions that is done during the loop.</summary>
         Action Loop { get; set; }
@@ -46,9 +45,11 @@ namespace WinBoyEmulator
         /// <summary>
         /// Updates buffer.
         /// </summary>
-        /// <param name="updatedBuffer">You can use with this argument or without
-        /// (the you must use Property <see cref="Buffer"/>).</param>
-        void Update(byte[] updatedBuffer = null);
+        /// <param name="screen">
+        ///     You can use with this argument or without
+        ///     (the you must use Property <see cref="Screen"/>).
+        /// </param>
+        void Update(Screen screen = null);
 
         /// <summary>Draws buffer to the target form.</summary>
         void Draw();

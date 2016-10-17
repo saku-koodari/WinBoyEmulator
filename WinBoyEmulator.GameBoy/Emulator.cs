@@ -30,15 +30,9 @@ namespace WinBoyEmulator.GameBoy
         private Screen _screen;
         private string _gamePath;
 
-        public Emulator()
+        public Emulator(int width, int height, Color[] colorPalette)
         {
-            _screen = new Screen(200, 100, new Color[]
-            {
-                Color.White,
-                Color.Silver,
-                Color.Gray,
-                Color.Black
-            });
+            _screen = new Screen(width, height, colorPalette);
         }
 
         #region Screen Properties

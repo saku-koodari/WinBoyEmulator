@@ -27,59 +27,62 @@ using Format = SharpDX.DXGI.Format;
 using Color = System.Drawing.Color;
 
 using WinBoyEmulator;
+using WinBoyEmulator.Rendering.Extensions;
 using WinBoyEmulator.Rendering.Utils;
 
 namespace WinBoyEmulator.Rendering
 {
-    /// <summary>Class Renderer. SharpDX class for showing emulator on a form. Disposable.</summary>
-    public class Renderer : IDisposable, IVideoRenderer
+    /// <summary>Class for showing an emulator on a form. Disposable.</summary>
+    public class SharpDX : IDisposable, IVideoRenderer
     {
-        private byte[] _buffer;
+        private static Format _format;
+        private static int _numberOfBytes;
+        private Log4Any.LogWriter _logWriter;
         private Form _form;
         private Factory _factory;
         private WindowRenderTarget _windowRenderTarget;
         private RawRectangleF _drawRectangle;
         private Bitmap _bitmap;
 
+        /// <summary>
+        /// Uses format <see cref="Format.R8G8B8A8_UNorm"/> and alpha is ignored.<para/>
+        /// (Used <see cref="Format.B8G8R8A8_UNorm" /> previously
+        /// </summary>
+        private PixelFormat NewPixelFormat => new PixelFormat(_format, AlphaMode.Ignore);
+
         // TODO: This is never assigned. Use it somehow.
         private bool _isFormClosed;
+
+        static SharpDX()
+        {
+            _numberOfBytes = Configuration.ColorFormat.ByteCount();
+            _format = Configuration.ColorFormat.ToSharpDXGIFormat();
+        }
+
+        /// <summary>
+        /// Constructor of <see cref="Render"/>.
+        /// Creates singlethreaded video renderer with SharpDX which uses information as debug level.
+        /// Doesn't initialize buffer. <para />
+        /// Class uses interface <see cref="IDisposable"/>
+        /// </summary>
+        public SharpDX() : this(ThreadType.SingleThread, DebugLevel.Information) { }
 
         /// <summary>
         /// Constructor of <see cref="Render"/>.
         /// Doesn't initialize buffer. <para />
         /// Class uses interface <see cref="IDisposable"/>
         /// </summary>
-        public Renderer()
+        public SharpDX(ThreadType threadType, DebugLevel debugLevel)
         {
-            _factory = new Factory(FactoryType.SingleThreaded, DebugLevel.Information);
+            _logWriter = new Log4Any.LogWriter(GetType());
+            _factory = new Factory(threadType.ToFactoryType(), debugLevel.ToSharpDXDebugLevel());
         }
 
-        public string Title => "WinBoyEmulator";
-        public int FPS { get; set; } = 60;
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public Color[] ColorPalette { get; set; }
-
-        /// <summary>
-        /// Buffer that contains GameBoy's screen
-        /// </summary>
-        public byte[] Buffer
-        {
-            get
-            {
-                return _buffer;
-            }
-            set
-            {
-                _buffer = value;
-            }
-        }
+        public Screen Screen { get; set; }
 
         public Action Loop { get; set; }
 
-        private Size2 NewSize => new Size2(Width, Height);
-
-        private PixelFormat NewPixelFormat => new PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Ignore);
+        private Size2 NewSize => new Size2(Screen.Width, Screen.Height);
 
         private void CreateRenderTargets()
         {
@@ -95,7 +98,8 @@ namespace WinBoyEmulator.Rendering
 
             // CreateRenderTargets
             var _screenRenderTarget = new BitmapRenderTarget(_windowRenderTarget, 
-                CompatibleRenderTargetOptions.None, new Size2F(Width, Height), NewSize, null);
+                CompatibleRenderTargetOptions.None, new Size2F(Screen.Width, Screen.Height), NewSize, null);
+            
             // RecalculateDrawRectangle
             _drawRectangle = new RawRectangleF(0, 0, _form.ClientSize.Width, _form.ClientSize.Height);
         }
@@ -103,7 +107,7 @@ namespace WinBoyEmulator.Rendering
         private void CreateBitmap()
         {
             _bitmap = new Bitmap(_windowRenderTarget, NewSize, new BitmapProperties { PixelFormat = NewPixelFormat });
-            _bitmap.CopyFromMemory(_buffer);
+            _bitmap.CopyFromMemory(Screen.Data);
         }
 
         private void SizeChanged(object sender, EventArgs e)
@@ -113,16 +117,19 @@ namespace WinBoyEmulator.Rendering
         }
 
         /// <summary>
-        /// Updates bitmap's buffer.
+        /// Updates buffer.
         /// </summary>
-        /// <param name="updatedBuffer">updated buffer. if value is null (which is default), use Property Buffer</param>
-        public void Update(byte[] updatedBuffer = null)
+        /// <param name="screen">
+        ///     You can use with this argument or without
+        ///     (the you must use Property <see cref="Screen"/>).
+        /// </param>
+        public void Update(Screen screen = null)
         {
-            if (updatedBuffer != null)
-                _buffer = updatedBuffer;
+            if (screen != null)
+                Screen = screen;
 
             // Copy gameboy screen's data to bitmap
-            _bitmap.CopyFromMemory(_buffer);
+            _bitmap.CopyFromMemory(Screen.Data);
         }
 
         /// <summary>
@@ -132,7 +139,7 @@ namespace WinBoyEmulator.Rendering
         {
             // Draw bitmap
             _windowRenderTarget.BeginDraw();
-            _windowRenderTarget.DrawBitmap(_bitmap, _drawRectangle, 1.0f, BitmapInterpolationMode.Linear);
+            _windowRenderTarget.DrawBitmap(_bitmap, _drawRectangle, 1.0f, BitmapInterpolationMode.NearestNeighbor);
             _windowRenderTarget.EndDraw();
         }
 
