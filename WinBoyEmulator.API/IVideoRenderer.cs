@@ -54,5 +54,4 @@ namespace WinBoyEmulator
         /// <summary>Draws buffer to the target form.</summary>
         void Draw();
     }
-
 }

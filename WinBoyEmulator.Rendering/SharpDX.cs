@@ -129,7 +129,7 @@ namespace WinBoyEmulator.Rendering
                 Screen = screen;
 
             // Copy gameboy screen's data to bitmap
-            _bitmap.CopyFromMemory(Screen.Data);
+            _bitmap.CopyFromMemory(Screen.Data, Screen.Width * _numberOfBytes);
         }
 
         /// <summary>
