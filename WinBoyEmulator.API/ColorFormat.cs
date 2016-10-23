@@ -23,6 +23,12 @@ namespace WinBoyEmulator
     /// <summary>Extension class that extens enum ColorFormat</summary>
     public static class ColorFormatExtensions
     {
+        /// <summary>
+        /// Tells how many bytes one color is using when using this color format.
+        /// </summary>
+        /// <param name="colorFormat"></param>
+        /// <exception cref="ArgumentException">At the moment this method can be only used with <see cref="ColorFormat.R8G8B8A8_UNorm"/></exception>
+        /// <returns>number of bytes</returns>
         public static int ByteCount(this ColorFormat colorFormat)
         {
             switch (colorFormat)

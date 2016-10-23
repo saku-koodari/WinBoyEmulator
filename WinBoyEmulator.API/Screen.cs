@@ -26,7 +26,9 @@ namespace WinBoyEmulator
     /// </summary>
     public class Screen
     {
-        public Screen() : this(0, 0, null) { }
+        public byte[] _data;
+
+        public Screen() : this(0, 0, new Color[0]) { }
 
         public Screen(int width, int height, Color[] colorPalette)
         {
@@ -34,10 +36,10 @@ namespace WinBoyEmulator
             Height = height;
             ColorPalette = colorPalette;
 
-            Data = new byte[width * height * Configuration.ColorFormat.ByteCount()];
+            _data = new byte[width * height * Configuration.ColorFormat.ByteCount()];
 
-            for (var i = 0; i < Data.Length; i++)
-                Data[i] = 0;
+            for (var i = 0; i < _data.Length; i++)
+                _data[i] = 0;
         }
 
         public int Width { get; set; }
@@ -48,28 +50,16 @@ namespace WinBoyEmulator
         /// Byte array, a buffer, 
         /// that conains the data of the screen.
         /// </summary>
-        public byte[] Data { get; set; }
-
-        public Color[] DataAsColor()
+        public byte[] Data
         {
-            var l = Width * Height;
-            var dl = Data.Length / 4; ;
-            
-            var data = new Color[Width * Height];
-            var i = 0;
-            var j = 0;
-
-            while(i < Data.Length)
+            get
             {
-                var red = Data[i++];
-                var green = Data[i++];
-                var blue = Data[i++];
-                var alpha = Data[i++];
-
-                data[j++] = Color.FromArgb(alpha, red, green, blue);
+                return _data;
             }
-
-            return data;
+            set
+            {
+                _data = value;
+            }
         }
     }
 }

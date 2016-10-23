@@ -93,14 +93,50 @@ namespace WinBoyEmulator
             //_emulator.StartEmulation();
         }
 
-        private readonly static Random r = new Random();
         private void Loop()
         {
             // pre-render,
             // emulates one cycle of gameboy
             _gameBoy.EmulateCycle();
 
-            r.NextBytes(_gameBoy.Screen.Data);
+            for (var i = 0; i < _gameBoy.Screen.Data.Length; i++)
+            {
+                // 8 bit (1 byte) for each Red, Blue, Green and alpha. Total 8x4 =  32 bit (4 byte) 
+                // ColorFormat.R8G8B8A8_UNorm 
+
+                // First sequence
+                _gameBoy.Screen.Data[i++] = 0; // Red
+                _gameBoy.Screen.Data[i++] = 0; // Blue
+                _gameBoy.Screen.Data[i++] = 0; // Green
+                //_gameBoy.Screen.Data[i++] = 1; // Alpha
+
+                if (i >= _gameBoy.Screen.Data.Length)
+                    break;
+
+                // Second sequence
+                _gameBoy.Screen.Data[i++] = 255; // Red
+                _gameBoy.Screen.Data[i++] = 255; // Blue
+                _gameBoy.Screen.Data[i++] = 255; // Green
+                //_gameBoy.Screen.Data[i++] = 1; // Alpha
+
+                if (i >= _gameBoy.Screen.Data.Length)
+                    break;
+
+                // First sequence
+                _gameBoy.Screen.Data[i++] = 255; // Red
+                _gameBoy.Screen.Data[i++] = 0; // Blue
+                _gameBoy.Screen.Data[i++] = 0; // Green
+                //_gameBoy.Screen.Data[i++] = 1; // Alpha
+
+                //if (i >= _gameBoy.Screen.Data.Length)
+                //    break;
+
+                //// Second sequence
+                //_gameBoy.Screen.Data[i++] = 0; // Red
+                //_gameBoy.Screen.Data[i++] = 255; // Blue
+                //_gameBoy.Screen.Data[i++] = 0; // Green
+                //_gameBoy.Screen.Data[i++] = 1; // Alpha
+            }
 
             // Update screen
             _graphics.Update(_gameBoy.Screen);
