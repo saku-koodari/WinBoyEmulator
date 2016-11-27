@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WinBoyEmulator.GameBoy")]
+[assembly: AssemblyTitle("WinBoyEmulator.Core")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WinBoyEmulator.GameBoy")]
+[assembly: AssemblyProduct("WinBoyEmulator.Core")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7689684f-8cf6-4476-905f-1f0cca95c93c")]
+[assembly: Guid("75bd1444-92cc-4c29-b9ac-7eac99e8fd84")]
 
 // Version information for an assembly consists of the following four values:
 //

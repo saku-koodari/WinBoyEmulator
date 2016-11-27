@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WinBoyEmulator.Properties
+namespace WinBoyEmulator.Forms.Properties
 {
 
 

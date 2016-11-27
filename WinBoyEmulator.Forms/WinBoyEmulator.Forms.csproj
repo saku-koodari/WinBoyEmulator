@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F9FE11D5-510F-4605-A540-F9CFD2A08059}</ProjectGuid>
+    <ProjectGuid>{84C42673-DC1E-4DAD-A186-943BA40760CD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WinBoyEmulator</RootNamespace>
-    <AssemblyName>WinBoyEmulator</AssemblyName>
+    <RootNamespace>WinBoyEmulator.Forms</RootNamespace>
+    <AssemblyName>WinBoyEmulator.Forms</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Log4Any">
-      <HintPath>..\..\Log4Any\Log4Any\bin\Release\Log4Any.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -83,13 +80,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WinBoyEmulator.API\WinBoyEmulator.csproj">
-      <Project>{3397e066-5e80-4283-8fd8-60c6805063b5}</Project>
-      <Name>WinBoyEmulator</Name>
+    <ProjectReference Include="..\WinBoyEmulator.Core\WinBoyEmulator.Core.csproj">
+      <Project>{75bd1444-92cc-4c29-b9ac-7eac99e8fd84}</Project>
+      <Name>WinBoyEmulator.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WinBoyEmulator.GameBoy\WinBoyEmulator.GameBoy.csproj">
-      <Project>{f63a5353-29c2-4892-bc76-4b9c1ab95c9c}</Project>
-      <Name>WinBoyEmulator.GameBoy</Name>
+    <ProjectReference Include="..\WinBoyEmulator.Emulation\WinBoyEmulator.Emulation.csproj">
+      <Project>{cf6174aa-3103-46c2-95db-586be9031a87}</Project>
+      <Name>WinBoyEmulator.Emulation</Name>
     </ProjectReference>
     <ProjectReference Include="..\WinBoyEmulator.Rendering\WinBoyEmulator.Rendering.csproj">
       <Project>{8146a6a9-a5f8-4bc2-945b-468eebbc31fc}</Project>

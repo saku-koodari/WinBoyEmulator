@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using SharpDX.Direct2D1;
 using Format = SharpDX.DXGI.Format;
 
-using WBEDL = WinBoyEmulator.DebugLevel;
+using WBEDL = WinBoyEmulator.Core.DebugLevel;
 using SDXDL = SharpDX.Direct2D1.DebugLevel;
 
 namespace WinBoyEmulator.Rendering.Extensions
@@ -37,7 +37,7 @@ namespace WinBoyEmulator.Rendering.Extensions
         /// </summary>
         /// <param name="threadType"></param>
         /// <returns><see cref="FactoryType"/></returns>
-        public static FactoryType ToFactoryType(this ThreadType threadType)
+        public static FactoryType ToFactoryType(this Core.ThreadType threadType)
         {
             var i = (int)threadType;
             return (FactoryType)i;
@@ -48,7 +48,7 @@ namespace WinBoyEmulator.Rendering.Extensions
         /// </summary>
         /// <param name="colorFormat"></param>
         /// <returns><see cref="Format"/></returns>
-        public static Format ToSharpDXGIFormat(this ColorFormat colorFormat)
+        public static Format ToSharpDXGIFormat(this Core.Color.ColorFormat colorFormat)
         {
             var i = (int)colorFormat;
             return (Format)i;
@@ -59,7 +59,7 @@ namespace WinBoyEmulator.Rendering.Extensions
         /// </summary>
         /// <param name="debugLevel"></param>
         /// <returns><see cref="SDXDL"/></returns>
-        public static SDXDL ToSharpDXDebugLevel(this WBEDL debugLevel)
+        public static SDXDL ToSharpDXDebugLevel(this Core.DebugLevel debugLevel)
         {
             var i = (int)debugLevel;
             return (SDXDL)i;

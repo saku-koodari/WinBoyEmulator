@@ -82,9 +82,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WinBoyEmulator.API\WinBoyEmulator.csproj">
-      <Project>{3397e066-5e80-4283-8fd8-60c6805063b5}</Project>
-      <Name>WinBoyEmulator</Name>
+    <ProjectReference Include="..\WinBoyEmulator.Core\WinBoyEmulator.Core.csproj">
+      <Project>{75bd1444-92cc-4c29-b9ac-7eac99e8fd84}</Project>
+      <Name>WinBoyEmulator.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

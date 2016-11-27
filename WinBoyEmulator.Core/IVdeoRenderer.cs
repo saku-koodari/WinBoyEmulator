@@ -18,48 +18,39 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace WinBoyEmulator
+namespace WinBoyEmulator.Core
 {
     /// <summary>
-    /// A class that holds the data of the screen.
+    /// An interface which purpose is to keep a different
+    /// video renderers compatible with WinBoyEmulator.
     /// </summary>
-    public class Screen
+    public interface IVideoRenderer : IDisposable
     {
-        public byte[] _data;
+        int Width { get; set; }
+        int Height { get; set; }
+        byte[] Data { get; set; }
 
-        public Screen() : this(0, 0, new Color[0]) { }
-
-        public Screen(int width, int height, Color[] colorPalette)
-        {
-            Width = width;
-            Height = height;
-            ColorPalette = colorPalette;
-
-            _data = new byte[width * height * Configuration.ColorFormat.ByteCount()];
-
-            for (var i = 0; i < _data.Length; i++)
-                _data[i] = 0;
-        }
-
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public Color[] ColorPalette { get; set; }
+        /// <summary>Actions that is done during the loop.</summary>
+        Action Loop { get; set; }
 
         /// <summary>
-        /// Byte array, a buffer, 
-        /// that conains the data of the screen.
+        /// Method that starts the Game.
         /// </summary>
-        public byte[] Data
-        {
-            get
-            {
-                return _data;
-            }
-            set
-            {
-                _data = value;
-            }
-        }
+        /// <param name="targetForm">The form where the game is drawn.</param>
+        void Run(Form targetForm);
+
+        /// <summary>
+        /// Updates buffer.
+        /// </summary>
+        /// <param name="data">
+        ///     You can use with this argument or without
+        ///     (the you must use Property <see cref="Data"/>).
+        /// </param>
+        void Update(byte[] data);
+
+        /// <summary>Draws buffer to the target form.</summary>
+        void Draw();
     }
 }

@@ -26,17 +26,15 @@ using SharpDX.Windows;
 using Format = SharpDX.DXGI.Format;
 using Color = System.Drawing.Color;
 
-using WinBoyEmulator;
-using WinBoyEmulator.Rendering.Extensions;
-using WinBoyEmulator.Rendering.Utils;
+using WinBoyEmulator.Core;
 
 namespace WinBoyEmulator.Rendering
 {
     /// <summary>Class for showing an emulator on a form. Disposable.</summary>
     public class SharpDX : IDisposable, IVideoRenderer
     {
-        private static Format _format;
-        private static int _numberOfBytes;
+        private readonly static Format _format = Format.R8G8B8A8_UInt;
+        private readonly static int _numberOfBytes = 4;
         private Log4Any.LogWriter _logWriter;
         private Form _form;
         private Factory _factory;
@@ -53,36 +51,23 @@ namespace WinBoyEmulator.Rendering
         // TODO: This is never assigned. Use it somehow.
         private bool _isFormClosed;
 
-        static SharpDX()
-        {
-            _numberOfBytes = Configuration.ColorFormat.ByteCount();
-            _format = Configuration.ColorFormat.ToSharpDXGIFormat();
-        }
-
-        /// <summary>
-        /// Constructor of <see cref="Render"/>.
-        /// Creates singlethreaded video renderer with SharpDX which uses information as debug level.
-        /// Doesn't initialize buffer. <para />
-        /// Class uses interface <see cref="IDisposable"/>
-        /// </summary>
-        public SharpDX() : this(ThreadType.SingleThread, DebugLevel.Information) { }
-
-        /// <summary>
-        /// Constructor of <see cref="Render"/>.
-        /// Doesn't initialize buffer. <para />
-        /// Class uses interface <see cref="IDisposable"/>
-        /// </summary>
-        public SharpDX(ThreadType threadType, DebugLevel debugLevel)
+        public SharpDX()
         {
             _logWriter = new Log4Any.LogWriter(GetType());
-            _factory = new Factory(threadType.ToFactoryType(), debugLevel.ToSharpDXDebugLevel());
+            _logWriter.Debug($"NoB: {_numberOfBytes}");
+            _factory = new Factory(FactoryType.SingleThreaded, DebugLevel.None);
         }
-
-        public Screen Screen { get; set; }
 
         public Action Loop { get; set; }
 
-        private Size2 NewSize => new Size2(Screen.Width, Screen.Height);
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
+        public byte[] Data { get; set; }
+
+
+        private Size2 NewSize => new Size2(Width, Height);
 
         private void CreateRenderTargets()
         {
@@ -98,7 +83,7 @@ namespace WinBoyEmulator.Rendering
 
             // CreateRenderTargets
             var _screenRenderTarget = new BitmapRenderTarget(_windowRenderTarget, 
-                CompatibleRenderTargetOptions.None, new Size2F(Screen.Width, Screen.Height), NewSize, null);
+                CompatibleRenderTargetOptions.None, new Size2F(Width, Height), NewSize, null);
             
             // RecalculateDrawRectangle
             _drawRectangle = new RawRectangleF(0, 0, _form.ClientSize.Width, _form.ClientSize.Height);
@@ -107,7 +92,7 @@ namespace WinBoyEmulator.Rendering
         private void CreateBitmap()
         {
             _bitmap = new Bitmap(_windowRenderTarget, NewSize, new BitmapProperties { PixelFormat = NewPixelFormat });
-            _bitmap.CopyFromMemory(Screen.Data);
+            UpdateDataToBitmap();
         }
 
         private void SizeChanged(object sender, EventArgs e)
@@ -116,20 +101,31 @@ namespace WinBoyEmulator.Rendering
             // _windowRenderTarget?.Resize(NewClientSize);
         }
 
+        private void UpdateDataToBitmap()
+        {
+            _bitmap.CopyFromMemory(Data, Width * _numberOfBytes);
+            //_bitmap.CopyFromMemory(Screen.Data, Screen.Width * sizeof(int));
+        }
+
         /// <summary>
         /// Updates buffer.
         /// </summary>
-        /// <param name="screen">
+        /// <param name="data">
         ///     You can use with this argument or without
-        ///     (the you must use Property <see cref="Screen"/>).
+        ///     (the you must use Property <see cref="Data"/>).
         /// </param>
-        public void Update(Screen screen = null)
+        public void Update(byte[] data = null)
         {
-            if (screen != null)
-                Screen = screen;
+            if (data != null)
+                Data = data;
+
+            if (Data == null)
+                // This happens when you use property Data instead of argument data
+                // and Data is null, for example is hasn't initialized yet.
+                throw new InvalidOperationException("Data is null.");
 
             // Copy gameboy screen's data to bitmap
-            _bitmap.CopyFromMemory(Screen.Data, Screen.Width * _numberOfBytes);
+            UpdateDataToBitmap();
         }
 
         /// <summary>
@@ -139,7 +135,14 @@ namespace WinBoyEmulator.Rendering
         {
             // Draw bitmap
             _windowRenderTarget.BeginDraw();
-            _windowRenderTarget.DrawBitmap(_bitmap, _drawRectangle, 1.0f, BitmapInterpolationMode.NearestNeighbor);
+            //RenderTarget2D.DrawBitmap(_bitmap, 1.0f, BitmapInterpolationMode.Linear);
+
+            // 
+            // _windowRenderTarget.DrawBitmap(_bitmap, _drawRectangle, 1.0f, BitmapInterpolationMode.NearestNeighbor);
+
+            // This is how it was done in SharpDX samples
+            _windowRenderTarget.DrawBitmap(_bitmap, _drawRectangle, 1.0f, BitmapInterpolationMode.Linear);
+
             _windowRenderTarget.EndDraw();
         }
 
