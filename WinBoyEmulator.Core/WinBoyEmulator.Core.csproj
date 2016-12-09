@@ -42,8 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameBoyConsole.cs" />
-    <Compile Include="IEmulatable.cs" />
+    <Compile Include="IEmulable.cs" />
     <Compile Include="IVdeoRenderer.cs" />
+    <Compile Include="Memory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

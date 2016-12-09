@@ -10,12 +10,13 @@ using WinBoyEmulator.GameBoyConsoles;
 namespace WinBoyEmulator.Emulation
 {
     /// <summary>
-    /// Class that emulates the selected GameBoyConsole.
+    /// A factory lass (of <see cref="GameBoy"/>), 
+    /// that emulates the selected GameBoyConsole.
     /// </summary>
     public class Emulator
     {
         private bool _isEmulatorRunning = false;
-        private IEmulatable _gameBoyConsole;
+        private IEmulable _gameBoyConsole;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Emulator"/> class.
@@ -51,7 +52,24 @@ namespace WinBoyEmulator.Emulation
         {
             _isEmulatorRunning = true;
 
-            // Because of this, you can't change the console on the fly.
+            InitializeGameBoyConsole();
+
+            // TODO: Consider changing the name to Start.
+            EmulateCycle();
+        }
+
+        /// <summary>Initializes <see cref="_gameBoyConsole"/> instance by <see cref="GameBoyConsole"/>.</summary>
+        private void InitializeGameBoyConsole()
+        {
+            // Should you uncomment following two lines?
+            // Or should they be on IDisposable.Dispose() - method?
+            // _gameBoyConsole?.Dispose();
+            // _gameBoyConsole = null; // sanity check
+
+            // Because of this, 
+            // you can't change the console on the fly.
+            // (I mean it recreate instance of _gameBoyConsole
+            // depending on GameBoyConsole).
             switch (GameBoyConsole)
             {
                 case GameBoyConsole.GameBoy:
@@ -67,7 +85,6 @@ namespace WinBoyEmulator.Emulation
                 case GameBoyConsole.Unknown:
                 default:
                     throw new InvalidOperationException($"Unsupported {nameof(GameBoyConsole)}.");
-
             }
         }
 
@@ -81,13 +98,25 @@ namespace WinBoyEmulator.Emulation
         public void Stop()
         {
             _isEmulatorRunning = false;
+
+            // Should this class be disposable?
+            // Or how the method should differ apart from Pause(); ?
+            // _gameBoyConsole?.Dispose();
+            // _gameBoyConsole = null; // Sanity check
+
             throw new NotImplementedException();
         }
 
         public void EmulateCycle(int amountOfCycles = 1)
         {
+            if (amountOfCycles < 0)
+                throw new ArgumentOutOfRangeException(nameof(amountOfCycles), "argument must be zero or bigger.");
+
             if (!_isEmulatorRunning)
                 return;
+
+            for(var i = 0; i < amountOfCycles; i++)
+                _gameBoyConsole.EmulateCpu();
         }
     }
 }

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace WinBoyEmulator.Core
 {
-    public interface IEmulatable
+    public interface IEmulable
     {
+        int Width { get; set; }
+        int Height { get; set; }
         void EmulateCpu();
-        void EmulateSound();
     }
 }
