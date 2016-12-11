@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinBoyEmulator.GameBoyConsoles
+namespace WinBoyEmulator.GameBoy
 {
     // Defines BIOS
-    public partial class GameBoy
+    public partial class Console
     {
 		// _bios.Length = 256
         private static readonly byte[] _bios = new byte[] {

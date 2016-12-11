@@ -48,9 +48,13 @@
       <Project>{75bd1444-92cc-4c29-b9ac-7eac99e8fd84}</Project>
       <Name>WinBoyEmulator.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WinBoyEmulator.GameBoy\WinBoyEmulator.GameBoyConsoles.csproj">
+    <ProjectReference Include="..\WinBoyEmulator.EmulatorBase\WinBoyEmulator.EmulatorBase.csproj">
+      <Project>{96c33478-26b4-44c5-9c00-e2ea3e6b64db}</Project>
+      <Name>WinBoyEmulator.EmulatorBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WinBoyEmulator.GameBoy\WinBoyEmulator.GameBoy.csproj">
       <Project>{7689684f-8cf6-4476-905f-1f0cca95c93c}</Project>
-      <Name>WinBoyEmulator.GameBoyConsoles</Name>
+      <Name>WinBoyEmulator.GameBoy</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

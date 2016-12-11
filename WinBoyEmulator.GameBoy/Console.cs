@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using WinBoyEmulator.Core;
+using WinBoyEmulator.EmulatorBase;
 
-namespace WinBoyEmulator.GameBoyConsoles
+namespace WinBoyEmulator.GameBoy
 {
-    public partial class GameBoy : IEmulable
+    public partial class Console : IEmulable
     {
         /// <summary>The Memory Management Unit</summary>
         private Memory _mmu;
 
-        public GameBoy()
+        public Console()
         {
             // Basic dimensions for GameBoy
             Width = 160;
@@ -26,7 +26,9 @@ namespace WinBoyEmulator.GameBoyConsoles
                 WorkingRam  = new byte[8192],
                 ZeropageRam = new byte[128]
             };
-            _mmu.ResetMemory();
+
+            // Resets the memory (fills the memory with zeroes).
+            _mmu.Reset();
         }
 
         public int Width { get; set; }

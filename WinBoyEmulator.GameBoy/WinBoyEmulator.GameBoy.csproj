@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{75BD1444-92CC-4C29-B9AC-7EAC99E8FD84}</ProjectGuid>
+    <ProjectGuid>{7689684F-8CF6-4476-905F-1F0CCA95C93C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WinBoyEmulator.Core</RootNamespace>
-    <AssemblyName>WinBoyEmulator.Core</AssemblyName>
+    <RootNamespace>WinBoyEmulator.GameBoy</RootNamespace>
+    <AssemblyName>WinBoyEmulator.GameBoy</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,7 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,10 +40,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions.cs" />
-    <Compile Include="GameBoyConsole.cs" />
-    <Compile Include="IVdeoRenderer.cs" />
+    <Compile Include="Console.cs" />
+    <Compile Include="Memory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WinBoyEmulator.Core\WinBoyEmulator.Core.csproj">
+      <Project>{75bd1444-92cc-4c29-b9ac-7eac99e8fd84}</Project>
+      <Name>WinBoyEmulator.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WinBoyEmulator.EmulatorBase\WinBoyEmulator.EmulatorBase.csproj">
+      <Project>{96c33478-26b4-44c5-9c00-e2ea3e6b64db}</Project>
+      <Name>WinBoyEmulator.EmulatorBase</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bios.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

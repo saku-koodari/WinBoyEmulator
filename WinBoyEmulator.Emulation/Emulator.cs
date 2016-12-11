@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using WinBoyEmulator.Core;
-using WinBoyEmulator.GameBoyConsoles;
+using WinBoyEmulator.EmulatorBase;
+using WinBoyEmulator.GameBoy;
 
 namespace WinBoyEmulator.Emulation
 {
@@ -73,12 +74,16 @@ namespace WinBoyEmulator.Emulation
             switch (GameBoyConsole)
             {
                 case GameBoyConsole.GameBoy:
-                    _gameBoyConsole = new GameBoy();
+                    _gameBoyConsole = new GameBoy.Console();
                     break;
                 case GameBoyConsole.GameBoyPocket:
                 case GameBoyConsole.GameBoyLight:
                 case GameBoyConsole.GameBoyColor:
+                    //_gameBoyConsole = new GameBoyColor.Console();
+                    // break;
                 case GameBoyConsole.GameBoyAdvance:
+                    //_gameBoyConsole = new GameBoyAdvance.Console();
+                    //break;
                 case GameBoyConsole.GameBoyAdvanceSP:
                 case GameBoyConsole.GameBoyMicro:
                     throw new NotImplementedException();
